@@ -26,6 +26,12 @@
                     <th width="200px" rowspan="2" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Aksi Kontrak
                     </th>
+                    <th width="200px" colspan="4" class="border-r border-b border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+                        Status Kontrak
+                    </th>
+                    <th width="200px" colspan="2" class="border-r border-b border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+                        Status Kontrak
+                    </th>
                     <th width="400px" colspan="2" class="border-r border-b border-[#eee] text-center font-medium text-white dark:text-white">
                         No Kontrak
                     </th>
@@ -76,6 +82,27 @@
                     </th>
                 </tr>
                 <tr class="text-left dark:bg-meta-4">
+                    {{-- Status Kontrak --}}
+                    <th width="100px" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+                        Pengiriman
+                    </th>
+                    <th width="100px" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+                        BA RIKMATEK
+                    </th>
+                    <th width="100px" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+                        BAPB/BAPP
+                    </th>
+                    <th width="100px" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+                        BAST
+                    </th>
+                    {{-- Status Invoice --}}
+                    <th width="100px" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+                        Invoice
+                    </th>
+                    <th width="100px" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+                        Resi Pengiriman
+                    </th>
+                    {{-- Data Kontrak --}}
                     <th width="200px" class="border-r border-[#eee] px-5 text-center font-medium text-white dark:text-white">
                         Takon
                     </th>
@@ -169,6 +196,27 @@
                                 </button>
                             </div>
                         </td>
+                        {{-- Status Kontrak --}}
+                        <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white">{{$itemKontrak->takon}}</p>
+                        </td>
+                        <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white">{{$itemKontrak->takon}}</p>
+                        </td>
+                        <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white">{{$itemKontrak->takon}}</p>
+                        </td>
+                        <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white">{{$itemKontrak->takon}}</p>
+                        </td>
+                        {{-- Status Pengiriman --}}
+                        <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white">{{$itemKontrak->takon}}</p>
+                        </td>
+                        <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white">{{$itemKontrak->takon}}</p>
+                        </td>
+                        {{-- Data Kontrak --}}
                         <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white">{{$itemKontrak->takon}}</p>
                         </td>
