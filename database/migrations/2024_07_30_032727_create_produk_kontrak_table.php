@@ -1,0 +1,43 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('produk_kontrak', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('id_kontrak_rinci');
+            $table->string('nama_barang', 100);
+            $table->integer('kuantitas');
+            $table->unsignedBigInteger('id_satuan')->nullable();
+            $table->integer('volume_kontrak')->nullable();
+            $table->integer('volume_realisasi')->nullable();
+            $table->integer('volume_sisa')->nullable();
+            $table->decimal('harga_barang', 15, 2)->nullable();
+            $table->timestamps();
+        
+            // Menambahkan foreign key untuk menghubungkan dengan kontrak_rinci_table
+            $table->foreign('id_kontrak_rinci')
+                  ->references('id')
+                  ->on('kontrak_rinci_table')
+                  ->onDelete('cascade')
+                  ->onUpdate('cascade');
+            $table->foreign('id_satuan')->references('id')->on('satuan_table');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('produk_kontrak');
+    }
+};

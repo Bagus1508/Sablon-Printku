@@ -11,7 +11,22 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->alias([
+            'setTitle' => \App\Http\Middleware\SetTitle::class,
+            'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+            'api' => [
+                \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+                'throttle:api',
+                \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            ],
+            'ErrorHandler' => \App\Http\Middleware\ErrorHandler::class,
+            \RealRashid\SweetAlert\ToSweetAlert::class,
+            'web' => [
+                // Middleware lainnya
+                \App\Http\Middleware\HandleValidationErrors::class,
+            ],
+            'checkrole' => \App\Http\Middleware\checkRole::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
