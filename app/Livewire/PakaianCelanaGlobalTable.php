@@ -92,7 +92,8 @@ class PakaianCelanaGlobalTable extends Component
             foreach ($item->stokHarian as $stokHarian) {
                 $totalSisaStok += $this->convertToMeter($stokHarian->sisa_stok, $stokHarian->id_satuan);
             }
-            $item->totalSisaStok = number_format($totalSisaStok, 2);
+            $item->totalSisaStok = number_format($totalSisaStok, 0, ',', '.');
+
             return $item;
         });
     

@@ -95,4 +95,22 @@
             </div>
         </div>
     </div>
+    <script>
+        document.getElementById('toggle-password').addEventListener('click', function() {
+            var passwordInputs = [document.getElementById('password1'), document.getElementById('password2')];
+            var showIcon = document.getElementById('show-icon');
+            var hideIcon = document.getElementById('hide-icon');
+
+            passwordInputs.forEach(function(passwordInput) {
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                } else {
+                    passwordInput.type = 'password';
+                }
+            });
+
+            showIcon.classList.toggle('hidden');
+            hideIcon.classList.toggle('hidden');
+        });
+    </script>
 </div>

@@ -24,7 +24,9 @@
                                     <div class="font-medium text-gray-900">{{ $log->user }}</div>
                                     <div
                                         class="mt-1 {{ $log->status === 'Error' ? 'text-rose-500' : 'text-gray-500' }}">
-                                        {{ Str::words(Str::title($log->message), 7, '...') }}</div>
+                                        {{-- {{ Str::words(Str::title($log->message), 7, '...') }} --}}
+                                        {{$log->message}}
+                                    </div>
                                     <div>
                                         {{$log->created_at}}
                                     </div>

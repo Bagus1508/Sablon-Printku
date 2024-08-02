@@ -73,6 +73,7 @@ class AccountController extends Controller
                 'name' => 'nullable',
                 'email' => 'nullable',
                 'level' => 'nullable',
+                'password' => 'nullable',
             ]);
 
             $data = User::find($id);
@@ -83,19 +84,26 @@ class AccountController extends Controller
                 return redirect()->back();
             }
 
-            $data->name = $validated['name'];
-            $data->email = $validated['email'];
-            $data->id_level_user = $validated['level'];
+            if($validated['password'] != null){
+                $data->name = $validated['name'];
+                $data->email = $validated['email'];
+                $data->id_level_user = $validated['level'];
+                $data->password = bcrypt($validated['password']);
+            } else if ($validated['password'] == null){
+                $data->name = $validated['name'];
+                $data->email = $validated['email'];
+                $data->id_level_user = $validated['level'];
+            }
 
             $User = $data->save();
             if (!$User) {
-                Alert::error('Gagal!', 'Gagal mengubah data akun');
+                Alert::error('Gagal!', 'Gagal mengubah data akun' .$data->name);
                 LogHelper::error('Gagal mengubah data akun!');
                 return redirect()->back();
             }
 
-            Alert::success('Berhasil!', 'Berhasil mengubah data akun');
-            LogHelper::success('Berhasil mengubah data akun.');
+            Alert::success('Berhasil!', 'Berhasil mengubah data akun' .$data->name);
+            LogHelper::success('Berhasil mengubah data akun.' .$data->name);
             return redirect()->back();
         } catch (Throwable $e) {
             LogHelper::error($e->getMessage());

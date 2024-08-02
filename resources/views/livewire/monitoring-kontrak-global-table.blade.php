@@ -38,6 +38,14 @@
                     <th rowspan="1" colspan="4" class="px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Volume
                     </th>
+                    @if ($loggedInUser->id_level_user === 1) 
+                    <th rowspan="2" class="px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+                        Harga
+                    </th>
+                    <th rowspan="2" class="px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+                        Total Harga
+                    </th>
+                    @endif
                     <th rowspan="1" colspan="2" class="px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Jangka Waktu Kontrak
                     </th>
@@ -73,67 +81,124 @@
                 </tr>
             </thead>
             <tbody class="dark:bg-meta-4">
-                <tr>
-                    <td rowspan="6" class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                        <h5 class="font-medium text-black dark:text-white">1</h5>
-                    </td>
-                    <td rowspan="6" class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                        <p class="text-black dark:text-white">123Takon</p>
-                    </td>
-                    <td rowspan="6" class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                        <p class="text-black dark:text-white">123</p>
-                    </td>
-                    <td rowspan="6" class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                        <p class="text-black dark:text-white">31 Juli 2024</p>
-                    </td>
-                    <td rowspan="6" class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                        <p class="text-black dark:text-white">PT. Sejahtera</p>
-                    </td>
-                    <td rowspan="6" class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                        <p class="text-black dark:text-white text-left">Test</p>
-                    </td>   
-                    <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
-                        <p class="text-black dark:text-white">Baju</p>
-                    </td>    
-                    <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
-                        <p class="text-black dark:text-white">meter</p>
-                    </td>    
-                    <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
-                        <p class="text-black dark:text-white">100</p>
-                    </td>    
-                    <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
-                        <p class="text-black dark:text-white">50</p>
-                    </td>    
-                    <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
-                        <p class="text-black dark:text-white">50</p>
-                    </td>
-                    <td rowspan="7" class="whitespace-nowrap text-center border-black dark:border-strokedark">
-                        <p class="text-black dark:text-white">01 Juli 2024</p>
-                    </td>    
-                    <td rowspan="7" class="whitespace-nowrap text-center border-black dark:border-strokedark">
-                        <p class="text-black dark:text-white">31 Juli 2024</p>
-                    </td>   
-                    <td rowspan="7" class="whitespace-nowrap text-center border-black dark:border-strokedark">
-                        <p class="text-black dark:text-white">31 Juli 2024</p>
-                    </td>   
-                </tr>
-                <tr>
-                    <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
-                        <p class="text-black dark:text-white">Baju</p>
-                    </td>    
-                    <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
-                        <p class="text-black dark:text-white">meter</p>
-                    </td>    
-                    <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
-                        <p class="text-black dark:text-white">100</p>
-                    </td>    
-                    <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
-                        <p class="text-black dark:text-white">50</p>
-                    </td>    
-                    <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
-                        <p class="text-black dark:text-white">50</p>
-                    </td>
-                </tr>
+                @foreach ($dataKontrak as $itemKontrak)
+                    @php
+                        $barangKontrakCount = $itemKontrak->barangKontrak->count();
+                    @endphp                    
+                    <tr>
+                        <td rowspan="{{$barangKontrakCount}}" class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <h5 class="font-medium text-black dark:text-white">{{$loop->index + 1}}</h5>
+                        </td>
+                        <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white">{{$itemKontrak->takon}}</p>
+                        </td>
+                        <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white">{{$itemKontrak->no_telepon}}</p>
+                        </td>
+                        <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white">                    
+                                @if($itemKontrak->tanggal_kontrak && $itemKontrak->tanggal_kontrak)
+                                    {{ \Carbon\Carbon::parse($itemKontrak->tanggal_kontrak)->translatedFormat('d F Y') }}
+                                @else
+                                    Kosong
+                                @endif
+                            </p>
+                        </td>
+                        <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white">{{$itemKontrak->perusahaan->nama_perusahaan ?? 'Kosong'}}</p>
+                        </td>
+                        <td rowspan="{{$barangKontrakCount}}" class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white text-left">{{$itemKontrak->uraian ?? 'Kosong'}}</p>
+                        </td>
+                        <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark text-center">
+                            <p class="text-black dark:text-white">{{$itemKontrak->barangKontrak->first()->nama_barang ?? 'Kosong'}}</p>
+                        </td>    
+                        <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark  text-center">
+                            <p class="text-black dark:text-white">{{$itemKontrak->barangKontrak->first()->satuan->nama_satuan ?? 'Kosong'}}</p>
+                        </td>    
+                        <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark text-center">
+                            <p class="text-black dark:text-white">{{$itemKontrak->barangKontrak->first()->volume_kontrak ?? 'Kosong'}}</p>
+                        </td>    
+                        <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark text-center">
+                            <p class="text-black dark:text-white">{{$itemKontrak->barangKontrak->first()->volume_realisasi ?? 'Kosong'}}</p>
+                        </td>    
+                        <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark text-center">
+                            <p class="text-black dark:text-white">{{$itemKontrak->barangKontrak->first()->volume_sisa ?? 'Kosong'}}</p>
+                        </td>
+                        @if ($loggedInUser->id_level_user === 1)   
+                        <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark text-center">
+                            <p class="text-black dark:text-white px-10">
+                                {{ 'Rp ' . number_format($itemKontrak->barangKontrak->first()->harga_barang ?? 'Kosong', 0, ',', '.') }}
+                            </p>
+                        </td>
+                        <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap text-center border-black dark:border-strokedark">
+                            <p class="text-black dark:text-white px-10">
+                                {{ 'Rp ' . number_format($itemKontrak->total_harga ?? 'Kosong', 0, ',', '.') }}
+                            </p>
+                        </td>    
+                        @endif
+                        <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap text-center border-black dark:border-strokedark">
+                            <p class="text-black dark:text-white px-10">                    
+                                @if($itemKontrak->awal_kr && $itemKontrak->awal_kr)
+                                    {{ \Carbon\Carbon::parse($itemKontrak->awal_kr)->translatedFormat('d F Y') }}
+                                @else
+                                    Kosong
+                                @endif
+                            </p>
+                        </td>   
+                        <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap text-center border-black dark:border-strokedark">
+                            <p class="text-black dark:text-white px-10">                    
+                                @if($itemKontrak->akhir_kr && $itemKontrak->akhir_kr)
+                                    {{ \Carbon\Carbon::parse($itemKontrak->akhir_kr)->translatedFormat('d F Y') }}
+                                @else
+                                    Kosong
+                                @endif
+                            </p>
+                        </td>   
+                        <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap text-center border-black dark:border-strokedark">
+                            <p class="text-black dark:text-white px-10">
+                                @if ($itemKontrak->kontrakGlobal->status_spk === false)
+                                    @include('components.badges.belum-selesai')
+                                @else
+                                    @include('components.badges.selesai')
+                                @endif
+                                <button 
+                                data-hs-overlay="#modal-update-status-spk"
+                                data-id-kontrak-global="{{$itemKontrak->kontrakGlobal->id}}"
+                                data-no-kontrak-takon="{{$itemKontrak->takon}}"
+                                data-status-spk="{{$itemKontrak->kontrakGlobal->status_spk}}"
+                                id="update-status-spk" class="update-status-spk text-blue-600 hover:underline">Update</button>
+                            </p>
+                        </td>   
+                    </tr>
+                    @foreach ($itemKontrak->barangKontrak as $itemBarang)  
+                    @if($loop->first)
+                        @continue
+                    @endif    
+                        <tr>
+                            <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark text-center">
+                                <p class="text-black dark:text-white">{{$itemBarang->nama_barang}}</p>
+                            </td>    
+                            <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark text-center">
+                                <p class="text-black dark:text-white">{{$itemBarang->satuan->nama_satuan}}</p>
+                            </td>    
+                            <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark text-center">
+                                <p class="text-black dark:text-white">{{$itemBarang->volume_kontrak}}</p>
+                            </td>    
+                            <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark text-center">
+                                <p class="text-black dark:text-white">{{$itemBarang->volume_realisasi}}</p>
+                            </td>    
+                            <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark text-center">
+                                <p class="text-black dark:text-white">{{$itemBarang->volume_sisa}}</p>
+                            </td>
+                            @if ($loggedInUser->id_level_user === 1) 
+                            <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark text-center">
+                                <p class="text-black dark:text-white">{{ 'Rp ' . number_format($itemBarang->harga_barang ?? 'Kosong', 0, ',', '.') }}</p>
+                            </td>
+                            @endif
+                        </tr>
+                    @endforeach
+                @endforeach
             </tbody>
         </table>
 
@@ -154,5 +219,8 @@
             </div>
     </section>
 
-    {{$data->links()}}
+    {{$dataKontrak->links()}}
+
+    {{-- Status SPK Update --}}
+    @include('pages.dashboard.monitoring_kontrak.kontrak_global.status_spk.edit')
 </div>

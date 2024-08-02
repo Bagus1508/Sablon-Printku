@@ -86,7 +86,7 @@
                 </li>
 
                 <!-- Notification Menu Area -->
-                <li class="relative" x-data="{ dropdownOpen: false, notifying: true }" @click.outside="dropdownOpen = false">
+                {{-- <li class="relative" x-data="{ dropdownOpen: false, notifying: true }" @click.outside="dropdownOpen = false">
                     <a class="relative flex h-8.5 w-8.5 items-center justify-center rounded-full border-[0.5px] border-stroke bg-gray hover:text-primary dark:border-strokedark dark:bg-meta-4 dark:text-white"
                         href="#" @click.prevent="dropdownOpen = ! dropdownOpen; notifying = false">
                         <span :class="!notifying && 'hidden'"
@@ -161,11 +161,11 @@
                         </ul>
                     </div>
                     <!-- Dropdown End -->
-                </li>
+                </li> --}}
                 <!-- Notification Menu Area -->
 
                 <!-- Chat Notification Area -->
-                <li class="relative" x-data="{ dropdownOpen: false, notifying: true }" @click.outside="dropdownOpen = false">
+                {{-- <li class="relative" x-data="{ dropdownOpen: false, notifying: true }" @click.outside="dropdownOpen = false">
                     <a class="relative flex h-8.5 w-8.5 items-center justify-center rounded-full border-[0.5px] border-stroke bg-gray hover:text-primary dark:border-strokedark dark:bg-meta-4 dark:text-white"
                         href="#" @click.prevent="dropdownOpen = ! dropdownOpen; notifying = false">
                         <span :class="!notifying && 'hidden'"
@@ -282,7 +282,7 @@
                         </ul>
                     </div>
                     <!-- Dropdown End -->
-                </li>
+                </li> --}}
                 <!-- Chat Notification Area -->
             </ul>
 
@@ -295,7 +295,7 @@
                     </span>
 
                     <span class="h-12 w-12 rounded-full">
-                        <img src="{{asset('src/images/user/user-01.png')}}" alt="User" />
+                        <img class="rounded-full" src="{{asset('src/images/user/default-profile-foto.jpg')}}" alt="User" />
                     </span>
 
                     <svg :class="dropdownOpen && 'rotate-180'" class="hidden fill-current sm:block" width="12"
@@ -325,7 +325,7 @@
                                 Profil Saya
                             </a>
                         </li>
-                        <li>
+                        {{-- <li>
                             <a href="{{route('akun.edit')}}"
                                 class="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
                                 <svg class="fill-current" width="22" height="22" viewBox="0 0 22 22"
@@ -339,7 +339,7 @@
                                 </svg>
                                 Setting Akun
                             </a>
-                        </li>
+                        </li> --}}
                     </ul>
                     <form method="POST" action="{{ route('logout') }}" x-data>
                         @csrf

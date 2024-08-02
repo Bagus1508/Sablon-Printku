@@ -46,6 +46,17 @@
                         </div>
                         <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                Perusahaan <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
+                            </label>
+                            <select required name="id_perusahaan" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
+                                <option selected disabled>==Pilih Perusahaan==</option>
+                                @foreach ($dataPerusahaan as $item)
+                                <option value="{{$item->id}}">{{$item->nama_perusahaan}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-4.5 w-full">
+                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 No Kontrak Rinci
                             </label>
                             <input type="number" id="no_kontrak_rinci" name="no_kontrak_rinci" placeholder="Masukan No Kontrak HP"

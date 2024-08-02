@@ -82,7 +82,7 @@ class PakaianCelanaGlobalController extends Controller
                 foreach ($item->stokHarian as $stokHarian) {
                     $totalSisaStok += $this->convertToMeter($stokHarian->sisa_stok, $stokHarian->id_satuan);
                 }
-                $item->totalSisaStok = number_format($totalSisaStok);
+                $item->totalSisaStok = number_format($totalSisaStok, 0, ',', '.');
                 return $item;
             });
         

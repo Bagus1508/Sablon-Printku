@@ -5,18 +5,24 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BahanBakuController;
 use App\Http\Controllers\BahanBakuGlobalController;
 use App\Http\Controllers\BahanBakuSatuanController;
+use App\Http\Controllers\BapbBappController;
 use App\Http\Controllers\BarangKontrakRinciController;
+use App\Http\Controllers\BaRikmatekController;
+use App\Http\Controllers\BastController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataPerusahaanController;
 use App\Http\Controllers\EkspedisiController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MonitoringKontrakGlobalController;
 use App\Http\Controllers\MonitoringKontrakRinciController;
 use App\Http\Controllers\PakaianCelanaGlobalController;
 use App\Http\Controllers\PakaianCelanaSatuanController;
+use App\Http\Controllers\PengirimanBarangController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RegionController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\StokBahanBakuController;
 use App\Http\Controllers\StokPakaianCelanaController;
@@ -39,6 +45,17 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('setting-akun', [AccountController::class, 'edit'])->name('akun.edit');
 
     Route::middleware(['checkrole:1'])->group(function () {
+        Route::resource('data-akun', AccountController::class);
+    });
+    
+    Route::middleware(['checkrole:1,2'])->group(function () {
+        Route::resource('data-satuan', UnitController::class);
+        Route::resource('data-ukuran', SizeController::class);
+        Route::resource('data-warna', ColorController::class);
+        Route::resource('data-kategori', CategoryController::class);
+        Route::resource('data-ekspedisi', EkspedisiController::class);
+        Route::resource('data-perusahaan', DataPerusahaanController::class);
+
         Route::resource('monitoring-kontrak-global', MonitoringKontrakGlobalController::class);
         Route::get('export-monitoring-kontrak-global-preview', [MonitoringKontrakGlobalController::class, 'preview_export'])->name('preview-export-monitoring-kontrak-global');
         Route::get('export-monitoring-kontrak-global', [MonitoringKontrakGlobalController::class, 'exportMonitoringKontrakGlobal'])->name('export-monitoring-kontrak-global');
@@ -51,16 +68,20 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::resource('barang-kontrak-rinci', BarangKontrakRinciController::class);
         Route::post('monitoring-kontrak-rinci/barang-kontrak/{id}', [BarangKontrakRinciController::class, 'updateBarang'])->name('monitoring-kontrak-rinci.updateBarang');
         Route::delete('monitoring-kontrak-rinci/barang-kontrak/hapus/{id}', [BarangKontrakRinciController::class, 'destroy'])->name('barang-kontrak-rinci.destroy');
-    });
-    
-    Route::middleware(['checkrole:1,2'])->group(function () {
-        Route::resource('data-akun', AccountController::class);
-        Route::resource('data-satuan', UnitController::class);
-        Route::resource('data-ukuran', SizeController::class);
-        Route::resource('data-warna', ColorController::class);
-        Route::resource('data-kategori', CategoryController::class);
-        Route::resource('data-ekspedisi', EkspedisiController::class);
-        Route::resource('data-perusahaan', DataPerusahaanController::class);
+        Route::resource('data-region', RegionController::class);
+        Route::resource('pengiriman-barang', PengirimanBarangController::class);
+        Route::resource('ba-rikmatek', BaRikmatekController::class);
+        Route::resource('bapb-bapp', BapbBappController::class);
+        Route::resource('bast', BastController::class);
+        Route::resource('invoice', InvoiceController::class);
+        
+        //Export
+        Route::get('monitoring-kontrak-rinci/export/preview/{id}', [MonitoringKontrakRinciController::class, 'preview_export'])->name('monitoring-kontrak-rinci.preview_export');
+        Route::get('export-kontrak-rinci-detail', [MonitoringKontrakRinciController::class, 'exportKontrakRinciDetail'])->name('export-monitoring-kontrak-rinci-detail');
+        
+        Route::get('monitoring-kontrak-global/export/preview/{id}', [MonitoringKontrakGlobalController::class, 'preview_export'])->name('monitoring-kontrak-global.preview_export');
+        //Update Status SPK
+        Route::post('monitoring-kontrak-global/update-status-spk/{id}', [MonitoringKontrakGlobalController::class, 'updateStatusSpk'])->name('monitoring-kontrak-global.updateStatusSpk');
     });
     
     Route::middleware(['checkrole:1,2,3'])->group(function () {

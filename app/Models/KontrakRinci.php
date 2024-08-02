@@ -32,4 +32,39 @@ class KontrakRinci extends Model
     {
         return $this->hasMany(ProdukKontrak::class, 'id_kontrak_rinci', 'id');
     }
+
+    public function pengirimanBarang()
+    {
+        return $this->hasOne(PengirimanBarang::class, 'id_kontrak_rinci', 'id');
+    }
+
+    public function ba_rikmatek()
+    {
+        return $this->hasOne(BaRikmatek::class, 'id_kontrak_rinci', 'id');
+    }
+
+    public function bapb_bapp()
+    {
+        return $this->hasOne(BapbBapp::class, 'id_kontrak_rinci', 'id');
+    }
+
+    public function bast()
+    {
+        return $this->hasOne(Bast::class, 'id_kontrak_rinci', 'id');
+    }
+
+    public function invoice()
+    {
+        return $this->hasOne(Invoice::class, 'id_kontrak_rinci', 'id');
+    }
+
+    public function kontrakGlobal()
+    {
+        return $this->hasOne(KontrakGlobal::class, 'id_kontrak_rinci', 'id');
+    }
+
+    public function perusahaan()
+    {
+        return $this->hasOne(DataPerusahaan::class, 'id', 'id_perusahaan');
+    }
 }

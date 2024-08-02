@@ -6,8 +6,8 @@
                 <div class="hidden w-full xl:block xl:w-1/2">
                     <div class="px-26 py-17.5 text-center">
                         <a class="mb-5.5 inline-block" href="#">
-                            <img class="hidden dark:block" src="{{asset('src/images/logo/logo.svg')}}" alt="Logo" />
-                            <img class="dark:hidden" src="{{asset('src/images/logo/logo-dark.svg')}}" alt="Logo" />
+                            <img class="hidden dark:block" src="{{ asset('src/images/logo/logo.png') }}" width="200px" alt="Logo" />
+                            <img class="dark:hidden" src="{{ asset('src/images/logo/logo.png') }}" width="200px"  alt="Logo" />
                         </a>
 
                         <p class="font-medium 2xl:px-20">

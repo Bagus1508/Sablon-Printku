@@ -22,7 +22,10 @@ return new class extends Migration
             $table->date('akhir_kr')->nullable();
             $table->string('uraian')->nullable();
             $table->string('total_harga',15,2)->nullable();
+            $table->unsignedBigInteger('id_perusahaan')->nullable();
             $table->timestamps();
+
+            $table->foreign('id_perusahaan')->references('id')->on('perusahaan_table');
         });
     }
 

@@ -4,12 +4,15 @@ namespace App\Livewire;
 
 use App\Exports\StokBahanBakuGlobalExport;
 use App\Helpers\TanggalHelper;
+use App\Models\DataEkspedisi;
+use App\Models\DataPerusahaan;
 use App\Models\DataSatuan;
 use App\Models\DataUkuran;
 use App\Models\DataWarna;
 use App\Models\KontrakRinci;
 use App\Models\Produk;
 use App\Models\ProdukKategori;
+use App\Models\Region;
 use App\Models\StokHarian;
 use Carbon\Carbon;
 use Livewire\Component;
@@ -56,20 +59,26 @@ class MonitoringKontrakRinciTable extends Component
         $query = KontrakRinci::where('takon', 'ilike', '%'.$this->search.'%')
         ->orWhere('no_kontrak_rinci', 'ilike', '%'.$this->search.'%')
         ->orderBy('tanggal_kontrak', 'desc')
-        ->with('prosesCutting')
-        ->with('prosesJahit')
-        ->with('prosesPacking')
-        ->with('barangKontrak');
+        ->with(['prosesCutting', 'prosesJahit', 'prosesPacking', 'barangKontrak', 'pengirimanBarang', 'ba_rikmatek', 
+                'bapb_bapp', 'bast', 'invoice'                 
+               ]);    
+        
     
         $dataKontrakRinci = $query->paginate($this->perPage);
         $dataSatuan = DataSatuan::all();
-    
+        $dataEkspedisi = DataEkspedisi::all();
+        $dataPerusahaan = DataPerusahaan::all();
+        $dataRegion = Region::all();
+
         $datanotfound = !$dataKontrakRinci->count();
 
         return view('livewire.monitoring-kontrak-rinci-table', [
             'dataKontrakRinci' => $dataKontrakRinci,
             'nodata' => $datanotfound,
             'dataSatuan' => $dataSatuan,
+            'dataEkspedisi' => $dataEkspedisi,
+            'dataRegion' => $dataRegion,
+            'dataPerusahaan' => $dataPerusahaan,
         ]);
     }
     

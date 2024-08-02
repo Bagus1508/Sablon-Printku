@@ -1,122 +1,187 @@
 <table class="w-full table-auto">
-    <thead class="bg-blue-600 text-white">
-        <tr class="text-left dark:bg-meta-4">
-            <th rowspan="2" class="min-w-[50px] text-center font-medium text-white dark:text-white justify-center my-auto">
+    <thead>
+        <tr class="dark:bg-meta-4">
+            <th rowspan="2" width="50px" style="background-color: #D0DFE2; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 No
             </th>
-            <th width="400px" colspan="2" class="text-center font-medium text-white dark:text-white">
+            <th width="400px" colspan="2" style="background-color: #D0DFE2; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 No Kontrak
             </th>
-            <th rowspan="2" class="px-5 text-center font-medium text-white dark:text-white">
+            <th rowspan="2" width="200px" style="background-color: #D0DFE2; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Tanggal
             </th>
-            <th width="200px" rowspan="2" class="text-center font-medium text-white dark:text-white">
+            <th width="200px" rowspan="2" style="background-color: #D0DFE2; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Perusahaan
             </th>
-            <th width="200px" rowspan="2" class="px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+            <th width="200px" rowspan="2" style="background-color: #D0DFE2; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Uraian Pekerjaan
             </th>
-            <th width="200px" rowspan="2" class="px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+            <th width="200px" rowspan="2" style="background-color: #D0DFE2; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Nama Barang
             </th>
-            <th rowspan="1" colspan="4" class="px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+            <th rowspan="1" colspan="4" style="background-color: #D0DFE2; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Volume
             </th>
-            <th rowspan="1" colspan="2" class="px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+            @if ($loggedInUser->id_level_user === 1)   
+            <th rowspan="2" width="200px" style="background-color: #D0DFE2; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
+                Harga
+            </th>
+            <th rowspan="2" width="200px" style="background-color: #D0DFE2; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
+                Total Harga
+            </th>
+            @endif
+            <th rowspan="1" colspan="2" style="background-color: #C9DBF9; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Jangka Waktu Kontrak
             </th>
-            <th rowspan="2" class="px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+            <th rowspan="2" width="200px" style="background-color: #D9EAD3; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 SPK Selesai
             </th>
         </tr>
         <tr class="text-left dark:bg-meta-4">
-            <th width="200px" class="px-5 text-center font-medium text-white dark:text-white">
+            <th width="200px" style="background-color: #D0DFE2; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Takon
             </th>
-            <th width="200px" class="px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+            <th width="200px" style="background-color: #D0DFE2; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Pihak Pertama
             </th>
-            <th width="100px" class="px-5 text-center font-medium text-white dark:text-white">
+            <th width="100px" style="background-color: #D0DFE2; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Satuan
             </th>
-            <th width="100px" class="px-5 text-center font-medium text-white dark:text-white">
+            <th width="100px" style="background-color: #D0DFE2; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Kontrak
             </th>
-            <th width="100px" class="px-5 text-center font-medium text-white dark:text-white">
+            <th width="100px" style="background-color: #D0DFE2; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Realisasi
             </th>
-            <th width="100px" class="px-5 text-center font-medium text-white dark:text-white">
+            <th width="100px" style="background-color: #D0DFE2; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Sisa
             </th>
-            <th width="100px" class="px-5 text-center font-medium text-white dark:text-white">
+            <th width="200px" style="background-color: #C9DBF9; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Awal
             </th>
-            <th width="100px" class="px-5 text-center font-medium text-white dark:text-white">
+            <th width="200px" style="background-color: #C9DBF9; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Akhir
             </th>
         </tr>
     </thead>
     <tbody class="dark:bg-meta-4">
-        <tr>
-            <td rowspan="6" class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                <h5 class="font-medium text-black dark:text-white">1</h5>
-            </td>
-            <td rowspan="6" class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                <p class="text-black dark:text-white">123Takon</p>
-            </td>
-            <td rowspan="6" class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                <p class="text-black dark:text-white">123</p>
-            </td>
-            <td rowspan="6" class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                <p class="text-black dark:text-white">31 Juli 2024</p>
-            </td>
-            <td rowspan="6" class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                <p class="text-black dark:text-white">PT. Sejahtera</p>
-            </td>
-            <td rowspan="6" class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                <p class="text-black dark:text-white text-left">Test</p>
-            </td>   
-            <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
-                <p class="text-black dark:text-white">Baju</p>
-            </td>    
-            <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
-                <p class="text-black dark:text-white">meter</p>
-            </td>    
-            <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
-                <p class="text-black dark:text-white">100</p>
-            </td>    
-            <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
-                <p class="text-black dark:text-white">50</p>
-            </td>    
-            <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
-                <p class="text-black dark:text-white">50</p>
-            </td>
-            <td rowspan="7" class="whitespace-nowrap text-center border-black dark:border-strokedark">
-                <p class="text-black dark:text-white">01 Juli 2024</p>
-            </td>    
-            <td rowspan="7" class="whitespace-nowrap text-center border-black dark:border-strokedark">
-                <p class="text-black dark:text-white">31 Juli 2024</p>
-            </td>   
-            <td rowspan="7" class="whitespace-nowrap text-center border-black dark:border-strokedark">
-                <p class="text-black dark:text-white">31 Juli 2024</p>
-            </td>   
-        </tr>
-        <tr>
-            <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
-                <p class="text-black dark:text-white">Baju</p>
-            </td>    
-            <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
-                <p class="text-black dark:text-white">meter</p>
-            </td>    
-            <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
-                <p class="text-black dark:text-white">100</p>
-            </td>    
-            <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
-                <p class="text-black dark:text-white">50</p>
-            </td>    
-            <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
-                <p class="text-black dark:text-white">50</p>
-            </td>
-        </tr>
+        @foreach ($dataKontrak as $itemKontrak)
+            @php
+                $barangKontrakCount = $itemKontrak->barangKontrak->count();
+            @endphp                    
+            <tr>
+                <td rowspan="{{$barangKontrakCount}}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
+                    <h5>{{$loop->index + 1}}</h5>
+                </td>
+                <td rowspan="{{$barangKontrakCount}}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
+                    <p>{{$itemKontrak->takon}}</p>
+                </td>
+                <td rowspan="{{$barangKontrakCount}}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
+                    <p>{{$itemKontrak->no_telepon}}</p>
+                </td>
+                <td rowspan="{{$barangKontrakCount}}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
+                    <p>                    
+                        @if($itemKontrak->tanggal_kontrak && $itemKontrak->tanggal_kontrak)
+                            {{ \Carbon\Carbon::parse($itemKontrak->tanggal_kontrak)->translatedFormat('d F Y') }}
+                        @else
+                            Kosong
+                        @endif
+                    </p>
+                </td>
+                <td rowspan="{{$barangKontrakCount}}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
+                    <p>{{$itemKontrak->perusahaan->nama_perusahaan ?? 'Kosong'}}</p>
+                </td>
+                <td rowspan="{{$barangKontrakCount}}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
+                    <p>{{$itemKontrak->uraian ?? 'Kosong'}}</p>
+                </td>
+                <td style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
+                    <p>{{$itemKontrak->barangKontrak->first()->nama_barang ?? 'Kosong'}}</p>
+                </td>    
+                <td style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
+                    <p>{{$itemKontrak->barangKontrak->first()->satuan->nama_satuan ?? 'Kosong'}}</p>
+                </td>    
+                <td style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
+                    <p>{{$itemKontrak->barangKontrak->first()->volume_kontrak ?? 'Kosong'}}</p>
+                </td>    
+                <td style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
+                    <p>{{$itemKontrak->barangKontrak->first()->volume_realisasi ?? 'Kosong'}}</p>
+                </td>    
+                <td style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
+                    <p>{{$itemKontrak->barangKontrak->first()->volume_sisa ?? 'Kosong'}}</p>
+                </td>
+                @if ($loggedInUser->id_level_user === 1)   
+                <td style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
+                    <p>
+                        {{ 'Rp ' . number_format($itemKontrak->barangKontrak->first()->harga_barang ?? 'Kosong', 0, ',', '.') }}
+                    </p>
+                </td>
+                @endif
+                @if ($loggedInUser->id_level_user === 1)                    
+                <td rowspan="{{$barangKontrakCount}}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
+                    <p>
+                        {{ 'Rp ' . number_format($itemKontrak->total_harga ?? 'Kosong', 0, ',', '.') }}
+                    </p>
+                </td>    
+                @endif
+                <td rowspan="{{$barangKontrakCount}}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
+                    <p>                    
+                        @if($itemKontrak->awal_kr && $itemKontrak->awal_kr)
+                            {{ \Carbon\Carbon::parse($itemKontrak->awal_kr)->translatedFormat('d F Y') }}
+                        @else
+                            Kosong
+                        @endif
+                    </p>
+                </td>   
+                <td rowspan="{{$barangKontrakCount}}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
+                    <p>                    
+                        @if($itemKontrak->akhir_kr && $itemKontrak->akhir_kr)
+                            {{ \Carbon\Carbon::parse($itemKontrak->akhir_kr)->translatedFormat('d F Y') }}
+                        @else
+                            Kosong
+                        @endif
+                    </p>
+                </td>
+                @if ($itemKontrak->kontrakGlobal->status_spk === false)
+                    <td rowspan="{{$barangKontrakCount}}" style="text-align: center; white-space: nowrap; color: #FFFFFF; background-color: #ff0000; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
+                        <p>
+                            Belum Selesai
+                        </p>
+                    </td>   
+                @else
+                    <td rowspan="{{$barangKontrakCount}}" style="text-align: center; white-space: nowrap; color: #FFFFFF; background-color: #1aff00; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
+                        <p>
+                            Selesai
+                        </p>
+                    </td>   
+                @endif    
+            </tr>
+            @foreach ($itemKontrak->barangKontrak as $itemBarang)  
+            @if($loop->first)
+                @continue
+            @endif    
+                <tr>
+                    <td style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
+                        <p>{{$itemBarang->nama_barang}}</p>
+                    </td>    
+                    <td style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
+                        <p>{{$itemBarang->satuan->nama_satuan}}</p>
+                    </td>    
+                    <td style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
+                        <p>{{$itemBarang->volume_kontrak}}</p>
+                    </td>    
+                    <td style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
+                        <p>{{$itemBarang->volume_realisasi}}</p>
+                    </td>    
+                    <td style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
+                        <p>{{$itemBarang->volume_sisa}}</p>
+                    </td>
+                    @if ($loggedInUser->id_level_user === 1)   
+                    <td style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
+                        <p>{{ 'Rp ' . number_format($itemBarang->harga_barang ?? 'Kosong', 0, ',', '.') }}</p>
+                    </td>
+                    @endif
+                </tr>
+            @endforeach
+        @endforeach
     </tbody>
 </table>

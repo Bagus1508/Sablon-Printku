@@ -68,7 +68,4 @@
     const url = '{{ route("monitoring-kontrak-rinci.updateProsesCutting", ":id") }}'.replace(':id', id);
     $('#form-proses-cutting').attr('action', url);
 });
-
-
-
 </script>

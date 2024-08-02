@@ -24,6 +24,8 @@ class DatabaseSeeder extends Seeder
             UkuranSeeder::class,
             PerusahaanSeeder::class,
             BahanBakuSeeder::class,
+            EkspedisiSeeder::class,
+            RegionSeeder::class,
         ]);
     }
 }

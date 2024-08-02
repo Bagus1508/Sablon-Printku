@@ -23,7 +23,7 @@
                 <form method="POST" action="{{route('monitoring-kontrak-rinci.update', (int)$ID)}}" id="form-edit-kontrak-rinci">
                     @csrf
                     <div class="p-6.5">
-                        <input type="text" id="id_kontrak_rinci">
+                        <input type="text" hidden id="id_kontrak_rinci">
                         <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 No Kontrak (Takon) <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
@@ -47,6 +47,17 @@
                         </div>
                         <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                Perusahaan <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
+                            </label>
+                            <select required name="id_perusahaan" id="id_perusahaan_kontrak_rinci" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
+                                <option selected disabled>==Pilih Perusahaan==</option>
+                                @foreach ($dataPerusahaan as $item)
+                                <option value="{{$item->id}}">{{$item->nama_perusahaan}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-4.5 w-full">
+                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 No Kontrak Rinci
                             </label>
                             <input type="number" id="no_kontrak_rinci" name="no_kontrak_rinci" placeholder="Masukan No Kontrak HP"
@@ -67,14 +78,14 @@
                                 <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                     Awal Kontrak
                                 </label>
-                                <input type="date" id="awal_kr" name="awal_kr" placeholder="Masukan Nama Perusahaan" onchange="updateMasaKontrak()"
+                                <input type="date" id="awal_kr_update" name="awal_kr" placeholder="Masukan Nama Perusahaan" onchange="updateMasaKontrak()"
                                     class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                             </div>
                             <div>
                                 <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                     Akhir Kontrak
                                 </label>
-                                <input type="date" id="akhir_kr" name="akhir_kr" placeholder="Masukan Nama Perusahaan" onchange="updateMasaKontrak()"
+                                <input type="date" id="akhir_kr_update" name="akhir_kr" placeholder="Masukan Nama Perusahaan" onchange="updateMasaKontrak()"
                                     class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                             </div>
                         </div>
@@ -82,14 +93,14 @@
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 Masa Kontrak <span class="text-red-500 text-[10px]">*Otomatis Terisi</span>
                             </label>
-                            <input readonly type="text" id="masa_kr" name="masa_kr" placeholder="Masukan Nama Perusahaan"
+                            <input readonly type="text" id="masa_kr_update" name="masa_kr" placeholder="Masukan Nama Perusahaan"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div>
                         <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 Durasi Hari <span class="text-red-500 text-[10px]">*Otomatis Terisi</span>
                             </label>
-                            <input readonly type="text" id="durasi_hari" name="durasi_hari" placeholder="Masukan Nama Perusahaan"
+                            <input readonly type="text" id="durasi_hari_update" name="durasi_hari" placeholder="Masukan Nama Perusahaan"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div>
                         <div class="mb-4.5 w-full">
@@ -111,44 +122,50 @@
     </div>
 </div>
 <script>
-    $(document).ready(function() {
-        // Gunakan event delegation untuk elemen yang di-generate secara dinamis
-        $(document).on('click', '.edit-kontrak-rinci', function() {
-            const id = $(this).data('id-kontrak-rinci');
-            const takon = $(this).data('takon');
-            const no_telepon = $(this).data('no-telepon');
-            const tanggal_kontrak = $(this).data('tanggal-kontrak');
-            const no_kontrak_rinci = $(this).data('no-kontrak-rinci');
-            const tanggal_kr = $(this).data('tanggal-kr');
-            const awal_kr = $(this).data('awal-kr');
-            const akhir_kr = $(this).data('akhir-kr');
-            const uraian = $(this).data('uraian');
+$(document).ready(function() {
+    // Gunakan event delegation untuk elemen yang di-generate secara dinamis
+    $(document).on('click', '.edit-kontrak-rinci', function() {
+        const id = $(this).data('id-kontrak-rinci');
+        const takon = $(this).data('takon');
+        const no_telepon = $(this).data('no-telepon');
+        const tanggal_kontrak = $(this).data('tanggal-kontrak');
+        const id_perusahaan_kontrak_rinci = $(this).data('id-perusahaan');
+        const no_kontrak_rinci = $(this).data('no-kontrak-rinci');
+        const tanggal_kr = $(this).data('tanggal-kr');
+        const awal_kr = $(this).data('awal-kr');
+        const akhir_kr = $(this).data('akhir-kr');
+        const uraian = $(this).data('uraian');
 
-            // Mengatur nilai input ID pada form modal
-            $('#id_kontrak_rinci').val(id);
-            $('#takon').val(takon);
-            $('#no_telepon').val(no_telepon);
-            $('#tanggal_kontrak').val(tanggal_kontrak);
-            $('#no_kontrak_rinci').val(no_kontrak_rinci);
-            $('#tanggal_kr').val(tanggal_kr);
-            $('#awal_kr').val(awal_kr);
-            $('#akhir_kr').val(akhir_kr);
-            $('#uraian').val(uraian);
+        // Mengatur nilai input ID pada form modal
+        $('#id_kontrak_rinci').val(id);
+        $('#takon').val(takon);
+        $('#no_telepon').val(no_telepon);
+        $('#tanggal_kontrak').val(tanggal_kontrak);
+        $('#id_perusahaan_kontrak_rinci').val(id_perusahaan_kontrak_rinci);
+        $('#no_kontrak_rinci').val(no_kontrak_rinci);
+        $('#tanggal_kr').val(tanggal_kr);
+        $('#awal_kr_update').val(awal_kr);
+        $('#akhir_kr_update').val(akhir_kr);
+        $('#uraian').val(uraian);
 
-            // Memanggil fungsi untuk menghitung dan menampilkan masa kontrak
-            updateMasaKontrak();
+        // Memanggil fungsi untuk menghitung dan menampilkan masa kontrak setelah data diatur
+        updateMasaKontrak();
 
-            // Set the action attribute of the form
-            const url = '{{ route("monitoring-kontrak-rinci.update", ":id") }}'.replace(':id', id);
-            $('#form-edit-kontrak-rinci').attr('action', url);
-        });
+        // Set the action attribute of the form
+        const url = '{{ route("monitoring-kontrak-rinci.update", ":id") }}'.replace(':id', id);
+        $('#form-edit-kontrak-rinci').attr('action', url);
+    });
+
+    // Event listener untuk perubahan pada input tanggal awal dan akhir
+    $('#awal_kr_update, #akhir_kr_update').on('change', function() {
+        updateMasaKontrak();
     });
 
     function updateMasaKontrak() {
-        var awalKontrak = document.getElementById('awal_kr').value;
-        var akhirKontrak = document.getElementById('akhir_kr').value;
-        var masaKontrakInput = document.getElementById('masa_kr');
-        var durasiHariInput = document.getElementById('durasi_hari');
+        var awalKontrak = document.getElementById('awal_kr_update').value;
+        var akhirKontrak = document.getElementById('akhir_kr_update').value;
+        var masaKontrakInput = document.getElementById('masa_kr_update');
+        var durasiHariInput = document.getElementById('durasi_hari_update');
 
         if (awalKontrak && akhirKontrak) {
             // Mengubah string tanggal menjadi objek Date
@@ -171,4 +188,7 @@
             durasiHariInput.value = '';
         }
     }
+});
+
 </script>
+

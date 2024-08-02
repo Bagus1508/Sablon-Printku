@@ -80,15 +80,9 @@
                                 <input type="text" name="harga_barang[]" id="harga_barang" placeholder="Masukan Harga"
                                     class="harga_barang w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                             </div>
-                            <div class="flex justify-end">
-                                <button type="button" class="remove-btn bg-red-500 text-white px-3 py-1 rounded">Hapus</button>
-                            </div>
                         </div>
                     </div>
                     <div class="bg-white dark:bg-boxdark flex justify-center">
-                        <button type="button" id="addInput" class="flex justify-center rounded w-full m-4 bg-green-500 font-medium p-2 text-white hover:bg-green-600">
-                            Tambah Input
-                        </button>
                         <button type="submit" class="flex justify-center rounded w-full m-4 bg-primary font-medium p-2 text-gray hover:bg-opacity-90">
                             Submit
                         </button>
@@ -112,78 +106,32 @@ $(document).ready(function() {
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        var inputContainer = document.getElementById('inputContainer');
-
-        // Event delegation untuk menangani event keyup pada input harga
-        inputContainer.addEventListener('keyup', function(e) {
-            if (e.target && e.target.classList.contains('harga_barang')) {
-                var angka = e.target.value.replace(/[^,\d]/g, '');
-                e.target.value = formatRupiah(angka, 'Rp. ');
-            }
+        // Target input dengan id "harga_barang"
+        document.querySelectorAll('input[name="harga_barang[]"]').forEach(function(element) {
+            element.addEventListener('keyup', function(e) {
+                // Ambil value dari input
+                var angka = this.value.replace(/[^,\d]/g, '').toString();
+                // Panggil fungsi untuk memformat ke dalam format Rupiah
+                this.value = formatRupiah(angka, 'Rp. ');
+            });
         });
-
+    
         function formatRupiah(angka, prefix) {
             var numberString = angka.replace(/[^,\d]/g, '').toString(),
                 split = numberString.split(','),
                 sisa = split[0].length % 3,
                 rupiah = split[0].substr(0, sisa),
                 ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
+    
             if (ribuan) {
                 var separator = sisa ? '.' : '';
                 rupiah += separator + ribuan.join('.');
             }
-
-            rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
-            return prefix === undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+    
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix == undefined ? rupiah : (rupiah ? prefix + rupiah : '');
         }
     });
-</script>
-
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var inputContainer = document.getElementById('inputContainer');
-        var inputTemplate = inputContainer.querySelector('.input-group');
-        var addInput = document.getElementById('addInput');
-
-        // Fungsi untuk menambahkan input baru
-        addInput.addEventListener('click', function () {
-            var newInputGroup = inputTemplate.cloneNode(true);
-            newInputGroup.style.display = 'block';
-
-            // Menghapus tombol hapus dari template default dan menambahkan tombol hapus pada input baru
-            newInputGroup.querySelector('.remove-btn').style.display = 'inline'; // Menampilkan tombol hapus pada input baru
-
-            // Tambahkan event listener untuk tombol hapus
-            newInputGroup.querySelector('.remove-btn').addEventListener('click', function () {
-                newInputGroup.remove();
-            });
-
-            // Resetkan nilai input
-            newInputGroup.querySelectorAll('input').forEach(function (input) {
-                input.value = '';
-            });
-            newInputGroup.querySelector('select').selectedIndex = 0; // Reset select
-
-            inputContainer.appendChild(newInputGroup);
-        });
-
-        // Hapus tombol hapus dari input default dan pastikan hanya ada satu input default
-        inputTemplate.querySelector('.remove-btn').style.display = 'none';
-
-        // Reset form ketika modal ditutup
-        document.querySelectorAll('[data-hs-overlay]').forEach(function (button) {
-            button.addEventListener('click', function () {
-                var modal = document.querySelector(button.getAttribute('data-hs-overlay'));
-                var form = modal.querySelector('#form-barang-kontrak');
-                form.reset(); // Reset form
-                inputContainer.innerHTML = ''; // Hapus semua input yang ada
-                inputContainer.appendChild(inputTemplate); // Tambah kembali input default
-                inputTemplate.querySelector('.remove-btn').style.display = 'none'; // Sembunyikan tombol hapus
-            });
-        });
-    });
-</script>
+    </script>
 
     

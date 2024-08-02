@@ -11,8 +11,8 @@
             <div
                 class="relative z-30 mx-auto -mt-22 h-30 w-full max-w-30 rounded-full bg-white/20 p-1 backdrop-blur sm:h-44 sm:max-w-44 sm:p-3">
                 <div class="relative drop-shadow-2">
-                    <img src="{{asset('src/images/user/user-06.png')}}" alt="profile" />
-                    <label for="profile"
+                    <img src="{{asset('src/images/user/default-profile-foto.jpg')}}" alt="profile" class="rounded-full" />
+                    {{-- <label for="profile"
                         class="absolute bottom-0 right-0 flex h-8.5 w-8.5 cursor-pointer items-center justify-center rounded-full bg-primary text-white hover:bg-opacity-90 sm:bottom-2 sm:right-2">
                         <svg class="fill-current" width="14" height="14" viewBox="0 0 14 14" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -24,14 +24,14 @@
                                 fill="" />
                         </svg>
                         <input type="file" name="profile" id="profile" class="sr-only" />
-                    </label>
+                    </label> --}}
                 </div>
             </div>
             <div class="mt-4">
                 <h3 class="mb-1.5 text-2xl font-medium text-black dark:text-white">
-                    Danish Heilium
+                    {{$loggedInUser->name}}
                 </h3>
-                <p class="font-medium">Ui/Ux Designer</p>
+                <p class="font-medium">{{$loggedInUser->level->level}}</p>
             </div>
         </div>
     </div>

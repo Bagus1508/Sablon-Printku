@@ -2,15 +2,20 @@
 
 namespace App\Livewire;
 
+use App\Exports\MonitoringKontrakGlobalExport;
 use App\Exports\StokBahanBakuGlobalExport;
 use App\Helpers\TanggalHelper;
+use App\Models\DataEkspedisi;
 use App\Models\DataSatuan;
 use App\Models\DataUkuran;
 use App\Models\DataWarna;
+use App\Models\KontrakRinci;
 use App\Models\Produk;
 use App\Models\ProdukKategori;
+use App\Models\Region;
 use App\Models\StokHarian;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
@@ -21,7 +26,7 @@ class MonitoringKontrakGlobalTable extends Component
 
     public $search = "";
     public $perPage = 10;
-    public $filter, $tanggal, $ID, $Id_no, $Id_kategori, $Nama_barang, $Id_warna;
+    public $filter, $tanggal, $ID, $Id_no;
     public $startDate;
     public $endDate;
     public $selectedUnit;
@@ -43,22 +48,6 @@ class MonitoringKontrakGlobalTable extends Component
         }
     }
 
-    public function convertToMeter($value, $unitId)
-    {
-        if ($unitId == 2) { // Yard
-            return $value * 0.9144; // Konversi Yard ke Meter
-        }
-        return $value; // Meter tidak perlu dikonversi
-    }
-
-    public function convertToYard($value, $unitId)
-    {
-        if ($unitId == 1) { // Yard
-            return $value / 0.9144; // Konversi Yard ke Meter
-        }
-        return $value; // Meter tidak perlu dikonversi
-    }
-
     public function render()
     {
         $this->startDate ? $awal = $this->startDate : $awal = Carbon::now()->startOfYear();
@@ -67,73 +56,114 @@ class MonitoringKontrakGlobalTable extends Component
         $startDate = Carbon::parse($awal);
         $endDate = Carbon::parse($akhir);
     
-        // Buat daftar tanggal dalam rentang
-        $dateRange = [];
-        for ($date = $startDate; $date->lte($endDate); $date->addDay()) {
-            $dateRange[] = $date->format('Y-m-d');
-        }
-    
-        // Ambil produk dengan stok harian dalam rentang tanggal
-        $query = Produk::where(function($query) {
-            $query->where('nama_barang', 'ilike', '%'.$this->search.'%')
-                  ->orWhere('id_no', 'ilike', '%'.$this->search.'%');
+        // Ambil Kontrak Rinci dengan stok harian dalam rentang tanggal
+        $query = KontrakRinci::where(function ($q) {
+            $q->where('takon', 'ilike', '%'.$this->search.'%')
+              ->orWhere('no_kontrak_rinci', 'ilike', '%'.$this->search.'%');
         })
-        ->where('id_kategori', 1)
-        ->with(['stokHarian' => function($query) use ($awal, $akhir) {
-            $query->whereBetween('tanggal', [$awal, $akhir]);
-        }])
-        ->orderBy('nama_barang', 'asc');
-    
-        $data = $query->paginate($this->perPage);
-    
-        $dataKategori = ProdukKategori::all();
+        ->whereBetween('tanggal_kontrak', [$awal, $akhir])
+        ->orderBy('tanggal_kontrak', 'desc')
+        ->with([
+            'prosesCutting', 'prosesJahit', 'prosesPacking', 'barangKontrak', 
+            'pengirimanBarang', 'ba_rikmatek', 'bapb_bapp', 'bast', 'invoice', 
+            'kontrakGlobal'
+        ]);        
+        
+        $dataKontrak = $query->paginate($this->perPage);
         $dataSatuan = DataSatuan::all();
-        $dataUkuran = DataUkuran::all();
-        $dataWarna = DataWarna::all();
-    
-        $datanotfound = !$data->count();
+        $dataEkspedisi = DataEkspedisi::all();
+        $dataRegion = Region::all();
 
-        if ($this->selectedUnit == '1' || $this->selectedUnit == null) { // Yard to Meter
-            // Hitung total sisa stok dalam Meter per Produk
-            $this->selectedUnit = 1;
-            $data->getCollection()->transform(function($item) {
+        $datanotfound = !$dataKontrak->count();
+
+        return view('livewire.monitoring-kontrak-global-table', [
+            'dataKontrak' => $dataKontrak,
+            'nodata' => $datanotfound,
+            'dataSatuan' => $dataSatuan,
+            'dataEkspedisi' => $dataEkspedisi,
+            'dataRegion' => $dataRegion,
+        ]);
+    }
+
+    public function preview_export(Request $request) 
+    {
+        try {
+            // Tangkap rentang tanggal dari parameter query
+            $tgl_kontrak = $request->input('tanggal'); // Ambil nilai dari parameter URL
+
+            if($tgl_kontrak == null){
+                // Mendapatkan tanggal awal tahun ini
+                $startDate = Carbon::now()->startOfYear()->format('Y-m-d');
+                // Mendapatkan tanggal akhir tahun ini
+                $endDate = Carbon::now()->endOfYear()->format('Y-m-d');
+            } else {
+                $tanggalKontrak = explode(' - ', $tgl_kontrak); // Membagi berdasarkan pemisah
+
+                if (count($tanggalKontrak) == 1) {
+                    $startDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalKontrak[0], 'en'))->format("Y-m-d");
+                    $startDate = Carbon::parse($startDateStr);
+                    $endDate = $startDate;
+                } else {
+                    $startDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalKontrak[0], 'en'))->format("Y-m-d");
+                    $endDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalKontrak[1], 'en'))->format("Y-m-d");
+            
+                    $startDate = Carbon::parse($startDateStr);
+                    $endDate = Carbon::parse($endDateStr);
+                }
+            }
+
+            // Ambil Kontrak Rinci dengan stok harian dalam rentang tanggal
+            $query = KontrakRinci::where(function ($q) {
+                $q->where('takon', 'ilike', '%'.$this->search.'%')
+                ->orWhere('no_kontrak_rinci', 'ilike', '%'.$this->search.'%');
+            })
+            ->whereBetween('tanggal_kontrak', [$startDate, $endDate])
+            ->orderBy('tanggal_kontrak', 'desc')
+            ->with([
+                'prosesCutting', 'prosesJahit', 'prosesPacking', 'barangKontrak', 
+                'pengirimanBarang', 'ba_rikmatek', 'bapb_bapp', 'bast', 'invoice', 
+                'kontrakGlobal'
+            ]);
+        
+            $data = $query->get();
+        
+            $dataKategori = ProdukKategori::all();
+            $dataSatuan = DataSatuan::all();
+            $dataUkuran = DataUkuran::all();
+            $dataWarna = DataWarna::all();
+        
+            $datanotfound = !$data->count();
+        
+            $data->transform(function($item) {
                 $totalSisaStok = 0;
                 foreach ($item->stokHarian as $stokHarian) {
                     $totalSisaStok += $this->convertToMeter($stokHarian->sisa_stok, $stokHarian->id_satuan);
                 }
-                $item->totalSisaStok = number_format($totalSisaStok, 2);
-                $item->satuanNamaTotal = DataSatuan::where('id', $this->selectedUnit)->pluck('nama_satuan')->first();
+                $item->totalSisaStok = number_format($totalSisaStok);
                 return $item;
             });
-        } elseif ($this->selectedUnit == '2') { // Meter to Yard
-            // Hitung total sisa stok dalam Meter per Produk
-            $data->getCollection()->transform(function($item) {
-                $totalSisaStok = 0;
-                foreach ($item->stokHarian as $stokHarian) {
-                    $totalSisaStok += $this->convertToYard($stokHarian->sisa_stok, $stokHarian->id_satuan);
-                }
-                $item->totalSisaStok = number_format($totalSisaStok, 2);
-                $item->satuanNamaTotal = DataSatuan::where('id', $this->selectedUnit)->pluck('nama_satuan')->first();
-                return $item;
-            });
-
+        
+            return view('pages.dashboard.monitoring_persediaan.pakaian_celana.global.export.index', [
+                'data' => $data,
+                'nodata' => $datanotfound,
+                'tgl_kontrak' => $tgl_kontrak,
+                'dataKategori' => $dataKategori,
+                'dataSatuan' => $dataSatuan,
+                'dataUkuran' => $dataUkuran,
+                'dataWarna' => $dataWarna,
+                'startDate' => $startDate,
+                'endDate' => $endDate,
+            ]);
+        } catch (\Exception $e) {
+            // Tangani error dan tampilkan pesan
+            toast('Gagal menampilkan data: ' . $e->getMessage(), 'error', 'top-right');
+            return redirect()->back();
         }
-
-        return view('livewire.monitoring-kontrak-global-table', [
-            'data' => $data,
-            'nodata' => $datanotfound,
-            'dataKategori' => $dataKategori,
-            'dataSatuan' => $dataSatuan,
-            'dataUkuran' => $dataUkuran,
-            'dataWarna' => $dataWarna,
-            'dateRange' => $dateRange,
-            'jumlahHari' => count($dateRange),
-        ]);
     }
     
     public function export() 
     {
-        return Excel::download(new StokBahanBakuGlobalExport, 'stokbahanbakuglobal.xlsx');
+        return Excel::download(new MonitoringKontrakGlobalExport(), 'stokbahanbakuglobal.xlsx');
     }
     
 }
