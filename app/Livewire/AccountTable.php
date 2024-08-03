@@ -36,7 +36,7 @@ class AccountTable extends Component
     public function render()
     {
         $Data = User::orderBy('id','desc')
-        ->where('name','ilike','%'.$this->search.'%')
+        ->where('name','LIKE','%'.$this->search.'%')
         ->paginate($this->perPage);
 
         $dataLevelUser = UserLevel::all();

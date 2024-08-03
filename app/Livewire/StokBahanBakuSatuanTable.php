@@ -82,7 +82,7 @@ class StokBahanBakuSatuanTable extends Component
 
         $dataStok = StokHarian::orderBy('tanggal', 'desc')
             ->where('id_produk', $idStokHarian)
-            ->where('stok_masuk', 'ilike', '%' . $this->search . '%')
+            ->where('stok_masuk', 'LIKE', '%' . $this->search . '%')
             ->whereBetween('tanggal', [$awal, $akhir]);
             
         $Data = $dataStok->paginate($this->perPage);

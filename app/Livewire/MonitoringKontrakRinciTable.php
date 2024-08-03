@@ -56,8 +56,8 @@ class MonitoringKontrakRinciTable extends Component
         $endDate = Carbon::parse($akhir);
     
         // Ambil Kontrak Rinci dengan stok harian dalam rentang tanggal
-        $query = KontrakRinci::where('takon', 'ilike', '%'.$this->search.'%')
-        ->orWhere('no_kontrak_rinci', 'ilike', '%'.$this->search.'%')
+        $query = KontrakRinci::where('takon', 'LIKE', '%'.$this->search.'%')
+        ->orWhere('no_kontrak_rinci', 'LIKE', '%'.$this->search.'%')
         ->orderBy('tanggal_kontrak', 'desc')
         ->with(['prosesCutting', 'prosesJahit', 'prosesPacking', 'barangKontrak', 'pengirimanBarang', 'ba_rikmatek', 
                 'bapb_bapp', 'bast', 'invoice'                 

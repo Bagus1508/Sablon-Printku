@@ -41,7 +41,7 @@
     $('#foto_invoice').val(foto_invoice);
 
     // Menampilkan gambar di modal
-    const imageUrl = `upload/dokumen_invoice/${foto_invoice}`;
+    const imageUrl = `storage/upload/dokumen_invoice/${foto_invoice}`;
     $('#imageShowInvoice').attr('src', imageUrl).show();
 });
 

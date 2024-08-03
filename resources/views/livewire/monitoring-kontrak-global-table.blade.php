@@ -128,12 +128,18 @@
                         @if ($loggedInUser->id_level_user === 1)   
                         <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark text-center">
                             <p class="text-black dark:text-white px-10">
-                                {{ 'Rp ' . number_format($itemKontrak->barangKontrak->first()->harga_barang ?? 'Kosong', 0, ',', '.') }}
+                                <p class="text-black dark:text-white text-left">
+                                    @if($itemKontrak->barangKontrak && $itemKontrak->barangKontrak->first())
+                                        Rp {{ number_format($itemKontrak->barangKontrak->first()->harga_barang, 0, ',', '.') }}
+                                    @else
+                                        Kosong
+                                    @endif
+                                </p>                                
                             </p>
                         </td>
                         <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap text-center border-black dark:border-strokedark">
                             <p class="text-black dark:text-white px-10">
-                                {{ 'Rp ' . number_format($itemKontrak->total_harga ?? 'Kosong', 0, ',', '.') }}
+                                {{ $itemKontrak->total_harga !== null ? 'Rp ' . number_format($itemKontrak->total_harga, 0, ',', '.') : 'Kosong' }}
                             </p>
                         </td>    
                         @endif
@@ -157,7 +163,7 @@
                         </td>   
                         <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap text-center border-black dark:border-strokedark">
                             <p class="text-black dark:text-white px-10">
-                                @if ($itemKontrak->kontrakGlobal->status_spk === false)
+                                @if ($itemKontrak->kontrakGlobal->status_spk === 0)
                                     @include('components.badges.belum-selesai')
                                 @else
                                     @include('components.badges.selesai')

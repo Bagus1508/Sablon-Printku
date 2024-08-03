@@ -227,12 +227,20 @@
                 <p class="text-black dark:text-white">{{$dataKontrakRinci->barangKontrak->first()->satuan->nama_satuan ?? 'Kosong'}}</p>
             </td>
             <td style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle; vertical-align: middle; vertical-align: middle;">
-                <p class="text-black dark:text-white text-left">{{ 'Rp ' . number_format($dataKontrakRinci->barangKontrak->first()->harga_barang ?? 'Kosong', 0, ',', '.') }}</p>
+                <p class="text-black dark:text-white text-left">
+                    @if($dataKontrakRinci->barangKontrak && $dataKontrakRinci->barangKontrak->first())
+                        Rp {{ number_format($dataKontrakRinci->barangKontrak->first()->harga_barang, 0, ',', '.') }}
+                    @else
+                        Kosong
+                    @endif
+                </p>                
             </td>
             {{-- Total Harga --}}
             @if ($loggedInUser->id_level_user === 1)              
             <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle; vertical-align: middle; vertical-align: middle;">
-                <p class="text-black dark:text-white text-left">{{ 'Rp ' . number_format($dataKontrakRinci->total_harga ?? 'Kosong', 0, ',', '.') }}</p>
+                <p class="text-black dark:text-white text-left">    
+                    {{ $dataKontrakRinci->total_harga ? 'Rp ' . number_format($dataKontrakRinci->total_harga, 0, ',', '.') : 'Kosong' }}
+                </p>
             </td>
             @endif
             {{-- Proses Cutting --}}
@@ -326,7 +334,7 @@
             <td rowspan="{{ $totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
                 @if($dataKontrakRinci->pengirimanBarang && $dataKontrakRinci->pengirimanBarang->bukti_foto)
             
-            <img src="{{ url('upload/dokumen_pengiriman_barang/' . $dataKontrakRinci->pengirimanBarang->bukti_foto) }}" alt="Bukti Foto" width="200px">
+            <img src="{{ url('storage/upload/dokumen_pengiriman_barang/' . $dataKontrakRinci->pengirimanBarang->bukti_foto) }}" alt="Bukti Foto" width="200px">
             
                 @else
                     <p class="text-black dark:text-white">Gambar tidak tersedia</p>
@@ -391,7 +399,7 @@
             <td rowspan="{{ $totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
                 @if($dataKontrakRinci->invoice && $dataKontrakRinci->invoice->foto_invoice)
                 
-                <img src="{{ url('upload\dokumen_pengiriman_barang/' . $dataKontrakRinci->pengirimanBarang->bukti_foto) }}" alt="Bukti Foto" width="200px">
+                <img src="{{ url('storage/upload/dokumen_pengiriman_barang/' . $dataKontrakRinci->pengirimanBarang->bukti_foto) }}" alt="Bukti Foto" width="200px">
                 
                 @else
                     <p class="text-black dark:text-white">Gambar tidak tersedia</p>

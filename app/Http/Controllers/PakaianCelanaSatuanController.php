@@ -254,6 +254,9 @@ class PakaianCelanaSatuanController extends Controller
             $tgl_stok_satuan = $request->input('tanggal'); // Ambil nilai dari parameter URL
             $id_satuan = $request->input('id_satuan'); // Ambil nilai dari parameter URL
 
+            $startDateFormatted = '';
+            $endDateFormatted = '';
+
             if($tgl_stok_satuan == null){
                 // Mendapatkan tanggal awal tahun ini
                 $startDateStr = Carbon::now()->startOfMonth()->format('Y-m-d');
@@ -289,8 +292,8 @@ class PakaianCelanaSatuanController extends Controller
         
             // Ambil produk dengan stok harian dalam rentang tanggal
             $query = Produk::where(function($query) {
-                $query->where('nama_barang', 'ilike', '%'.$this->search.'%')
-                    ->orWhere('id_no', 'ilike', '%'.$this->search.'%');
+                $query->where('nama_barang', 'LIKE', '%'.$this->search.'%')
+                    ->orWhere('id_no', 'LIKE', '%'.$this->search.'%');
             })
             ->where('id_kategori', 2)
             ->with(['stokHarian' => function($query) use ($startDateStr, $endDateStr) {

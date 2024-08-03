@@ -18,15 +18,6 @@
                         <option value="2">Yard</option>
                     </select>
                 </div>
-                <!-- Pilihan Sortir -->
-                <div class="mb-4">
-                    <label for="unit" class="block text-sm font-medium text-gray-700">Sortir</label>
-                    <select wire:model.lazy='selectedSortBy' id="unit" class="dark:bg-boxdark ring-1 mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-                        <option selected>Default</option>
-                        <option value="1">Nama Barang A-Z</option>
-                        <option value="2">No ID A-Z</option>
-                    </select>
-                </div>
             </section>
             <button type="submit" class="transition ease-in-out hover:bg-gray-100 hover:text-gray-950 inline-flex w-fit rounded-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6 justify-center my-auto">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 mr-1 h-5">

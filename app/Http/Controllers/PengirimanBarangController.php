@@ -38,11 +38,11 @@ class PengirimanBarangController extends Controller
     
                 if ($uploadedFile) {
                     // Menentukan direktori penyimpanan di public/upload
-                    $destinationPath = public_path('upload/dokumen_pengiriman_barang');
+                    $destinationPath = 'public/upload/dokumen_pengiriman_barang';
                     // Membuat nama file unik dengan tanggal dan waktu
                     $namaFile = date('His') . '_' . date('dmy') . '_' . 'pengiriman_barang_' . $uploadedFile->getClientOriginalName();
                     // Memindahkan file yang diunggah ke direktori public/upload/dokumen_pengiriman_barang
-                    $uploadedFile->move($destinationPath, $namaFile);
+                    $uploadedFile->storeAs($destinationPath, $namaFile);
                     // Mengatur nama file dokumen pada objek pengiriman barang
                     $validated['bukti_foto'] = $namaFile;
                 } else {
@@ -69,7 +69,7 @@ class PengirimanBarangController extends Controller
     
                 if ($uploadedFile) {
                     // Menentukan direktori penyimpanan di public/upload
-                    $destinationPath = public_path('upload/dokumen_pengiriman_barang');
+                    $destinationPath = 'public/upload/dokumen_pengiriman_barang';
                     // Membuat nama file unik dengan tanggal dan waktu
                     $namaFile = date('His') . '_' . date('dmy') . '_' . 'pengiriman_barang_' . $uploadedFile->getClientOriginalName();
                     // Hapus file lama jika ada
@@ -77,7 +77,7 @@ class PengirimanBarangController extends Controller
                         Storage::delete($destinationPath . '/' . $data->bukti_foto);
                     }
                     // Memindahkan file yang diunggah ke direktori public/upload/dokumen_pengiriman_barang
-                    $uploadedFile->move($destinationPath, $namaFile);
+                    $uploadedFile->storeAs($destinationPath, $namaFile);
                     // Mengatur nama file dokumen pada objek pengiriman barang
                     $validated['bukti_foto'] = $namaFile;
                 } else {

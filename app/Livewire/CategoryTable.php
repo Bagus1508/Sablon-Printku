@@ -34,8 +34,8 @@ class CategoryTable extends Component
     public function render()
     {
         $Data = ProdukKategori::orderBy('id','desc')
-        ->where('nama_kategori','ilike','%'.$this->search.'%')
-        ->orwhere('kode_kategori','ilike','%'.$this->search.'%')
+        ->where('nama_kategori','LIKE','%'.$this->search.'%')
+        ->orwhere('kode_kategori','LIKE','%'.$this->search.'%')
         ->paginate($this->perPage);
 
         $datanotfound = false;

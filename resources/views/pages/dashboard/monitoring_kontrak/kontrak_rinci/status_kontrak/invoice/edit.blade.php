@@ -92,7 +92,7 @@
     $('#tanggal_kirim_invoice').val(tanggal_kirim_invoice);
 
     // Menampilkan gambar di modal
-    const imageUrl = `upload/dokumen_invoice/${foto_invoice}`;
+    const imageUrl = `storage/upload/dokumen_invoice/${foto_invoice}`;
     $('#imagePreviewInvoice').attr('src', imageUrl).show();
 });
 

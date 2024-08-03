@@ -34,8 +34,8 @@ class ColorTable extends Component
     public function render()
     {
         $Data = DataWarna::orderBy('kode_warna','desc')
-        ->where('nama_warna','ilike','%'.$this->search.'%')
-        ->orwhere('kode_warna','ilike','%'.$this->search.'%')
+        ->where('nama_warna','LIKE','%'.$this->search.'%')
+        ->orwhere('kode_warna','LIKE','%'.$this->search.'%')
         ->paginate($this->perPage);
 
         $datanotfound = false;

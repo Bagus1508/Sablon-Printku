@@ -250,19 +250,34 @@ class BahanBakuSatuanController extends Controller
             // Tangkap rentang tanggal dari parameter query
             $tgl_stok_satuan = $request->input('tanggal'); // Ambil nilai dari parameter URL
             $id_satuan = $request->input('id_satuan'); // Ambil nilai dari parameter URL
-            $tanggalStokSatuan = explode(' - ', $tgl_stok_satuan); // Membagi berdasarkan pemisah
-        
-            if (count($tanggalStokSatuan) == 1) {
-                $startDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalStokSatuan[0], 'en'))->format("Y-m-d");
-                $startDate = Carbon::parse($startDateStr);
-                $endDate = $startDate;
-            } else {
-                $startDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalStokSatuan[0], 'en'))->format("Y-m-d");
-                $endDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalStokSatuan[1], 'en'))->format("Y-m-d");
-        
+
+            if($tgl_stok_satuan == null){
+                // Mendapatkan tanggal awal tahun ini
+                $startDateStr = Carbon::now()->startOfMonth()->format('Y-m-d');
+                // Mendapatkan tanggal akhir tahun ini
+                $endDateStr = Carbon::now()->endOfMonth()->format('Y-m-d');
+
                 $startDate = Carbon::parse($startDateStr);
                 $endDate = Carbon::parse($endDateStr);
+
+                $startDateFormatted = Carbon::parse($startDate)->translatedFormat('j F Y');
+                $endDateFormatted = Carbon::parse($endDate)->translatedFormat('j F Y');
+            } else {
+                $tanggalStokSatuan = explode(' - ', $tgl_stok_satuan); // Membagi berdasarkan pemisah
+
+                if (count($tanggalStokSatuan) == 1) {
+                    $startDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalStokSatuan[0], 'en'))->format("Y-m-d");
+                    $startDate = Carbon::parse($startDateStr);
+                    $endDate = $startDate;
+                } else {
+                    $startDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalStokSatuan[0], 'en'))->format("Y-m-d");
+                    $endDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalStokSatuan[1], 'en'))->format("Y-m-d");
+            
+                    $startDate = Carbon::parse($startDateStr);
+                    $endDate = Carbon::parse($endDateStr);
+                }
             }
+        
 
             // Buat daftar tanggal dalam rentang
             $dateRange = [];
@@ -272,9 +287,10 @@ class BahanBakuSatuanController extends Controller
         
             // Ambil produk dengan stok harian dalam rentang tanggal
             $query = Produk::where(function($query) {
-                $query->where('nama_barang', 'ilike', '%'.$this->search.'%')
-                      ->orWhere('id_no', 'ilike', '%'.$this->search.'%');
+                $query->where('nama_barang', 'LIKE', '%'.$this->search.'%')
+                      ->orWhere('id_no', 'LIKE', '%'.$this->search.'%');
             })
+            ->where('id_kategori', 1)
             ->with(['stokHarian' => function($query) use ($startDateStr, $endDateStr) {
                 $query->whereBetween('tanggal', [$startDateStr, $endDateStr]);
             }])

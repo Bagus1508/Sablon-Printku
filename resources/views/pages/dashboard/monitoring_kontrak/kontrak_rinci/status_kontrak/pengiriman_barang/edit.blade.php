@@ -103,7 +103,7 @@
     $('#region_pengiriman').val(region_pengiriman);
 
     // Menampilkan gambar di modal
-    const imageUrl = `upload/dokumen_pengiriman_barang/${bukti_foto}`;
+    const imageUrl = `storage/upload/dokumen_pengiriman_barang/${bukti_foto}`;
     $('#imagePreview').attr('src', imageUrl).show();
 });
 

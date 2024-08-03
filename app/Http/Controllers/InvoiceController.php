@@ -38,11 +38,11 @@ class InvoiceController extends Controller
     
                 if ($uploadedFile) {
                     // Menentukan direktori penyimpanan di public/upload
-                    $destinationPath = public_path('upload/dokumen_invoice');
+                    $destinationPath = 'public/upload/dokumen_invoice';
                     // Membuat nama file unik dengan tanggal dan waktu
                     $namaFile = date('His') . '_' . date('dmy') . '_' . 'invoice' . $uploadedFile->getClientOriginalName();
                     // Memindahkan file yang diunggah ke direktori public/upload/dokumen_invoice
-                    $uploadedFile->move($destinationPath, $namaFile);
+                    $uploadedFile->storeAs($destinationPath, $namaFile);
                     // Mengatur nama file dokumen pada objek pengiriman barang
                     $validated['foto_invoice'] = $namaFile;
                 } else {
@@ -68,7 +68,7 @@ class InvoiceController extends Controller
     
                 if ($uploadedFile) {
                     // Menentukan direktori penyimpanan di public/upload
-                    $destinationPath = public_path('upload/dokumen_invoice');
+                    $destinationPath = 'public/upload/dokumen_invoice';
                     // Membuat nama file unik dengan tanggal dan waktu
                     $namaFile = date('His') . '_' . date('dmy') . '_' . 'invoice' . $uploadedFile->getClientOriginalName();
                     // Hapus file lama jika ada
@@ -76,7 +76,7 @@ class InvoiceController extends Controller
                         Storage::delete($destinationPath . '/' . $data->foto_invoice);
                     }
                     // Memindahkan file yang diunggah ke direktori public/upload/dokumen_pengiriman_barang
-                    $uploadedFile->move($destinationPath, $namaFile);
+                    $uploadedFile->storeAs($destinationPath, $namaFile);
                     // Mengatur nama file dokumen pada objek pengiriman barang
                     $validated['foto_invoice'] = $namaFile;
                 } else {

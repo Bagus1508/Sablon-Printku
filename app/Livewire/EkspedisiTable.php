@@ -34,8 +34,8 @@ class EkspedisiTable extends Component
     public function render()
     {
         $Data = DataEkspedisi::orderBy('id','desc')
-        ->where('kode_ekspedisi','ilike','%'.$this->search.'%')
-        ->orwhere('nama_ekspedisi','ilike','%'.$this->search.'%')
+        ->where('kode_ekspedisi','LIKE','%'.$this->search.'%')
+        ->orwhere('nama_ekspedisi','LIKE','%'.$this->search.'%')
         ->paginate($this->perPage);
 
         $datanotfound = false;

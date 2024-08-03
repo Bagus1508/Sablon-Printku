@@ -33,7 +33,7 @@ class RegionTable extends Component
     public function render()
     {
         $Data = Region::orderBy('id','desc')
-        ->orwhere('nama_region','ilike','%'.$this->search.'%')
+        ->orwhere('nama_region','LIKE','%'.$this->search.'%')
         ->paginate($this->perPage);
 
         $datanotfound = false;

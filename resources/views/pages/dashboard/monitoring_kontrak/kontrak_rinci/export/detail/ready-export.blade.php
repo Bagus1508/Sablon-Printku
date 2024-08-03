@@ -165,17 +165,17 @@
                 <h5 class="font-medium text-black dark:text-white">1</h5>
             </td>
             <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black;  vertical-align: middle;">
-                <p class="text-black dark:text-white">{{$dataKontrakRinci->takon ?? 'Kosong'}}</p>
+                <p class="text-black dark:text-white">{{$dataKontrakRinci->takon ?? ''}}</p>
             </td>
             <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black;  vertical-align: middle;">
-                <p class="text-black dark:text-white">{{$dataKontrakRinci->no_telepon ?? 'Kosong'}}</p>
+                <p class="text-black dark:text-white">{{$dataKontrakRinci->no_telepon ?? ''}}</p>
             </td>
             <td rowspan="{{ $totalBarang }}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black;  vertical-align: middle;">
                 <p class="text-black dark:text-white">
                     @if($dataKontrakRinci->tanggal_kontrak)
                         {{ \Carbon\Carbon::parse($dataKontrakRinci->tanggal_kontrak)->translatedFormat('d F Y') }}
                     @else
-                        Kosong
+                        
                     @endif
                 </p>
             </td>            
@@ -185,9 +185,9 @@
                     @if($dataKontrakRinci->awal_kr && $dataKontrakRinci->akhir_kr)
                         {{ \Carbon\Carbon::parse($dataKontrakRinci->awal_kr)->translatedFormat('d F Y') }} - {{ \Carbon\Carbon::parse($dataKontrakRinci->akhir_kr)->translatedFormat('d F Y') }}
                     @else
-                        Kosong
+                        
                     @endif
-                    <br> ({{ $durasiHari ?? 'Kosong' }} Hari)
+                    <br> ({{ $durasiHari ?? '' }} Hari)
                 </p>
             </td>
 
@@ -197,7 +197,7 @@
                     @if($dataKontrakRinci->awal_kr)
                         {{ \Carbon\Carbon::parse($dataKontrakRinci->awal_kr)->translatedFormat('d F Y') }}
                     @else
-                        Kosong
+                        
                     @endif
                 </p>
             </td>
@@ -208,32 +208,44 @@
                     @if($dataKontrakRinci->akhir_kr)
                         {{ \Carbon\Carbon::parse($dataKontrakRinci->akhir_kr)->translatedFormat('d F Y') }}
                     @else
-                        Kosong
+                        
                     @endif
                 </p>
             </td>
 
             <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle; vertical-align: middle; vertical-align: middle; vertical-align: middle;">
-                <p class="text-black dark:text-white text-left">{{$dataKontrakRinci->uraian ?? 'Kosong'}}</p>
+                <p class="text-black dark:text-white text-left">{{$dataKontrakRinci->uraian ?? ''}}</p>
             </td>
             {{-- Item Barang Pertama --}}
             <td style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle; vertical-align: middle; vertical-align: middle;">
-                <p class="text-black dark:text-white">{{$dataKontrakRinci->barangKontrak->first()->nama_barang ?? 'Kosong'}}</p>
+                <p class="text-black dark:text-white">{{$dataKontrakRinci->barangKontrak->first()->nama_barang ?? ''}}</p>
             </td>    
             <td  style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle; vertical-align: middle; vertical-align: middle;">
-                <p class="text-black dark:text-white">{{$dataKontrakRinci->barangKontrak->first()->kuantitas ?? 'Kosong'}}</p>
+                <p class="text-black dark:text-white">{{$dataKontrakRinci->barangKontrak->first()->kuantitas ?? ''}}</p>
             </td>    
             <td  style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle; vertical-align: middle; vertical-align: middle;">
-                <p class="text-black dark:text-white">{{$dataKontrakRinci->barangKontrak->first()->satuan->nama_satuan ?? 'Kosong'}}</p>
+                <p class="text-black dark:text-white">{{$dataKontrakRinci->barangKontrak->first()->satuan->nama_satuan ?? ''}}</p>
             </td>
-            <td style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle; vertical-align: middle; vertical-align: middle;">
-                <p class="text-black dark:text-white text-left">{{ 'Rp ' . number_format($dataKontrakRinci->barangKontrak->first()->harga_barang ?? 'Kosong', 0, ',', '.') }}</p>
-            </td>
+            <td style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
+                <p class="text-black dark:text-white text-left">
+                    @if (isset($dataKontrakRinci->barangKontrak->first()->harga_barang))
+                        Rp {{ number_format($dataKontrakRinci->barangKontrak->first()->harga_barang, 0, ',', '.') }}
+                    @else
+                        
+                    @endif
+                </p>
+            </td>            
             {{-- Total Harga --}}
             @if ($loggedInUser->id_level_user === 1)              
-            <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle; vertical-align: middle; vertical-align: middle;">
-                <p class="text-black dark:text-white text-left">{{ 'Rp ' . number_format($dataKontrakRinci->total_harga ?? 'Kosong', 0, ',', '.') }}</p>
-            </td>
+            <td rowspan="{{ $totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
+                <p class="text-black dark:text-white text-left">
+                    @if (is_numeric($dataKontrakRinci->total_harga))
+                        Rp {{ number_format($dataKontrakRinci->total_harga, 0, ',', '.') }}
+                    @else
+                        
+                    @endif
+                </p>
+            </td>            
             @endif
             {{-- Proses Cutting --}}
             <!-- Tanggal Masuk Proses Cutting -->
@@ -242,7 +254,7 @@
                     @if($dataKontrakRinci->prosesCutting && $dataKontrakRinci->prosesCutting->tanggal_masuk)
                         {{ \Carbon\Carbon::parse($dataKontrakRinci->prosesCutting->tanggal_masuk)->translatedFormat('d F Y') }}
                     @else
-                        Kosong
+                        
                     @endif
                 </p>
             </td> 
@@ -252,12 +264,12 @@
                     @if($dataKontrakRinci->prosesCutting && $dataKontrakRinci->prosesCutting->tanggal_selesai)
                         {{ \Carbon\Carbon::parse($dataKontrakRinci->prosesCutting->tanggal_selesai)->translatedFormat('d F Y') }}
                     @else
-                        Kosong
+                        
                     @endif
                 </p>
             </td>
             <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
-                <p class="text-black dark:text-white">{{$dataKontrakRinci->prosesCutting->durasi ?? 'Kosong'}} Hari</p>
+                <p class="text-black dark:text-white">{{$dataKontrakRinci->prosesCutting->durasi ?? ''}} Hari</p>
             </td>       
             {{-- Proses Jahit --}}
             <!-- Tanggal Masuk Proses Jahit -->
@@ -266,7 +278,7 @@
                     @if($dataKontrakRinci->prosesJahit && $dataKontrakRinci->prosesJahit->tanggal_masuk)
                         {{ \Carbon\Carbon::parse($dataKontrakRinci->prosesJahit->tanggal_masuk)->translatedFormat('d F Y') }}
                     @else
-                        Kosong
+                        
                     @endif
                 </p>
             </td> 
@@ -276,12 +288,12 @@
                     @if($dataKontrakRinci->prosesJahit && $dataKontrakRinci->prosesJahit->tanggal_selesai)
                         {{ \Carbon\Carbon::parse($dataKontrakRinci->prosesJahit->tanggal_selesai)->translatedFormat('d F Y') }}
                     @else
-                        Kosong
+                        
                     @endif
                 </p>
             </td>
             <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle; vertical-align: middle;">
-                <p class="text-black dark:text-white">{{$dataKontrakRinci->prosesJahit->durasi ?? 'Kosong'}} Hari</p>
+                <p class="text-black dark:text-white">{{$dataKontrakRinci->prosesJahit->durasi ?? ''}} Hari</p>
             </td>           
             {{-- Proses Packing --}}
             <!-- Tanggal Masuk Proses Packing -->
@@ -290,7 +302,7 @@
                     @if($dataKontrakRinci->prosesPacking && $dataKontrakRinci->prosesPacking->tanggal_masuk)
                         {{ \Carbon\Carbon::parse($dataKontrakRinci->prosesPacking->tanggal_masuk)->translatedFormat('d F Y') }}
                     @else
-                        Kosong
+                        
                     @endif
                 </p>
             </td> 
@@ -300,90 +312,90 @@
                     @if($dataKontrakRinci->prosesPacking && $dataKontrakRinci->prosesPacking->tanggal_selesai)
                         {{ \Carbon\Carbon::parse($dataKontrakRinci->prosesPacking->tanggal_selesai)->translatedFormat('d F Y') }}
                     @else
-                        Kosong
+                        
                     @endif
                 </p>
             </td>
             <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
-                <p class="text-black dark:text-white">{{$dataKontrakRinci->prosesPacking->durasi ?? 'Kosong'}} Hari</p>
+                <p class="text-black dark:text-white">{{$dataKontrakRinci->prosesPacking->durasi ?? ''}} Hari</p>
             </td>           
             {{-- Pengiriman Barang --}}
             <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
-                <p class="text-black dark:text-white">{{$dataKontrakRinci->pengirimanBarang->region->nama_region ?? 'Kosong'}}</p>
+                <p class="text-black dark:text-white">{{$dataKontrakRinci->pengirimanBarang->region->nama_region ?? ''}}</p>
             </td>    
             <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
-                <p class="text-black dark:text-white">{{$dataKontrakRinci->pengirimanBarang->no_surat_jalan ?? 'Kosong'}}</p>
+                <p class="text-black dark:text-white">{{$dataKontrakRinci->pengirimanBarang->no_surat_jalan ?? ''}}</p>
             </td>   
             <td rowspan="{{ $totalBarang }}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; vertical-align: middle;">
                 <p class="text-black dark:text-white">
                     @if($dataKontrakRinci->pengirimanBarang && $dataKontrakRinci->pengirimanBarang->tanggal_surat_jalan)
                         {{ \Carbon\Carbon::parse($dataKontrakRinci->pengirimanBarang->tanggal_surat_jalan)->translatedFormat('d F Y') }}
                     @else
-                        Kosong
+                        
                     @endif
                 </p>
             </td>            
             <td rowspan="{{ $totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
                 @if($dataKontrakRinci->pengirimanBarang && $dataKontrakRinci->pengirimanBarang->bukti_foto)
             
-            <img src="{{ public_path('upload/dokumen_pengiriman_barang/' . $dataKontrakRinci->pengirimanBarang->bukti_foto) }}" alt="Bukti Foto" width="200px">
+            <img src="{{ public_path('storage/upload/dokumen_pengiriman_barang/' . $dataKontrakRinci->pengirimanBarang->bukti_foto) }}" alt="Bukti Foto" width="200px">
             
                 @else
                     <p class="text-black dark:text-white">Gambar tidak tersedia</p>
                 @endif
             </td>                
             <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
-                <p class="text-black dark:text-white">{{$dataKontrakRinci->pengirimanBarang->ekspedisi->nama_ekspedisi ?? 'Kosong'}}</p>
+                <p class="text-black dark:text-white">{{$dataKontrakRinci->pengirimanBarang->ekspedisi->nama_ekspedisi ?? ''}}</p>
             </td>
             {{-- BA RIKMATEK --}}
             <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
-                <p class="text-black dark:text-white">{{$dataKontrakRinci->ba_rikmatek->no ?? 'Kosong'}}</p>
+                <p class="text-black dark:text-white">{{$dataKontrakRinci->ba_rikmatek->no ?? ''}}</p>
             </td>    
             <td rowspan="{{ $totalBarang }}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; vertical-align: middle;">
                 <p class="text-black dark:text-white">
                     @if($dataKontrakRinci->ba_rikmatek && $dataKontrakRinci->ba_rikmatek->tanggal_ba_rikmatek)
                         {{ \Carbon\Carbon::parse($dataKontrakRinci->ba_rikmatek->tanggal_ba_rikmatek)->translatedFormat('d F Y') }}
                     @else
-                        Kosong
+                        
                     @endif
                 </p>
             </td>                   
             {{-- BAPB/BAPP --}}
             <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
-                <p class="text-black dark:text-white">{{$dataKontrakRinci->bapb_bapp->no ?? 'Kosong'}}</p>
+                <p class="text-black dark:text-white">{{$dataKontrakRinci->bapb_bapp->no ?? ''}}</p>
             </td>    
             <td rowspan="{{ $totalBarang }}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; vertical-align: middle;">
                 <p class="text-black dark:text-white">
                     @if($dataKontrakRinci->bapb_bapp && $dataKontrakRinci->bapb_bapp->tanggal_bapb_bapp)
                         {{ \Carbon\Carbon::parse($dataKontrakRinci->bapb_bapp->tanggal_bapb_bapp)->translatedFormat('d F Y') }}
                     @else
-                        Kosong
+                        
                     @endif
                 </p>
             </td>                 
             {{-- BAST --}}
             <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
-                <p class="text-black dark:text-white">{{$dataKontrakRinci->bast->no ?? 'Kosong'}}</p>
+                <p class="text-black dark:text-white">{{$dataKontrakRinci->bast->no ?? ''}}</p>
             </td>    
             <td rowspan="{{ $totalBarang }}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; vertical-align: middle;">
                 <p class="text-black dark:text-white">
                     @if($dataKontrakRinci->bast && $dataKontrakRinci->bast->tanggal_bast)
                         {{ \Carbon\Carbon::parse($dataKontrakRinci->bast->tanggal_bast)->translatedFormat('d F Y') }}
                     @else
-                        Kosong
+                        
                     @endif
                 </p>
             </td>               
             {{-- INVOICE --}}
             <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
-                <p class="text-black dark:text-white">{{$dataKontrakRinci->invoice->nomor_invoice ?? 'Kosong'}}</p>
+                <p class="text-black dark:text-white">{{$dataKontrakRinci->invoice->nomor_invoice ?? ''}}</p>
             </td>    
             <td rowspan="{{ $totalBarang }}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; vertical-align: middle;">
                 <p class="text-black dark:text-white">
                     @if($dataKontrakRinci->invoice && $dataKontrakRinci->invoice->tanggal_invoice)
                         {{ \Carbon\Carbon::parse($dataKontrakRinci->invoice->tanggal_invoice)->translatedFormat('d F Y') }}
                     @else
-                        Kosong
+                        
                     @endif
                 </p>
             </td>            
@@ -391,7 +403,7 @@
             <td rowspan="{{ $totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
                 @if($dataKontrakRinci->invoice && $dataKontrakRinci->invoice->foto_invoice)
                 
-                <img src="{{ public_path('upload\dokumen_pengiriman_barang/' . $dataKontrakRinci->pengirimanBarang->bukti_foto) }}" alt="Bukti Foto" width="200px">
+                <img src="{{ public_path('storage/upload/dokumen_pengiriman_barang/' . $dataKontrakRinci->pengirimanBarang->bukti_foto) }}" alt="Bukti Foto" width="200px">
                 
                 @else
                     <p class="text-black dark:text-white">Gambar tidak tersedia</p>
@@ -402,7 +414,7 @@
                     @if($dataKontrakRinci->invoice && $dataKontrakRinci->invoice->tanggal_kirim_invoice)
                         {{ \Carbon\Carbon::parse($dataKontrakRinci->invoice->tanggal_kirim_invoice)->translatedFormat('d F Y') }}
                     @else
-                        Kosong
+                        
                     @endif
                 </p>
             </td>                  
@@ -423,7 +435,7 @@
             </td>
             @if ($loggedInUser->id_level_user === 1)                
             <td  style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
-                <p class="text-black dark:text-white">{{ 'Rp ' . number_format($itemBarang->harga_barang ?? 'Kosong', 0, ',', '.') }}</p>
+                <p class="text-black dark:text-white">{{ 'Rp ' . number_format($itemBarang->harga_barang ?? '', 0, ',', '.') }}</p>
             </td>
             @endif
         </tr>

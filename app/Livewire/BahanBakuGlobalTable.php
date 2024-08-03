@@ -75,8 +75,8 @@ class BahanBakuGlobalTable extends Component
     
         // Ambil produk dengan stok harian dalam rentang tanggal
         $query = Produk::where(function($query) {
-            $query->where('nama_barang', 'ilike', '%'.$this->search.'%')
-                  ->orWhere('id_no', 'ilike', '%'.$this->search.'%');
+            $query->where('nama_barang', 'LIKE', '%'.$this->search.'%')
+                  ->orWhere('id_no', 'LIKE', '%'.$this->search.'%');
         })
         ->where('id_kategori', 1)
         ->with(['stokHarian' => function($query) use ($awal, $akhir) {

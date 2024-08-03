@@ -34,7 +34,7 @@ class SizeTable extends Component
     public function render()
     {
         $Data = DataUkuran::orderBy('id','desc')
-        ->where('nama_ukuran','ilike','%'.$this->search.'%')
+        ->where('nama_ukuran','LIKE','%'.$this->search.'%')
         ->paginate($this->perPage);
 
         $datanotfound = false;

@@ -139,8 +139,8 @@ class PerusahaanTable extends Component
     public function render()
     {
         $Data = DataPerusahaan::orderBy('id','desc')
-        ->where('kode_perusahaan','ilike','%'.$this->search.'%')
-        ->orwhere('nama_perusahaan','ilike','%'.$this->search.'%')
+        ->where('kode_perusahaan','LIKE','%'.$this->search.'%')
+        ->orwhere('nama_perusahaan','LIKE','%'.$this->search.'%')
         ->paginate($this->perPage);
 
         $this->apiProvice   = $this->fetchProvince();

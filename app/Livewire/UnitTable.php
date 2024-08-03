@@ -34,7 +34,7 @@ class UnitTable extends Component
     public function render()
     {
         $Data = DataSatuan::orderBy('id','desc')
-        ->where('nama_satuan','ilike','%'.$this->search.'%')
+        ->where('nama_satuan','LIKE','%'.$this->search.'%')
         ->paginate($this->perPage);
 
         $datanotfound = false;

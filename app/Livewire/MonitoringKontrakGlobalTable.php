@@ -58,8 +58,8 @@ class MonitoringKontrakGlobalTable extends Component
     
         // Ambil Kontrak Rinci dengan stok harian dalam rentang tanggal
         $query = KontrakRinci::where(function ($q) {
-            $q->where('takon', 'ilike', '%'.$this->search.'%')
-              ->orWhere('no_kontrak_rinci', 'ilike', '%'.$this->search.'%');
+            $q->where('takon', 'LIKE', '%'.$this->search.'%')
+              ->orWhere('no_kontrak_rinci', 'LIKE', '%'.$this->search.'%');
         })
         ->whereBetween('tanggal_kontrak', [$awal, $akhir])
         ->orderBy('tanggal_kontrak', 'desc')
@@ -114,8 +114,8 @@ class MonitoringKontrakGlobalTable extends Component
 
             // Ambil Kontrak Rinci dengan stok harian dalam rentang tanggal
             $query = KontrakRinci::where(function ($q) {
-                $q->where('takon', 'ilike', '%'.$this->search.'%')
-                ->orWhere('no_kontrak_rinci', 'ilike', '%'.$this->search.'%');
+                $q->where('takon', 'LIKE', '%'.$this->search.'%')
+                ->orWhere('no_kontrak_rinci', 'LIKE', '%'.$this->search.'%');
             })
             ->whereBetween('tanggal_kontrak', [$startDate, $endDate])
             ->orderBy('tanggal_kontrak', 'desc')
