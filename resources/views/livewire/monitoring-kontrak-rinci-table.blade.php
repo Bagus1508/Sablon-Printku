@@ -53,15 +53,19 @@
                     <th width="200px" rowspan="3" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Satuan
                     </th>
+                    @if ($loggedInUser->id_level_user == 1)                        
                     <th width="200px" rowspan="3" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Harga
                     </th>
+                    @endif
                     <th width="200px" rowspan="3" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         
                     </th>
+                    @if ($loggedInUser->id_level_user == 1)    
                     <th width="200px" rowspan="3" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Total Harga
                     </th>
+                    @endif
                     <th width="200px" rowspan="3" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Aksi Barang
                     </th>
@@ -283,6 +287,7 @@
                                 <p class="text-black dark:text-white text-left border-b border-slate-400 px-10">{{$barang->satuan->nama_satuan}}</p>
                             @endforeach
                         </td>    
+                        @if ($loggedInUser->id_level_user == 1)    
                         <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark items-center mx-auto">
                             @foreach ($itemKontrak->barangKontrak as $barang)
                                 <p class="text-black dark:text-white text-left border-b border-slate-400 px-10">
@@ -290,6 +295,7 @@
                                 </p>
                             @endforeach
                         </td>    
+                        @endif
                         <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark items-center mx-auto">
                             @foreach ($itemKontrak->barangKontrak as $barang)
                             <p class="text-black dark:text-white text-left border-b border-slate-400 px-10">
@@ -315,12 +321,14 @@
                             </p>
                             @endforeach
                         </td>    
+                        @if ($loggedInUser->id_level_user == 1)    
                         {{-- Harga --}}
                         <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
                             <p class="text-black dark:text-white hover:underline">
                                 Rp. {{ number_format($itemKontrak->total_harga, 2, ',', '.') }}
                             </p>
                         </td>
+                        @endif
                         {{-- Tombol Tambah Barang --}}                           
                         <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark items-center mx-auto px-10">
                             <button

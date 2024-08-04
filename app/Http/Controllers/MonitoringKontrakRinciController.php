@@ -23,6 +23,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
 use Throwable;
 
+use function PHPUnit\Framework\isNull;
+
 class MonitoringKontrakRinciController extends Controller
 {
     public function index(){
@@ -351,6 +353,11 @@ class MonitoringKontrakRinciController extends Controller
             $dataKontrakRinci = $query->where('id', $id)->get()->first();
 
             $totalBarang = $dataKontrakRinci->barangKontrak->count();
+
+            if($totalBarang == 0){
+                toast('Gagal menampilkan data: data Barang masih kosong!', 'error', 'top-right');
+                return redirect()->back();
+            }
 
             $awalKr = Carbon::parse($dataKontrakRinci->awal_kr);
             $akhirKr = Carbon::parse($dataKontrakRinci->akhir_kr);

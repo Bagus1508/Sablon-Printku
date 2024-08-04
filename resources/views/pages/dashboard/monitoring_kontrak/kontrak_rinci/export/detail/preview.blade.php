@@ -29,10 +29,10 @@
             <th width="200px" rowspan="2" style="background-color: #C9DBF9; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Harga
             </th>
-            @endif
             <th width="200px" rowspan="2" style="background-color: #C9DBF9; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Total Harga
             </th>
+            @endif
             <th colspan="3" style="background-color: #EBD2DD; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Proses Cutting
             </th>
@@ -226,6 +226,7 @@
             <td  style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle; vertical-align: middle; vertical-align: middle;">
                 <p class="text-black dark:text-white">{{$dataKontrakRinci->barangKontrak->first()->satuan->nama_satuan ?? 'Kosong'}}</p>
             </td>
+            @if ($loggedInUser->id_level_user === 1)    
             <td style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle; vertical-align: middle; vertical-align: middle;">
                 <p class="text-black dark:text-white text-left">
                     @if($dataKontrakRinci->barangKontrak && $dataKontrakRinci->barangKontrak->first())
@@ -235,6 +236,7 @@
                     @endif
                 </p>                
             </td>
+            @endif
             {{-- Total Harga --}}
             @if ($loggedInUser->id_level_user === 1)              
             <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle; vertical-align: middle; vertical-align: middle;">

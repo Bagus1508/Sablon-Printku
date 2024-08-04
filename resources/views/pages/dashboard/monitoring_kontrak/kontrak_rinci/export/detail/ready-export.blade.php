@@ -226,6 +226,7 @@
             <td  style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle; vertical-align: middle; vertical-align: middle;">
                 <p class="text-black dark:text-white">{{$dataKontrakRinci->barangKontrak->first()->satuan->nama_satuan ?? ''}}</p>
             </td>
+            @if ($loggedInUser->id_level_user === 1)    
             <td style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
                 <p class="text-black dark:text-white text-left">
                     @if (isset($dataKontrakRinci->barangKontrak->first()->harga_barang))
@@ -235,6 +236,7 @@
                     @endif
                 </p>
             </td>            
+            @endif
             {{-- Total Harga --}}
             @if ($loggedInUser->id_level_user === 1)              
             <td rowspan="{{ $totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">

@@ -363,19 +363,26 @@ class BahanBakuSatuanController extends Controller
         // Tangkap rentang tanggal dari parameter query
         $tgl_stok_satuan = $request->input('tanggal'); // Ambil nilai dari parameter URL
         $IdSatuan = $request->input('id_satuan'); // Ambil nilai dari parameter URL
-        
-        $tanggalStokSatuan = explode(' - ', $tgl_stok_satuan); // Membagi berdasarkan pemisah
 
-        if (count($tanggalStokSatuan) == 1) {
-            $startDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalStokSatuan[0], 'en'))->format("Y-m-d");
-            $startDate = Carbon::parse($startDateStr);
-            $endDate = $startDate;
+        if($tgl_stok_satuan == null){
+            // Mendapatkan tanggal awal tahun ini
+            $startDate = Carbon::now()->startOfMonth()->format('Y-m-d');
+            // Mendapatkan tanggal akhir tahun ini
+            $endDate = Carbon::now()->endOfMonth()->format('Y-m-d');
         } else {
-            $startDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalStokSatuan[0], 'en'))->format("Y-m-d");
-            $endDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalStokSatuan[1], 'en'))->format("Y-m-d");
-    
-            $startDate = Carbon::parse($startDateStr);
-            $endDate = Carbon::parse($endDateStr);
+            $tanggalStokSatuan = explode(' - ', $tgl_stok_satuan); // Membagi berdasarkan pemisah
+
+            if (count($tanggalStokSatuan) == 1) {
+                $startDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalStokSatuan[0], 'en'))->format("Y-m-d");
+                $startDate = Carbon::parse($startDateStr);
+                $endDate = $startDate;
+            } else {
+                $startDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalStokSatuan[0], 'en'))->format("Y-m-d");
+                $endDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalStokSatuan[1], 'en'))->format("Y-m-d");
+        
+                $startDate = Carbon::parse($startDateStr);
+                $endDate = Carbon::parse($endDateStr);
+            }
         }
         $filename = 'PERSEDIAAN KAIN SATUAN_' . $startDate . ' - '. $endDate .'.xlsx';
         return Excel::download(new StokBahanBakuSatuanExport($startDate, $endDate ,$IdSatuan), $filename);

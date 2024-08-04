@@ -119,19 +119,26 @@ class BarangKontrakRinciController extends Controller
             'volume_realisasi.numeric' => 'Volume realisasi harus berupa angka.',
             'volume_sisa.numeric' => 'Volume sisa harus berupa angka.',
         ]);    
-        $hargaString = $validated['harga_barang'] ?? '0';
-        // Hapus "Rp " dari awal string dan ganti "." menjadi ""
-        $harga = str_replace('Rp ', '', $hargaString); // Menghapus prefiks "Rp "
-        $harga = str_replace('.', '', $harga); // Menghapus titik dari string
-        $harga = str_replace('Rp ', '', $harga);
-        $harga = (float) $harga; // Konversi ke float
-        
+
         $dataProdukKontrak = ProdukKontrak::find($id);
         $dataKontrakRinci = KontrakRinci::find($dataProdukKontrak->id_kontrak_rinci);
-        
-        /* Hitung Total harga baru */
-        $totalHargaLama = (float)$dataKontrakRinci->total_harga - (float)$dataProdukKontrak->harga_barang; // Pengurangan total sebelumnya
-        $totalHargaBaru = $totalHargaLama + $harga;
+
+        if (!is_null($validated['harga_barang'])) {
+            $hargaString = $validated['harga_barang'] ?? '0';
+            // Hapus "Rp " dari awal string dan ganti "." menjadi ""
+            $harga = str_replace('Rp ', '', $hargaString); // Menghapus prefiks "Rp "
+            $harga = str_replace('.', '', $harga); // Menghapus titik dari string
+            $harga = str_replace('Rp ', '', $harga);
+            $harga = (float) $harga; // Konversi ke float
+            
+            /* Hitung Total harga baru */
+            $totalHargaLama = (float)$dataKontrakRinci->total_harga - (float)$dataProdukKontrak->harga_barang; // Pengurangan total sebelumnya
+            $totalHargaBaru = $totalHargaLama + $harga;
+            /* Update Harga Barang */
+            $dataProdukKontrak->harga_barang = $harga;
+            /* Update dataKontrakRinci */
+            $dataKontrakRinci->total_harga = $totalHargaBaru;
+        }
         
         /* Update dataProdukKontrak */
         $dataProdukKontrak->nama_barang = $validated['nama_barang'];
@@ -140,10 +147,6 @@ class BarangKontrakRinciController extends Controller
         $dataProdukKontrak->volume_kontrak = $validated['volume_kontrak'];
         $dataProdukKontrak->volume_realisasi = $validated['volume_realisasi'];
         $dataProdukKontrak->volume_sisa = $validated['volume_sisa'];
-        $dataProdukKontrak->harga_barang = $harga;
-
-        /* Update dataKontrakRinci */
-        $dataKontrakRinci->total_harga = $totalHargaBaru;
 
         $dataProdukKontrak->save();
         $dataKontrakRinci->save();

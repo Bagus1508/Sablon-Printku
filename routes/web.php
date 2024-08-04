@@ -46,13 +46,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::middleware(['checkrole:1'])->group(function () {
         Route::resource('data-akun', AccountController::class);
+        Route::resource('data-kategori', CategoryController::class);
     });
     
     Route::middleware(['checkrole:1,2'])->group(function () {
         Route::resource('data-satuan', UnitController::class);
         Route::resource('data-ukuran', SizeController::class);
         Route::resource('data-warna', ColorController::class);
-        Route::resource('data-kategori', CategoryController::class);
         Route::resource('data-ekspedisi', EkspedisiController::class);
         Route::resource('data-perusahaan', DataPerusahaanController::class);
 

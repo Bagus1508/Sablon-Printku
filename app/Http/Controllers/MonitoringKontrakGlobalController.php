@@ -86,6 +86,15 @@ class MonitoringKontrakGlobalController extends Controller
             
             $dataKontrak = $query->get();
 
+            // Pengecekan barangKontrak kosong
+            foreach ($dataKontrak as $kontrak) {
+                if ($kontrak->barangKontrak->isEmpty()) {
+                    // Barang kontrak kosong pada salah satu kontrak, tidak bisa lanjut
+                    toast('Gagal menampilkan data: Salah satu data Barang masih kosong!', 'error', 'top-right');
+                    return redirect()->back();
+                }
+            }
+
             $datanotfound = !$dataKontrak->count();
         
             return view('pages.dashboard.monitoring_kontrak.kontrak_global.export.index', [
