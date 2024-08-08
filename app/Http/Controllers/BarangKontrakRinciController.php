@@ -16,54 +16,48 @@ class BarangKontrakRinciController extends Controller
     {
         try {
             // Ambil semua data dari input
-            $idKontrakRinci = $request->input('id_kontrak_rinci', []);
-            $namaBarang = $request->input('nama_barang', []);
+            $idKontrakRinci = $request->input('id_kontrak_rinci');
+            $namaBarang = $request->input('id_produk', []);
             $kuantitas = $request->input('kuantitas', []);
             $idSatuan = $request->input('id_satuan', []);
             $volumeKontrak = $request->input('volume_kontrak', []);
             $volumeRealisasi = $request->input('volume_realisasi', []);
             $volumeSisa = $request->input('volume_sisa', []);
-            $hargaBarang = $request->input('harga_barang', []);
+            $totalHarga = $request->input('total_harga') ?? '0';
     
             // Validasi data
             $rules = [
-                'nama_barang.*' => 'required|string',
+                'id_produk.*' => 'required|integer',
                 'kuantitas.*' => 'nullable|numeric',
                 'id_satuan.*' => 'nullable|integer',
                 'volume_kontrak.*' => 'nullable|numeric',
                 'volume_realisasi.*' => 'nullable|numeric',
                 'volume_sisa.*' => 'nullable|numeric',
-                'harga_barang.*' => 'nullable',
+                'total_harga.*' => 'nullable',
             ];
     
             $validated = $request->validate($rules, [
-                'nama_barang.*.required' => 'Nama barang wajib diisi.',
-                'nama_barang.*.string' => 'Nama barang harus berupa string.',
+                'id_produk.*.required' => 'Nama barang wajib diisi.',
+                'id_produk.*.integer' => 'Nama barang tidak sesuai.',
                 'kuantitas.*.nullable' => 'Kuantitas bersifat opsional.',
                 'id_satuan.*.nullable' => 'ID Satuan bersifat opsional.',
                 'volume_kontrak.*.numeric' => 'Volume kontrak harus berupa angka.',
                 'volume_realisasi.*.numeric' => 'Volume realisasi harus berupa angka.',
                 'volume_sisa.*.numeric' => 'Volume sisa harus berupa angka.',
             ]);
-
-            $totalHarga = 0; // Variabel untuk menyimpan total harga
     
             // Proses dan simpan setiap entri
             foreach ($namaBarang as $index => $itemNamaBarang) {
-                // Ambil harga barang dan ubah menjadi format numerik
-                $harga = str_replace(['Rp. ', '.'], '', $hargaBarang[$index] ?? 0);
-                $totalHarga += (int)$harga; // Tambahkan harga ke total harga
 
                 // Siapkan data untuk disimpan
                 $parameter = [
                     'id_kontrak_rinci' => $idKontrakRinci[0], // Atur sesuai kebutuhan
-                    'nama_barang' => $itemNamaBarang,
+                    'id_produk' => $itemNamaBarang,
                     'kuantitas' => $kuantitas[$index] ?? null,
                     'id_satuan' => $idSatuan[$index] ?? null,
                     'volume_kontrak' => $volumeKontrak[$index] ?? null,
                     'volume_realisasi' => $volumeRealisasi[$index] ?? null,
                     'volume_sisa' => $volumeSisa[$index] ?? null,
-                    'harga_barang' => $harga,
                 ];
     
                 // Simpan data
@@ -78,10 +72,10 @@ class BarangKontrakRinciController extends Controller
 
             $dataKontrakRinci = KontrakRinci::find($idKontrakRinci[0]);
 
-            /* Total Harga Baru + Lama */
-            $totalHargaBaru = (float)$dataKontrakRinci->total_harga + $totalHarga;
+            // Ambil harga barang dan ubah menjadi format numerik
+            $totalHargaStr = str_replace(['Rp. ', '.'], '', $totalHarga ?? 0);
 
-            $dataKontrakRinci->total_harga = $totalHargaBaru;
+            $dataKontrakRinci->total_harga = floatval($totalHargaStr) ;
             $dataKontrakRinci->save();
     
             Alert::success('Berhasil!', 'Berhasil menambah barang kontrak rinci');
@@ -103,7 +97,7 @@ class BarangKontrakRinciController extends Controller
     public function updateBarang(Request $request, $id)
     {
         $validated = $request->validate([
-            'nama_barang' => 'required|string',
+            'id_produk' => 'required',
             'kuantitas' => 'nullable|numeric',
             'id_satuan' => 'nullable|integer',
             'volume_kontrak' => 'nullable|numeric',
@@ -111,8 +105,7 @@ class BarangKontrakRinciController extends Controller
             'volume_sisa' => 'nullable|numeric',
             'harga_barang' => 'nullable',
         ],[
-            'nama_barang.required' => 'Nama barang wajib diisi.',
-            'nama_barang.string' => 'Nama barang harus berupa string.',
+            'id_produk.required' => 'Nama barang wajib diisi.',
             'kuantitas.nullable' => 'Kuantitas bersifat opsional.',
             'id_satuan.nullable' => 'ID Satuan bersifat opsional.',
             'volume_kontrak.numeric' => 'Volume kontrak harus berupa angka.',
@@ -141,7 +134,7 @@ class BarangKontrakRinciController extends Controller
         }
         
         /* Update dataProdukKontrak */
-        $dataProdukKontrak->nama_barang = $validated['nama_barang'];
+        $dataProdukKontrak->id_produk = $validated['id_produk'];
         $dataProdukKontrak->kuantitas = $validated['kuantitas'];
         $dataProdukKontrak->id_satuan = $validated['id_satuan'];
         $dataProdukKontrak->volume_kontrak = $validated['volume_kontrak'];

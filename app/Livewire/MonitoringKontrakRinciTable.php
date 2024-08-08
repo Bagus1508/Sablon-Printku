@@ -10,6 +10,7 @@ use App\Models\DataSatuan;
 use App\Models\DataUkuran;
 use App\Models\DataWarna;
 use App\Models\KontrakRinci;
+use App\Models\Pajak;
 use App\Models\Produk;
 use App\Models\ProdukKategori;
 use App\Models\Region;
@@ -30,6 +31,8 @@ class MonitoringKontrakRinciTable extends Component
     public $endDate;
     public $selectedUnit;
     public $selectedSortBy;
+    public $no_kontrak_pihak_pertama;
+    public $kode_perusahaan;
 
     public function updatedTanggal()
     {
@@ -47,6 +50,17 @@ class MonitoringKontrakRinciTable extends Component
         }
     }
 
+    public $columnsVisibility = [
+        'proses_cutting' => false,
+        'proses_jahit' => false,
+        'proses_packing' => false,
+    ];
+
+    public function toggleColumnVisibility($column)
+    {
+        $this->columnsVisibility[$column] = !$this->columnsVisibility[$column];
+    }
+
     public function render()
     {
         $this->startDate ? $awal = $this->startDate : $awal = Carbon::now()->startOfYear();
@@ -54,17 +68,37 @@ class MonitoringKontrakRinciTable extends Component
     
         $startDate = Carbon::parse($awal);
         $endDate = Carbon::parse($akhir);
+
+        //Data Kontrak Rinci
+        $allDataKontrakRinci = KontrakRinci::with('perusahaan')->get();
+
+        //Produk Pakaian
+        $dataProdukPakaian = Produk::where('id_kategori', 2)->get();
     
         // Ambil Kontrak Rinci dengan stok harian dalam rentang tanggal
-        $query = KontrakRinci::where('takon', 'LIKE', '%'.$this->search.'%')
-        ->orWhere('no_kontrak_rinci', 'LIKE', '%'.$this->search.'%')
+        $query = KontrakRinci::where(function ($q) {
+            $q->where('takon', 'LIKE', '%'.$this->search.'%')
+              ->orWhere('no_kontrak_rinci', 'LIKE', '%'.$this->search.'%');
+        })
+        ->whereBetween('tanggal_kontrak', [$awal, $akhir])
         ->orderBy('tanggal_kontrak', 'desc')
         ->with(['prosesCutting', 'prosesJahit', 'prosesPacking', 'barangKontrak', 'pengirimanBarang', 'ba_rikmatek', 
                 'bapb_bapp', 'bast', 'invoice'                 
                ]);    
         
-    
+            
+        if ($this->no_kontrak_pihak_pertama) {
+            $query->where('no_kontrak_pihak_pertama', $this->no_kontrak_pihak_pertama);
+        }
+        
+        if ($this->kode_perusahaan) {
+            $query->whereHas('perusahaan', function ($query) {
+                $query->where('kode_perusahaan', $this->kode_perusahaan);
+            });
+        }
+        
         $dataKontrakRinci = $query->paginate($this->perPage);
+            
         $dataSatuan = DataSatuan::all();
         $dataEkspedisi = DataEkspedisi::all();
         $dataPerusahaan = DataPerusahaan::all();
@@ -74,17 +108,15 @@ class MonitoringKontrakRinciTable extends Component
 
         return view('livewire.monitoring-kontrak-rinci-table', [
             'dataKontrakRinci' => $dataKontrakRinci,
+            'allDataKontrakRinci' => $allDataKontrakRinci,
             'nodata' => $datanotfound,
             'dataSatuan' => $dataSatuan,
             'dataEkspedisi' => $dataEkspedisi,
             'dataRegion' => $dataRegion,
             'dataPerusahaan' => $dataPerusahaan,
+            'dataProdukPakaian' => $dataProdukPakaian,
+            'dataPajak' => Pajak::get()->first(),
         ]);
-    }
-    
-    public function export() 
-    {
-        return Excel::download(new StokBahanBakuGlobalExport, 'stokbahanbakuglobal.xlsx');
     }
     
 }

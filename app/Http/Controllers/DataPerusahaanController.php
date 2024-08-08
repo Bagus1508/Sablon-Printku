@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Helpers\LogHelper;
 use App\Models\DataAlamat;
 use App\Models\DataPerusahaan;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use RealRashid\SweetAlert\Facades\Alert;
 use Throwable;
+
+use function PHPUnit\Framework\isNull;
 
 class DataPerusahaanController extends Controller
 {
@@ -23,6 +26,7 @@ class DataPerusahaanController extends Controller
             $validated = $request->validate([
                 'kode_perusahaan' => 'required|unique:perusahaan_table,kode_perusahaan',
                 'nama_perusahaan' => 'required',
+                'npwp' => 'nullable',
                 'no_telepon' => 'nullable|regex:/^[0-9]+$/',
                 'email' => 'nullable|email',
                 'alamat' => 'nullable|string|max:255',
@@ -68,6 +72,7 @@ class DataPerusahaanController extends Controller
             $parameter = [
                 'kode_perusahaan' => $validated['kode_perusahaan'],
                 'nama_perusahaan' => $validated['nama_perusahaan'],
+                'npwp' => $validated['npwp'],
                 'no_telepon' => $validated['no_telepon'],
                 'email' => $validated['email'],
                 'id_alamat' => $dataAlamatPerusahaan->id,
@@ -76,13 +81,13 @@ class DataPerusahaanController extends Controller
             $dataPerusahaan = DataPerusahaan::create($parameter);
 
             if (!$dataPerusahaan) {
-                Alert::error('Gagal!', 'Gagal menambahkan perusahaan');
-                LogHelper::error('Gagal menambahkan perusahaan!');
+                Alert::error('Gagal!', 'Gagal menambahkan perusahaan '.$dataPerusahaan->nama_perusahaan);
+                LogHelper::error('Gagal menambahkan perusahaan! '.$dataPerusahaan->nama_perusahaan);
                 return redirect()->back();
             }
     
-            Alert::success('Berhasil!', 'Berhasil menambah perusahaan');
-            LogHelper::success('Berhasil menambahkan perusahaan.');
+            Alert::success('Berhasil!', 'Berhasil menambah perusahaan '.$dataPerusahaan->nama_perusahaan);
+            LogHelper::success('Berhasil menambahkan perusahaan '.$dataPerusahaan->nama_perusahaan);
             return redirect()->back();
             
         } catch (ValidationException $e) {
@@ -123,7 +128,7 @@ class DataPerusahaanController extends Controller
                 'rt.numeric' => 'RT tidak sesuai.',
                 'rw.numeric' => 'RW tidak sesuai.',
             ]);
-    
+
             $dataPerusahaan = DataPerusahaan::findOrFail($id);
     
             // Cek apakah kode_perusahaan sudah digunakan oleh perusahaan lain
@@ -165,8 +170,8 @@ class DataPerusahaanController extends Controller
     
             $dataPerusahaan->save();
     
-            Alert::success('Berhasil!', 'Berhasil mengubah data perusahaan');
-            LogHelper::success('Berhasil mengubah data perusahaan.');
+            Alert::success('Berhasil!', 'Berhasil mengubah data perusahaan '.$dataPerusahaan->nama_perusahaan);
+            LogHelper::success('Berhasil mengubah data perusahaan '.$dataPerusahaan->nama_perusahaan);
             return redirect()->back();
         } catch (ValidationException $e) {
             foreach ($e->errors() as $errors) {
@@ -188,18 +193,35 @@ class DataPerusahaanController extends Controller
     {
         try{
             $dataPerusahaan = dataPerusahaan::find($id);
-            $dataAlamat = DataAlamat::find($dataPerusahaan->id_alamat);
+    
             $dataPerusahaan->delete();
-            $dataAlamat->delete();
+            
+            if(!isNull($dataPerusahaan->id_alamat)){
+                $dataAlamat = DataAlamat::find($dataPerusahaan->id_alamat);
+                $dataAlamat->delete();
+            }
+            
             if(!$dataPerusahaan){
                 return redirect()->back()->with('gagal', 'menghapus');
             }
             LogHelper::success('Berhasil menghapus data perusahaan!');
             toast('Berhasil menghapus data perusahaan!','success','top-right');
             return redirect()->back();
-        }catch(Throwable $e){
-            LogHelper::error('Gagal menghapus data, error pada sistem!');
-            return view('pages.utility.500');
+        } catch (QueryException $e) {
+            // Cek apakah kesalahan adalah Integrity constraint violation
+            if ($e->getCode() == 23000) {
+                LogHelper::error('Gagal menghapus data perusahaan: Data terkait masih ada.');
+                Alert::error('Gagal!', 'Gagal menghapus data perusahaan: Data terkait masih ada.');
+            } else {
+                LogHelper::error('Terjadi kesalahan saat mencoba menghapus data perusahaan.');
+                Alert::error('Gagal!', 'Gagal menghapus data perusahaan: Data terkait masih ada.');
+            }
+    
+            return redirect()->back();
+        } catch (Throwable $e) {
+            LogHelper::error('Terjadi kesalahan saat mencoba menghapus data perusahaan.');
+            Alert::error('Gagal!', 'Gagal menghapus data perusahaan: Data terkait masih ada.');
+            return redirect()->back();
         }
     }
 }

@@ -39,6 +39,13 @@
                         </div>
                         <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                No Kontrak Pihak Pertama <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
+                            </label>
+                            <input type="text" id="no_kontrak_pihak_pertama" name="no_kontrak_pihak_pertama" placeholder="Masukan No Kontrak Pihak Pertama"
+                                class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                        </div>
+                        <div class="mb-4.5 w-full">
+                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 Tanggal Kontrak <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
                             </label>
                             <input type="date" id="tanggal_kontrak" name="tanggal_kontrak" placeholder="Masukan Tanggal Kontrak"
@@ -59,7 +66,7 @@
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 No Kontrak Rinci
                             </label>
-                            <input type="number" id="no_kontrak_rinci" name="no_kontrak_rinci" placeholder="Masukan No Kontrak HP"
+                            <input type="text" id="no_kontrak_rinci" name="no_kontrak_rinci" placeholder="Masukan No Kontrak HP"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div>
                         <div class="mb-4.5 w-full">

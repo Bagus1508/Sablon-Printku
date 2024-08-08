@@ -55,6 +55,7 @@ class PerusahaanTable extends Component
 
     public function editPerusahaan(int $id){
         $this->ID = $id;
+
         $data = DataPerusahaan::findOrFail($id);
     
         $dataAlamat = DataAlamat::select('id_provinsi', 'id_kota', 'id_kecamatan', 'id_kelurahan', 'alamat', 'rt','rw')

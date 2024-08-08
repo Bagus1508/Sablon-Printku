@@ -26,12 +26,15 @@
                         <!-- Input default pertama -->
                         <div class="input-group mb-4.5">
                             <input type="text" hidden name="id_barang_kontrak" id="id_barang_kontrak" class="id_barang_kontrak">
-                            <div class="mb-4.5 w-full">
+                            <div class="mb-4 w-full">
                                 <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                    Nama Barang
+                                    Nama Barang <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
                                 </label>
-                                <input type="text" name="nama_barang" id="nama_barang" placeholder="Masukan Nama Barang"
-                                    class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                                <select required name="id_produk" id="id_produk" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
+                                    @foreach ($dataProdukPakaian as $item)
+                                    <option value="{{$item->id}}">{{$item->nama_barang}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="flex justify-between gap-3">
                                 <div class="mb-4.5 w-full">
@@ -99,8 +102,8 @@
 $(document).ready(function() {
     // Gunakan event delegation untuk elemen yang di-generate secara dinamis
     $(document).on('click', '.edit-barang-kontrak', function() {
-        const id = $(this).data('id-barang-kontrak');
-        const nama_barang = $(this).data('nama-barang-kontrak');
+        const id = $(this).data('id');
+        const id_produk = $(this).data('id-barang-kontrak');
         const kuantitas = $(this).data('kuantitas-barang-kontrak');
         const id_satuan = $(this).data('id-satuan-kontrak');
         const volume_kontrak = $(this).data('volume-kontrak');
@@ -127,7 +130,7 @@ $(document).ready(function() {
 
         // Mengatur nilai input ID pada form modal
         $('#id_barang_kontrak').val(id);
-        $('#nama_barang').val(nama_barang);
+        $('#id_produk').val(id_produk);
         $('#kuantitas').val(kuantitas);
         $('#id_satuan').val(id_satuan);
         $('#volume_kontrak').val(volume_kontrak);

@@ -11,16 +11,22 @@ use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class MonitoringKontrakRinciDetailExport implements FromView, WithEvents, ShouldAutoSize
+class MonitoringKontrakRinciDetailExport implements FromView, ShouldAutoSize
 {
     protected $idKontrakRinci;
+    protected $checkboxCutting;
+    protected $checkboxJahit;
+    protected $checkboxPacking;
     protected $dataKontrakRinci;
     protected $totalBarang;
     protected $durasiHari;
 
-    public function __construct($Id)
+    public function __construct($Id, $checkCutting, $checkJahit, $checkPacking)
     {   
         $this->idKontrakRinci = $Id;
+        $this->checkboxCutting = $checkCutting;
+        $this->checkboxJahit = $checkJahit;
+        $this->checkboxPacking = $checkPacking;
 
         // Fetch the data needed
         $this->dataKontrakRinci = KontrakRinci::with([
@@ -43,45 +49,10 @@ class MonitoringKontrakRinciDetailExport implements FromView, WithEvents, Should
             'dataKontrakRinci' => $this->dataKontrakRinci,
             'durasiHari' => $this->durasiHari,
             'totalBarang' => $this->totalBarang,
+            'checkbox_cutting' => $this->checkboxCutting,
+            'checkbox_jahit' => $this->checkboxJahit,
+            'checkbox_packing' => $this->checkboxPacking,
         ]);
     }
 
-    public function registerEvents(): array
-    {
-        return [
-            AfterSheet::class => function (AfterSheet $event) {
-                $sheet = $event->sheet->getDelegate();
-
-                // Path gambar
-                $invoiceImagePath = storage_path('app/public/upload/dokumen_invoice/' . $this->dataKontrakRinci->invoice->foto_invoice);
-                $pengirimanBarangImagePath = storage_path('app/public/upload/dokumen_pengiriman_barang/' . $this->dataKontrakRinci->pengirimanBarang->bukti_foto);
-
-                // Sisipkan gambar untuk invoice
-                if (file_exists($invoiceImagePath)) {
-                    $drawingInvoice = new Drawing();
-                    $drawingInvoice->setName('Invoice Image');
-                    $drawingInvoice->setDescription('Invoice Image');
-                    $drawingInvoice->setPath($invoiceImagePath);
-                    $drawingInvoice->setCoordinates('AJ3'); // Koordinat untuk gambar
-                    $drawingInvoice->setHeight(150); // Atur tinggi gambar
-                    $drawingInvoice->setWorksheet($sheet);
-                } else {
-                    $sheet->setCellValue('AJ3', 'Gambar tidak tersedia');
-                }
-
-                // Sisipkan gambar untuk pengiriman barang
-                if (file_exists($pengirimanBarangImagePath)) {
-                    $drawingPengirimanBarang = new Drawing();
-                    $drawingPengirimanBarang->setName('Pengiriman Barang Image');
-                    $drawingPengirimanBarang->setDescription('Pengiriman Barang Image');
-                    $drawingPengirimanBarang->setPath($pengirimanBarangImagePath);
-                    $drawingPengirimanBarang->setCoordinates('Z3'); // Koordinat untuk gambar
-                    $drawingPengirimanBarang->setHeight(150); // Atur tinggi gambar
-                    $drawingPengirimanBarang->setWorksheet($sheet);
-                } else {
-                    $sheet->setCellValue('Z3', 'Gambar tidak tersedia');
-                }
-            },
-        ];
-    }
 }

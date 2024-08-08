@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             BahanBakuSeeder::class,
             EkspedisiSeeder::class,
             RegionSeeder::class,
+            KontrakRinciSeeder::class,
         ]);
     }
 }

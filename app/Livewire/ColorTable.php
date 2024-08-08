@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\DataMerek;
 use App\Models\DataWarna;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -38,6 +39,8 @@ class ColorTable extends Component
         ->orwhere('kode_warna','LIKE','%'.$this->search.'%')
         ->paginate($this->perPage);
 
+        $dataMerek = DataMerek::all();
+
         $datanotfound = false;
         if(!$Data[0]){
             $datanotfound = true;
@@ -45,7 +48,8 @@ class ColorTable extends Component
 
         return view('livewire.color-table',[
             'data' => $Data,
-            'nodata' => $datanotfound
+            'nodata' => $datanotfound,
+            'dataMerek' => $dataMerek,
         ]);
     }
 

@@ -12,11 +12,13 @@ use App\Http\Controllers\BastController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DataMerekController;
 use App\Http\Controllers\DataPerusahaanController;
 use App\Http\Controllers\EkspedisiController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\MonitoringKontrakGlobalController;
 use App\Http\Controllers\MonitoringKontrakRinciController;
+use App\Http\Controllers\PajakController;
 use App\Http\Controllers\PakaianCelanaGlobalController;
 use App\Http\Controllers\PakaianCelanaSatuanController;
 use App\Http\Controllers\PengirimanBarangController;
@@ -47,6 +49,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::middleware(['checkrole:1'])->group(function () {
         Route::resource('data-akun', AccountController::class);
         Route::resource('data-kategori', CategoryController::class);
+        Route::resource('data-pajak', PajakController::class);
+        Route::post('data-pajak/update/{id}', [PajakController::class, 'update'])->name('data-pajak.update');
+
     });
     
     Route::middleware(['checkrole:1,2'])->group(function () {
@@ -55,6 +60,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::resource('data-warna', ColorController::class);
         Route::resource('data-ekspedisi', EkspedisiController::class);
         Route::resource('data-perusahaan', DataPerusahaanController::class);
+        Route::resource('data-merek', DataMerekController::class);
 
         Route::resource('monitoring-kontrak-global', MonitoringKontrakGlobalController::class);
         Route::get('export-monitoring-kontrak-global-preview', [MonitoringKontrakGlobalController::class, 'preview_export'])->name('preview-export-monitoring-kontrak-global');
@@ -66,6 +72,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('monitoring-kontrak-rinci/proses-jahit/{id}', [MonitoringKontrakRinciController::class, 'updateProsesJahit'])->name('monitoring-kontrak-rinci.updateProsesJahit');
         Route::post('monitoring-kontrak-rinci/proses-packing/{id}', [MonitoringKontrakRinciController::class, 'updateProsesPacking'])->name('monitoring-kontrak-rinci.updateProsesPacking');
         Route::resource('barang-kontrak-rinci', BarangKontrakRinciController::class);
+        Route::post('monitoring-kontrak-rinci/total-harga/{id}', [MonitoringKontrakRinciController::class, 'updateTotalHarga'])->name('monitoring-kontrak-rinci.updateTotalHarga');
         Route::post('monitoring-kontrak-rinci/barang-kontrak/{id}', [BarangKontrakRinciController::class, 'updateBarang'])->name('monitoring-kontrak-rinci.updateBarang');
         Route::delete('monitoring-kontrak-rinci/barang-kontrak/hapus/{id}', [BarangKontrakRinciController::class, 'destroy'])->name('barang-kontrak-rinci.destroy');
         Route::resource('data-region', RegionController::class);
@@ -76,7 +83,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::resource('invoice', InvoiceController::class);
         
         //Export
-        Route::get('monitoring-kontrak-rinci/export/preview/{id}', [MonitoringKontrakRinciController::class, 'preview_export'])->name('monitoring-kontrak-rinci.preview_export');
+        Route::get('monitoring-kontrak-rinci/export/preview-all', [MonitoringKontrakRinciController::class, 'preview_export_all'])->name('monitoring-kontrak-rinci.preview_export_all');
+        Route::get('export-kontrak-rinci-all', [MonitoringKontrakRinciController::class, 'exportKontrakRinciAll'])->name('export-monitoring-kontrak-rinci-all');
+        Route::get('monitoring-kontrak-rinci/export/preview-detail/{id}', [MonitoringKontrakRinciController::class, 'preview_export_detail'])->name('monitoring-kontrak-rinci.preview_export_detail');
         Route::get('export-kontrak-rinci-detail', [MonitoringKontrakRinciController::class, 'exportKontrakRinciDetail'])->name('export-monitoring-kontrak-rinci-detail');
         
         Route::get('monitoring-kontrak-global/export/preview/{id}', [MonitoringKontrakGlobalController::class, 'preview_export'])->name('monitoring-kontrak-global.preview_export');

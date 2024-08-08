@@ -20,24 +20,24 @@
                         </button>
                     </div>
                 </div>
-                <form method="POST" action="{{route('stok-bahan-baku-satuan.update', (int)$Id_stok)}}">
+                <form method="POST" action="{{route('stok-bahan-baku-satuan.update', (int)$ID)}}" id="form-edit-stok">
                     @csrf
                     {{method_field('PUT')}}
                     <div class="p-6.5">
-                        <input type="hidden" name="id_produk" value="{{$Id_produk}}">
+                        {{-- <input type="hidden" name="id_produk" value="{{$Id_produk}}"> --}}
                         <div class="flex gap-3 justify-between">
                             <div class="mb-4.5 w-full">
                                 <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                     No ID
                                 </label>
-                                <input type="text" value="{{$Id_no}}" disabled placeholder="Masukan Nama Barang"
+                                <input type="text" id="no_id" disabled placeholder="Masukan Nama Barang"
                                     class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                             </div>
                             <div class="mb-4.5 w-full">
                                 <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                     Nama Barang
                                 </label>
-                                <input type="text" disabled placeholder="Masukan Nama Barang" value="{{$Nama_barang}}"
+                                <input type="text" id="nama_barang" disabled placeholder="Masukan Nama Barang"
                                     class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                             </div>
                         </div>
@@ -45,14 +45,14 @@
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 Warna
                             </label>
-                            <input type="text" disabled placeholder="Masukan Nama Barang" value="{{$Warna ?? ''}} - {{$Kode_warna ?? ''}}"
+                            <input type="text" id="warna" disabled placeholder="Masukan Nama Warna"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div>
                         <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 Tanggal <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
                             </label>
-                            <input type="date" id="tanggal" name="tanggal" value="{{$Tanggal_stok}}" placeholder="Masukan Tanggal"
+                            <input type="date" id="tanggal" name="tanggal" placeholder="Masukan Tanggal"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div>
                         <div class="flex gap-3 justify-between">
@@ -60,16 +60,23 @@
                                 <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                     Stok Masuk
                                 </label>
-                                <input type="number" value="{{$Stok_masuk}}" name="stok_masuk" placeholder="Masukan Stok Masuk"
+                                <input type="number" id="stok_masuk" name="stok_masuk" placeholder="Masukan Stok Masuk"
                                     class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                             </div>
                             <div class="mb-4.5 w-full">
                                 <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                     Stok Keluar
                                 </label>
-                                <input type="number" value="{{$Stok_keluar}}" name="stok_keluar" placeholder="Masukan Stok Keluar"
+                                <input type="number" id="stok_keluar" name="stok_keluar" placeholder="Masukan Stok Keluar"
                                     class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                             </div>
+                        </div>
+                        <div class="mb-4.5 w-full">
+                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                Harga Beli Satuan
+                            </label>
+                            <input type="text" name="harga_beli_satuan" id="harga_beli_satuan" placeholder="Masukan Harga Beli Satuan"
+                                class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div>
                         <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -77,7 +84,7 @@
                             </label>
                             <select required id="id_satuan" name="id_satuan" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
                                 @foreach ($dataSatuan as $item)
-                                    <option value="{{ $item->id }}" {{ $item->id == $Id_satuan ? 'selected' : '' }}>
+                                    <option value="{{ $item->id }}">
                                         {{ $item->nama_satuan }}
                                     </option>
                                 @endforeach
@@ -94,3 +101,91 @@
         </div>
     </div>
 </div>
+<script>
+    // Ketika tombol edit diklik
+    $('.edit-stok-harian').click(function() {
+    const id = $(this).data('id-stok');
+    const id_no = $(this).data('no-id');
+    const nama_barang = $(this).data('nama-barang');
+    const nama_warna = $(this).data('nama-warna');
+    const kode_warna = $(this).data('kode-warna');
+    const tanggal = $(this).data('tanggal');
+    const stok_masuk = $(this).data('stok-masuk');
+    const stok_keluar = $(this).data('stok-keluar');
+    let harga_beli_satuan = $(this).data('harga-beli-satuan');
+    const id_satuan = $(this).data('id-satuan');
+
+
+    function formatRupiah(angka, prefix) {
+        var numberString = angka.toString(),
+            split = numberString.split('.'),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+        
+        if (ribuan) {
+            var separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+        
+        rupiah = split[1] !== undefined ? rupiah + ',' + split[1] : rupiah;
+        return prefix === undefined ? rupiah : (rupiah ? prefix + ' ' + rupiah : '');
+    }
+
+    // Ubah harga_beli_satuan menjadi float
+    harga_beli_satuan = parseFloat(harga_beli_satuan);
+    if (!isNaN(harga_beli_satuan)) {
+        // Jika harga_beli_satuan adalah angka yang valid
+        harga_beli_satuan = harga_beli_satuan.toFixed(0);
+    } else {
+        // Jika tidak, berikan nilai default, misalnya 0.00
+        harga_beli_satuan = "0.00";
+    }
+
+    // Mengatur nilai input ID pada form modal
+    $('#no_id').val(id_no);
+    $('#nama_barang').val(nama_barang);
+    $('#warna').val(nama_warna + ' - ' + kode_warna);
+    $('#tanggal').val(tanggal);
+    $('#stok_masuk').val(stok_masuk);
+    $('#stok_keluar').val(stok_keluar);
+    $('#harga_beli_satuan').val(formatRupiah(harga_beli_satuan, 'Rp'));
+    $('#id_satuan').val(id_satuan);
+
+    // Select the form element
+    const form = $('form');
+    
+    // Set the action attribute of the form
+    const url = '{{ route("stok-bahan-baku-satuan.update", ":id") }}'.replace(':id', id);
+    $('#form-edit-stok').attr('action', url);
+});
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Target input dengan id "harga_beli_satuan"
+        document.querySelectorAll('input[name="harga_beli_satuan"]').forEach(function(element) {
+            element.addEventListener('keyup', function(e) {
+                // Ambil value dari input
+                var angka = this.value.replace(/[^,\d]/g, '').toString();
+                // Panggil fungsi untuk memformat ke dalam format Rupiah
+                this.value = formatRupiah(angka, 'Rp. ');
+            });
+        });
+    
+        function formatRupiah(angka, prefix) {
+            var numberString = angka.replace(/[^,\d]/g, '').toString(),
+                split = numberString.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+    
+            if (ribuan) {
+                var separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+    
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix == undefined ? rupiah : (rupiah ? prefix + rupiah : '');
+        }
+    });
+</script>

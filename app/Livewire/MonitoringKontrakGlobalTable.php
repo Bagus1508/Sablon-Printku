@@ -10,6 +10,7 @@ use App\Models\DataSatuan;
 use App\Models\DataUkuran;
 use App\Models\DataWarna;
 use App\Models\KontrakRinci;
+use App\Models\Pajak;
 use App\Models\Produk;
 use App\Models\ProdukKategori;
 use App\Models\Region;
@@ -82,6 +83,7 @@ class MonitoringKontrakGlobalTable extends Component
             'dataSatuan' => $dataSatuan,
             'dataEkspedisi' => $dataEkspedisi,
             'dataRegion' => $dataRegion,
+            'dataPajak' => Pajak::get()->first(),
         ]);
     }
 

@@ -43,7 +43,10 @@
                         Harga
                     </th>
                     <th rowspan="2" class="px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
-                        Total Harga
+                        PPN ({{$dataPajak->ppn}}%)
+                    </th>
+                    <th rowspan="2" class="px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+                        Harga + PPN
                     </th>
                     @endif
                     <th rowspan="1" colspan="2" class="px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
@@ -93,53 +96,54 @@
                             <p class="text-black dark:text-white">{{$itemKontrak->takon}}</p>
                         </td>
                         <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                            <p class="text-black dark:text-white">{{$itemKontrak->no_telepon}}</p>
+                            <p class="text-black dark:text-white">{{$itemKontrak->no_kontrak_pihak_pertama ?? ''}}</p>
                         </td>
                         <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white">                    
                                 @if($itemKontrak->tanggal_kontrak && $itemKontrak->tanggal_kontrak)
                                     {{ \Carbon\Carbon::parse($itemKontrak->tanggal_kontrak)->translatedFormat('d F Y') }}
                                 @else
-                                    Kosong
+                                    -
                                 @endif
                             </p>
                         </td>
                         <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                            <p class="text-black dark:text-white">{{$itemKontrak->perusahaan->nama_perusahaan ?? 'Kosong'}}</p>
+                            <p class="text-black dark:text-white">{{$itemKontrak->perusahaan->nama_perusahaan ?? '-'}}</p>
                         </td>
                         <td rowspan="{{$barangKontrakCount}}" class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                            <p class="text-black dark:text-white text-left">{{$itemKontrak->uraian ?? 'Kosong'}}</p>
+                            <p class="text-black dark:text-white text-left">{{$itemKontrak->uraian ?? '-'}}</p>
                         </td>
                         <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark text-center">
-                            <p class="text-black dark:text-white">{{$itemKontrak->barangKontrak->first()->nama_barang ?? 'Kosong'}}</p>
+                            <p class="text-black dark:text-white">{{$itemKontrak->barangKontrak->first()->dataProduk->nama_barang ?? '-'}}</p>
                         </td>    
                         <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark  text-center">
-                            <p class="text-black dark:text-white">{{$itemKontrak->barangKontrak->first()->satuan->nama_satuan ?? 'Kosong'}}</p>
+                            <p class="text-black dark:text-white">{{$itemKontrak->barangKontrak->first()->satuan->nama_satuan ?? '-'}}</p>
                         </td>    
                         <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark text-center">
-                            <p class="text-black dark:text-white">{{$itemKontrak->barangKontrak->first()->volume_kontrak ?? 'Kosong'}}</p>
+                            <p class="text-black dark:text-white">{{$itemKontrak->barangKontrak->first()->volume_kontrak ?? '-'}}</p>
                         </td>    
                         <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark text-center">
-                            <p class="text-black dark:text-white">{{$itemKontrak->barangKontrak->first()->volume_realisasi ?? 'Kosong'}}</p>
+                            <p class="text-black dark:text-white">{{$itemKontrak->barangKontrak->first()->volume_realisasi ?? '-'}}</p>
                         </td>    
                         <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark text-center">
-                            <p class="text-black dark:text-white">{{$itemKontrak->barangKontrak->first()->volume_sisa ?? 'Kosong'}}</p>
+                            <p class="text-black dark:text-white">{{$itemKontrak->barangKontrak->first()->volume_sisa ?? '-'}}</p>
                         </td>
                         @if ($loggedInUser->id_level_user === 1)   
-                        <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark text-center">
-                            <p class="text-black dark:text-white px-10">
-                                <p class="text-black dark:text-white text-left">
-                                    @if($itemKontrak->barangKontrak && $itemKontrak->barangKontrak->first())
-                                        Rp {{ number_format($itemKontrak->barangKontrak->first()->harga_barang, 0, ',', '.') }}
-                                    @else
-                                        Kosong
-                                    @endif
-                                </p>                                
-                            </p>
-                        </td>
                         <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap text-center border-black dark:border-strokedark">
                             <p class="text-black dark:text-white px-10">
-                                {{ $itemKontrak->total_harga !== null ? 'Rp ' . number_format($itemKontrak->total_harga, 0, ',', '.') : 'Kosong' }}
+                                {{ $itemKontrak->total_harga !== null ? 'Rp ' . number_format($itemKontrak->total_harga, 0, ',', '.') : '-' }}
+                            </p>
+                        </td>
+                        {{-- PPN --}}
+                        <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
+                            <p class="text-black dark:text-white hover:underline">
+                                Rp. {{ number_format(($itemKontrak->total_harga/100)*$dataPajak->ppn, 2, ',', '.') }}
+                            </p>
+                        </td>
+                        {{-- Total Harga + PPN --}}
+                        <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
+                            <p class="text-black dark:text-white hover:underline">
+                                Rp. {{ number_format($itemKontrak->total_harga + ($itemKontrak->total_harga/100)*$dataPajak->ppn, 2, ',', '.') }}
                             </p>
                         </td>    
                         @endif
@@ -148,7 +152,7 @@
                                 @if($itemKontrak->awal_kr && $itemKontrak->awal_kr)
                                     {{ \Carbon\Carbon::parse($itemKontrak->awal_kr)->translatedFormat('d F Y') }}
                                 @else
-                                    Kosong
+                                    -
                                 @endif
                             </p>
                         </td>   
@@ -157,7 +161,7 @@
                                 @if($itemKontrak->akhir_kr && $itemKontrak->akhir_kr)
                                     {{ \Carbon\Carbon::parse($itemKontrak->akhir_kr)->translatedFormat('d F Y') }}
                                 @else
-                                    Kosong
+                                    -
                                 @endif
                             </p>
                         </td>   
@@ -183,7 +187,7 @@
                     @endif    
                         <tr>
                             <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark text-center">
-                                <p class="text-black dark:text-white">{{$itemBarang->nama_barang}}</p>
+                                <p class="text-black dark:text-white">{{$itemBarang->dataProduk->nama_barang}}</p>
                             </td>    
                             <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark text-center">
                                 <p class="text-black dark:text-white">{{$itemBarang->satuan->nama_satuan}}</p>
@@ -197,11 +201,6 @@
                             <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark text-center">
                                 <p class="text-black dark:text-white">{{$itemBarang->volume_sisa}}</p>
                             </td>
-                            @if ($loggedInUser->id_level_user === 1) 
-                            <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark text-center">
-                                <p class="text-black dark:text-white">{{ 'Rp ' . number_format($itemBarang->harga_barang ?? 'Kosong', 0, ',', '.') }}</p>
-                            </td>
-                            @endif
                         </tr>
                     @endforeach
                 @endforeach

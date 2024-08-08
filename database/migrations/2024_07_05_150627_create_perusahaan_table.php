@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama_perusahaan');
             $table->string('kode_perusahaan', 20);
+            $table->string('npwp', 20)->nullable();
             $table->bigInteger('no_telepon')->nullable();
             $table->string('email')->nullable();
             $table->timestamps();

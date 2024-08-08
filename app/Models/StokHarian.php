@@ -24,4 +24,8 @@ class StokHarian extends Model
     public function ukuran(){
         return $this->BelongsTo(DataUkuran::class, 'id_ukuran');
     }
+
+    public function hargaProduk(){
+        return $this->hasOne(HargaProduk::class, 'id_stok_harian', 'id');
+    }
 }

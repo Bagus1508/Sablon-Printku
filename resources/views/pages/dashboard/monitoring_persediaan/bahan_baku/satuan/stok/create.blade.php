@@ -72,6 +72,15 @@
                                     class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                             </div>
                         </div>
+                        @if ($loggedInUser->id_level_user == 1)    
+                        <div class="mb-4.5 w-full">
+                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                Harga Beli Satuan
+                            </label>
+                            <input type="text" name="harga_beli_satuan" id="harga_beli_satuan" placeholder="Masukan Harga Beli Satuan"
+                                class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                        </div>
+                        @endif
                         <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 Satuan <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
@@ -93,3 +102,32 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Target input dengan id "harga_beli_satuan"
+        document.querySelectorAll('input[name="harga_beli_satuan"]').forEach(function(element) {
+            element.addEventListener('keyup', function(e) {
+                // Ambil value dari input
+                var angka = this.value.replace(/[^,\d]/g, '').toString();
+                // Panggil fungsi untuk memformat ke dalam format Rupiah
+                this.value = formatRupiah(angka, 'Rp. ');
+            });
+        });
+    
+        function formatRupiah(angka, prefix) {
+            var numberString = angka.replace(/[^,\d]/g, '').toString(),
+                split = numberString.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+    
+            if (ribuan) {
+                var separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+    
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix == undefined ? rupiah : (rupiah ? prefix + rupiah : '');
+        }
+    });
+</script>

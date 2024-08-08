@@ -26,7 +26,7 @@
                         <div class="px-6.5">
                             <div class="mb-4.5 w-full">
                                 <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                    Kode Warna
+                                    Kode Warna <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
                                 </label>
                                 <input type="text" id="kode_warna" name="kode_warna" placeholder="Masukan Kode Warna"
                                     class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
@@ -35,10 +35,23 @@
                         <div class="px-6.5">
                             <div class="mb-4.5 w-full">
                                 <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                    Nama Warna
+                                    Nama Warna <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
                                 </label>
                                 <input type="text" id="nama_warna" name="nama_warna" placeholder="Masukan Nama Warna"
                                     class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                            </div>
+                        </div>
+                        <div class="px-6.5">
+                            <div class="mb-4.5 w-full">
+                                <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                    Merek Kain <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
+                                </label>
+                                <select required name="id_merek" id="id_merek" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
+                                    <option selected disabled>==Pilih Merek==</option>
+                                    @foreach ($dataMerek as $item)
+                                    <option value="{{$item->id}}">{{$item->nama_merek}}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>

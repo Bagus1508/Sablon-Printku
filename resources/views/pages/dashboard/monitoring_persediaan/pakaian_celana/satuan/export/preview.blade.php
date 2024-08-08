@@ -81,23 +81,23 @@
                         $satuanNama = optional($stok)->satuan->singkatan ?? '-';
                     @endphp
                     <p class="dark:text-white">
-                        {{ $stokMasuk ?? '-' }} {{ $satuanNama ?? '-' }}
+                        {{ $stokMasuk ?? '-' }}
                     </p>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap" style="text-align: center; color:#000000; border: 1px solid black;">
                     <p class="dark:text-white">
-                        {{ $stokKeluar ?? '-' }} {{ $satuanNama ?? '-' }}
+                        {{ $stokKeluar ?? '-' }}
                     </p>
                 </td>
                 @endforeach
                 <td class="" style="color: #000000; text-align: left; border: 1px solid black;">
-                    <p class="dark:text-white">{{ $totalStokMasuk[$item->id] ?? 0 }} {{$satuanNama}}</p>
+                    <p class="dark:text-white">{{ $totalStokMasuk[$item->id] ?? 0 }}</p>
                 </td>
                 <td class="" style="color: #000000; text-align: left; border: 1px solid black;">
-                    <p class="dark:text-white">{{ $totalStokKeluar[$item->id] ?? 0 }} {{$satuanNama}}</p>
+                    <p class="dark:text-white">{{ $totalStokKeluar[$item->id] ?? 0 }}</p>
                 </td>
                 <td class="" style="background-color: #FF0000; color: white; text-align: left; border: 1px solid black;">
-                    <p class="dark:text-white">{{ $totalStokMasuk[$item->id] - $totalStokKeluar[$item->id] }} {{$satuanNama}}</p>
+                    <p class="dark:text-white">{{ $totalStokMasuk[$item->id] - $totalStokKeluar[$item->id] }}</p>
                 </td>
             </tr>
         @endforeach

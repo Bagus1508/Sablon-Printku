@@ -37,10 +37,16 @@ class PakaianCelanaGlobalController extends Controller
             $tgl_stok_global = $request->input('tanggal'); // Ambil nilai dari parameter URL
 
             if($tgl_stok_global == null){
-                // Mendapatkan tanggal awal tahun ini
-                $startDate = Carbon::now()->startOfYear()->format('Y-m-d');
-                // Mendapatkan tanggal akhir tahun ini
-                $endDate = Carbon::now()->endOfYear()->format('Y-m-d');
+                // Mendapatkan tanggal awal bulan saat ini
+                $startDateStr = Carbon::now()->startOfMonth()->format('Y-m-d');
+                // Mendapatkan tanggal akhir bulan saat ini
+                $endDateStr = Carbon::now()->endOfMonth()->format('Y-m-d');
+
+                $startDate = Carbon::parse($startDateStr);
+                $endDate = Carbon::parse($endDateStr);
+
+                $startDateFormatted = Carbon::parse($startDate)->translatedFormat('j F Y');
+                $endDateFormatted = Carbon::parse($endDate)->translatedFormat('j F Y');
             } else {
                 $tanggalStokGlobal = explode(' - ', $tgl_stok_global); // Membagi berdasarkan pemisah
 
@@ -94,8 +100,8 @@ class PakaianCelanaGlobalController extends Controller
                 'dataSatuan' => $dataSatuan,
                 'dataUkuran' => $dataUkuran,
                 'dataWarna' => $dataWarna,
-                'startDate' => $startDate,
-                'endDate' => $endDate,
+                'startDate' => $startDateFormatted,
+                'endDate' => $endDateFormatted,
             ]);
         } catch (\Exception $e) {
             // Tangani error dan tampilkan pesan
@@ -110,10 +116,16 @@ class PakaianCelanaGlobalController extends Controller
         $tgl_stok_global = $request->input('tanggal'); // Ambil nilai dari parameter URL
 
         if($tgl_stok_global == null){
-            // Mendapatkan tanggal awal tahun ini
-            $startDate = Carbon::now()->startOfYear()->format('Y-m-d');
-            // Mendapatkan tanggal akhir tahun ini
-            $endDate = Carbon::now()->endOfYear()->format('Y-m-d');
+            // Mendapatkan tanggal awal bulan saat ini
+            $startDateStr = Carbon::now()->startOfMonth()->format('Y-m-d');
+            // Mendapatkan tanggal akhir bulan saat ini
+            $endDateStr = Carbon::now()->endOfMonth()->format('Y-m-d');
+
+            $startDate = Carbon::parse($startDateStr);
+            $endDate = Carbon::parse($endDateStr);
+
+            $startDateFormatted = Carbon::parse($startDate)->translatedFormat('j F Y');
+            $endDateFormatted = Carbon::parse($endDate)->translatedFormat('j F Y');
         } else {
             $tanggalStokGlobal = explode(' - ', $tgl_stok_global); // Membagi berdasarkan pemisah
 

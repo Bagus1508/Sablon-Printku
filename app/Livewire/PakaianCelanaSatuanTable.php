@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Helpers\TanggalHelper;
+use App\Models\DataPerusahaan;
 use App\Models\DataSatuan;
 use App\Models\DataUkuran;
 use App\Models\DataWarna;
@@ -121,21 +122,23 @@ class PakaianCelanaSatuanTable extends Component
         $dataSatuan = DataSatuan::all();
         $dataUkuran = DataUkuran::all();
         $dataWarna = DataWarna::all();
+        $dataPerusahaan = DataPerusahaan::all();
     
         $datanotfound = !$data->count();
     
         return view('livewire.pakaian-celana-satuan-table', [
             'data' => $data,
             'nodata' => $datanotfound,
-            'dataKategori' => $dataKategori,
-            'dataSatuan' => $dataSatuan,
-            'dataUkuran' => $dataUkuran,
-            'dataWarna' => $dataWarna,
-            'dateRange' => $dateRange,
-            'totalStokMasuk' => $totalStokMasuk,
-            'totalStokKeluar' => $totalStokKeluar,
-            'jumlahHari' => count($dateRange),
+            'dataKategori' => $dataKategori ?? '',
+            'dataSatuan' => $dataSatuan ?? '',
+            'dataUkuran' => $dataUkuran ?? '',
+            'dataWarna' => $dataWarna ?? '',
+            'dateRange' => $dateRange ?? '',
+            'totalStokMasuk' => $totalStokMasuk ?? '',
+            'totalStokKeluar' => $totalStokKeluar ?? '',
+            'jumlahHari' => count($dateRange) ?? '',
             'satuanNamaTotal' => $satuanNamaTotal??'',
+            'dataPerusahaan' => $dataPerusahaan ?? '',
         ]);
     }
     

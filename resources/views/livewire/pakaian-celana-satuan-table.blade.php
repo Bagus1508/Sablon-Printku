@@ -20,13 +20,13 @@
         <table class="w-full table-auto">
             <thead class="bg-blue-600 text-white">
                 <tr class="text-left dark:bg-meta-4">
-                    <th rowspan="3" class="min-w-[50px] text-center px-4 py-4 font-medium text-white dark:text-white">
+                    <th rowspan="3" class="min-w-[50px] text-center px-4 py-4 font-medium text-white dark:text-white sticky bg-blue-600 left-0 border-b">
                         No
                     </th>
                     <th rowspan="3" class="px-4 py-4 text-center font-medium text-white dark:text-white">
                         Aksi
                     </th>
-                    <th rowspan="3" class="text-center px-4 py-4 font-medium text-white dark:text-white">
+                    <th rowspan="3" class="whitespace-nowrap text-center px-4 py-4 font-medium text-white dark:text-white">
                         NO ID
                     </th>
                     <th rowspan="3" class="min-w-[150px] px-4 py-4 text-center font-medium text-white dark:text-white">
@@ -37,6 +37,9 @@
                     </th>
                     <th rowspan="3" class="min-w-[150px] px-4 py-4 text-center font-medium text-white dark:text-white">
                         Kode Warna
+                    </th>
+                    <th rowspan="3" class="whitespace-nowrap px-4 py-4 text-center font-medium text-white dark:text-white">
+                        Perusahaan
                     </th>
                     <th colspan="{{$jumlahHari*2}}" class="px-4 py-4 text-center font-medium text-white dark:text-white">
                         Tanggal
@@ -72,7 +75,7 @@
             <tbody class="dark:bg-meta-4">
                 @foreach ($data as $item)                    
                     <tr>
-                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark sticky bg-blue-600 left-0">
                             <h5 class="font-medium text-black dark:text-white">{{$loop->index + 1}}</h5>
                         </td>
                         <td class="mx-auto px-4 py-5 border-b border-[#eee] dark:border-strokedark">
@@ -83,21 +86,28 @@
                                         <path d="M20,21H4a.99974.99974,0,0,1-1-1V4A.99974.99974,0,0,1,4,3h9a1,1,0,0,1,0,2H5V19H19V5H17a1,1,0,0,1,0-2h3a.99974.99974,0,0,1,1,1V20A.99974.99974,0,0,1,20,21Z"/><polygon points="10 4 10 11 12 9 14 11 14 4 10 4" />
                                     </svg>
                                 </button>
-                                <button wire:click="editPakaianCelana({{$item->id}})" title="Edit Data" data-hs-overlay="#modal-edit-produk" type="button"
-                                    class="transition ease-in-out border-l hover:bg-amber-50 focus:bg-amber-50 hover:text-amber-500 focus:text-amber-500 inline-flex w-fit p-2 text-gray-900 items-center hover:ring-1 ring-inset ring-gray-300 hover:ring-amber-500 focus:ring-2 focus:ring-amber-500 sm:text-sm sm:leading-6">
+                                <button title="Edit Data" data-hs-overlay="#modal-edit-produk" type="button" id="edit-pakaian-satuan"
+                                    data-id-pakaian="{{$item->id ?? ''}}"
+                                    data-no-id-pakaian="{{$item->id_no ?? ''}}"
+                                    data-id-kategori="{{$item->kategori->id ?? ''}}"
+                                    data-nama-barang="{{$item->nama_barang ?? ''}}"
+                                    data-id-warna="{{$item->warna->id ?? ''}}"
+                                    data-id-perusahaan="{{$item->perusahaan->id ?? ''}}"
+                                    class="edit-pakaian-satuan transition ease-in-out border-l hover:bg-amber-50 focus:bg-amber-50 hover:text-amber-500 focus:text-amber-500 inline-flex w-fit p-2 text-gray-900 items-center hover:ring-1 ring-inset ring-gray-300 hover:ring-amber-500 focus:ring-2 focus:ring-amber-500 sm:text-sm sm:leading-6">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-5">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                                     </svg>
                                 </button>
-                                <button wire:click="deletePakaianCelana({{$item->id}})" title="Hapus Data" data-hs-overlay="#modal-delete-produk" type="button"
-                                    class="transition ease-in-out hover:bg-rose-50 border-l rounded-r-md focus:bg-rose-50 hover:text-rose-500 focus:text-rose-500 inline-flex w-fit  p-2 text-gray-900 items-center hover:ring-1 ring-inset ring-gray-300 hover:ring-rose-500 focus:ring-2 focus:ring-rose-500 sm:text-sm sm:leading-6">
+                                <button title="Hapus Data" data-hs-overlay="#modal-delete-produk" type="button" id="delete-pakaian-satuan"
+                                    data-id-pakaian="{{$item->id ?? ''}}"
+                                    class="delete-pakaian-satuan transition ease-in-out hover:bg-rose-50 border-l rounded-r-md focus:bg-rose-50 hover:text-rose-500 focus:text-rose-500 inline-flex w-fit  p-2 text-gray-900 items-center hover:ring-1 ring-inset ring-gray-300 hover:ring-rose-500 focus:ring-2 focus:ring-rose-500 sm:text-sm sm:leading-6">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-5">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                                    </svg>
+                                </svg>
                                 </button>
                             </div>
                         </td>
@@ -113,6 +123,9 @@
                         <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white">{{$item->warna->kode_warna}}</p>
                         </td>
+                        <td class="text-center whitespace-nowrap border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white">{{$item->perusahaan->nama_perusahaan}}</p>
+                        </td>
                         @foreach ($dateRange as $range)
                         <td class="px-6 py-4 whitespace-nowrap text-center">
                             @php
@@ -121,16 +134,6 @@
                                 $stokKeluar = optional($stok)->stok_keluar ?? 0;
                                 $satuanId = optional($stok)->id_satuan;
                                 $satuanNama = optional($stok)->satuan->nama_satuan ?? '-';
-    
-                                if ($selectedUnit == '1' && $satuanId == '2') { // Yard to Meter
-                                    $stokMasuk = round($stokMasuk / 1.09361, 2);
-                                    $stokKeluar = round($stokKeluar / 1.09361, 2);
-                                    $satuanNama = 'Meter';
-                                } elseif ($selectedUnit == '2' && $satuanId == '1') { // Meter to Yard
-                                    $stokMasuk = round($stokMasuk * 1.09361, 2);
-                                    $stokKeluar = round($stokKeluar * 1.09361, 2);
-                                    $satuanNama = 'Yard';
-                                }
                             @endphp
                             <p class="text-black dark:text-white">
                                 {{ $stokMasuk ?? '-' }} {{ $satuanNama ?? '-' }}

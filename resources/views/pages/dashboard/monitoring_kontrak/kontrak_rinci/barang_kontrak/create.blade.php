@@ -22,66 +22,76 @@
                 </div>
                 <form method="POST" action="{{route('barang-kontrak-rinci.store')}}" id="form-barang-kontrak">
                     @csrf
+                    <input type="text" hidden name="id_kontrak_rinci" class="id_kontrak_rinci">
                     <div id="inputContainer" class="p-6.5">
-                        <!-- Input default pertama -->
-                        <div class="input-group mb-4.5">
-                            <input type="text" hidden name="id_kontrak_rinci[]" class="id_kontrak_rinci">
-                            <div class="mb-4.5 w-full">
-                                <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                    Nama Barang
-                                </label>
-                                <input type="text" name="nama_barang[]" placeholder="Masukan Nama Barang"
-                                    class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
-                            </div>
-                            <div class="flex justify-between gap-3">
-                                <div class="mb-4.5 w-full">
+                        <div id="input-container">
+                            <!-- Input default pertama -->
+                            <div id="input-template" class="input-group mb-4">
+                                <div class="mb-4 w-full">
                                     <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                        Kuantitas
+                                        Nama Barang <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
                                     </label>
-                                    <input type="number" name="kuantitas[]" placeholder="Masukan Kuantitas"
-                                        class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
-                                </div>
-                                <div class="mb-4.5 w-full">
-                                    <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                        Satuan <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
-                                    </label>
-                                    <select required name="id_satuan[]" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
-                                        @foreach ($dataSatuan as $item)
-                                        <option value="{{$item->id}}">{{$item->nama_satuan}}</option>
+                                    <select required name="id_produk[]" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
+                                        @foreach ($dataProdukPakaian as $item)
+                                        <option value="{{$item->id}}">{{$item->nama_barang}}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                            </div>
-                            <div class="mb-4.5 w-full">
-                                <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                    Volume Kontrak
-                                </label>
-                                <input type="number" name="volume_kontrak[]" placeholder="Masukan Volume Kontrak"
-                                    class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
-                            </div>
-                            <div class="mb-4.5 w-full">
-                                <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                    Volume Realisasi
-                                </label>
-                                <input type="number" name="volume_realisasi[]" placeholder="Masukan Volume Realisasi"
-                                    class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
-                            </div>
-                            <div class="mb-4.5 w-full">
-                                <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                    Volume Sisa
-                                </label>
-                                <input type="number" name="volume_sisa[]" placeholder="Masukan Volume Sisa"
-                                    class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
-                            </div>
-                            <div class="mb-4.5 w-full">
-                                <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                    Harga
-                                </label>
-                                <input type="text" name="harga_barang[]" id="harga_barang" placeholder="Masukan Harga"
-                                    class="harga_barang w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                                <div class="flex justify-between gap-3">
+                                    <div class="mb-4 w-full">
+                                        <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                            Kuantitas
+                                        </label>
+                                        <input type="number" name="kuantitas[]" placeholder="Masukan Kuantitas"
+                                            class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                                    </div>
+                                    <div class="mb-4 w-full">
+                                        <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                            Satuan <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
+                                        </label>
+                                        <select required name="id_satuan[]" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
+                                            @foreach ($dataSatuan as $item)
+                                            <option value="{{$item->id}}">{{$item->nama_satuan}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-4 w-full">
+                                    <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                        Volume Kontrak
+                                    </label>
+                                    <input type="number" name="volume_kontrak[]" placeholder="Masukan Volume Kontrak"
+                                        class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                                </div>
+                                <div class="mb-4 w-full">
+                                    <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                        Volume Realisasi
+                                    </label>
+                                    <input type="number" name="volume_realisasi[]" placeholder="Masukan Volume Realisasi"
+                                        class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                                </div>
+                                <div class="mb-4 w-full">
+                                    <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                        Volume Sisa
+                                    </label>
+                                    <input type="number" name="volume_sisa[]" placeholder="Masukan Volume Sisa"
+                                        class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                                </div>
+                                <!-- Tombol hapus untuk setiap input -->
+                                <button type="button" class="remove-input btn btn-primary px-6 py-3 bg-red-600 text-white rounded-md hover:bg-red-600">Hapus</button>
                             </div>
                         </div>
+                        <button type="button" id="add-input" class="btn btn-primary px-6 py-3 bg-blue-600 text-white rounded-md mb-4 hover:bg-blue-700">Tambah Input</button>
+                    
+                        <div class="mb-4.5 w-full">
+                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                Total Harga
+                            </label>
+                            <input type="text" name="total_harga" id="total_harga" placeholder="Masukan Harga"
+                                class="total-harga w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                        </div>                        
                     </div>
+                    
                     <div class="bg-white dark:bg-boxdark flex justify-center">
                         <button type="submit" class="flex justify-center rounded w-full m-4 bg-primary font-medium p-2 text-gray hover:bg-opacity-90">
                             Submit
@@ -98,6 +108,9 @@ $(document).ready(function() {
     // Gunakan event delegation untuk elemen yang di-generate secara dinamis
     $(document).on('click', '.barang-kontrak', function() {
         const id = $(this).data('id-kontrak-rinci');
+
+        console.log(id);
+        
         
         // Mengatur nilai input ID pada form modal
         $('.id_kontrak_rinci').val(id);
@@ -106,8 +119,47 @@ $(document).ready(function() {
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        let inputContainer = document.getElementById('input-container');
+        let addButton = document.getElementById('add-input');
+        let inputTemplate = document.getElementById('input-template').innerHTML;
+        let inputCount = inputContainer.children.length; // Menghitung input yang sudah ada
+    
+        addButton.addEventListener('click', function() {
+            inputCount++;
+            let newInput = document.createElement('div');
+            newInput.classList.add('input-group', 'mb-4');
+            newInput.innerHTML = inputTemplate;
+            inputContainer.appendChild(newInput);
+    
+            // Tampilkan tombol hapus setelah input kedua
+            if (inputCount > 1) {
+                document.querySelectorAll('.remove-input').forEach(btn => btn.style.display = 'inline-block');
+            }
+        });
+    
+        // Delegate click event to dynamically added remove buttons
+        inputContainer.addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-input')) {
+                e.target.parentElement.remove();
+                inputCount--;
+    
+                // Sembunyikan tombol hapus jika hanya ada satu input tersisa
+                if (inputCount <= 1) {
+                    document.querySelectorAll('.remove-input').forEach(btn => btn.style.display = 'none');
+                }
+            }
+        });
+    
+        // Inisialisasi visibilitas tombol hapus
+        if (inputCount <= 1) {
+            document.querySelectorAll('.remove-input').forEach(btn => btn.style.display = 'none');
+        }
+    });
+</script>    
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
         // Target input dengan id "harga_barang"
-        document.querySelectorAll('input[name="harga_barang[]"]').forEach(function(element) {
+        document.querySelectorAll('input[name="total_harga"]').forEach(function(element) {
             element.addEventListener('keyup', function(e) {
                 // Ambil value dari input
                 var angka = this.value.replace(/[^,\d]/g, '').toString();
@@ -132,6 +184,6 @@ $(document).ready(function() {
             return prefix == undefined ? rupiah : (rupiah ? prefix + rupiah : '');
         }
     });
-    </script>
+</script>
 
     

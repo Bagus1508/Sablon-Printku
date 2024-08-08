@@ -11,7 +11,11 @@
             <div class="my-5">
                 <div>
                     Data Tanggal :
-                    {{$tgl_stok_satuan}}
+                    @if (isset($startDateFormatted))
+                        {{$startDateFormatted}} - {{$endDateFormatted}}
+                    @else
+                        {{$tgl_stok_satuan}}
+                    @endif
                 </div>
                 <a href="{{route('export-bahan-baku-stok-satuan', ['tanggal' => $tgl_stok_satuan,'id_satuan' => $id_satuan])}}">
                     <button type="button" class="mt-2 transition ease-in-out hover:bg-gray-100 hover:text-gray-950 inline-flex w-fit rounded-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">

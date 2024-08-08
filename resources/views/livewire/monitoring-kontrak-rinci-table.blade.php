@@ -1,7 +1,64 @@
 <div>
-    {{-- <div class="my-5">
-        <form action="{{route('preview-export-stok-global')}}" method="GET" class="flex mt-3 gap-x-3 max-sm:flex-col gap-5">
+    <section class="justify-between flex max-sm:flex-col-reverse max-sm:mb-5">
+        @include('livewire.search-data')
+        <div class="my-5">
+            <button data-hs-overlay="#modal-create-kontrak-rinci" class="bg-blue-600 text-white font-medium px-4 py-2 rounded-md hover:bg-blue-700">+ Tambah Data</button>
+        </div>
+    </section>
+    <div class="my-5">
+        <form action="{{route('monitoring-kontrak-rinci.preview_export_all')}}" method="GET" class="flex mt-3 gap-x-3 max-sm:flex-col gap-5">
             <x-datepicker-range name="tanggal"/>
+            <div>
+                <div class="hs-dropdown hs-dropdown-proses relative inline-flex [--auto-close:inside]">
+                    <button id="hs-dropdown-proses" type="button" class="hs-dropdown-toggle py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
+                        Tampilkan Proses
+                      <svg class="hs-dropdown-open:rotate-180 size-4 text-gray-600 dark:text-neutral-600" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m6 9 6 6 6-6"></path>
+                      </svg>
+                    </button>
+                  
+                    <div class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 w-56 hidden z-10 mt-2 min-w-60 bg-white shadow-md rounded-lg p-2 dark:bg-neutral-800 dark:border dark:border-neutral-700 dark:divide-neutral-700" role="menu" aria-orientation="vertical" aria-labelledby="hs-dropdown-proses">
+                        <label class="block">
+                            <input type="checkbox" name="proses_cutting_checkbox" wire:click="toggleColumnVisibility('proses_cutting')" 
+                                @if($columnsVisibility['proses_cutting']) checked @endif>
+                            Proses Cutting
+                        </label>
+                        <label class="block">
+                            <input type="checkbox" name="proses_jahit_checkbox" wire:click="toggleColumnVisibility('proses_jahit')" 
+                                @if($columnsVisibility['proses_jahit']) checked @endif>
+                            Proses Jahit
+                        </label>
+                        <label class="block">
+                            <input type="checkbox" name="proses_packing_checkbox" wire:click="toggleColumnVisibility('proses_packing')" 
+                                @if($columnsVisibility['proses_packing']) checked @endif>
+                            Proses Packing
+                        </label>
+                    </div>
+                </div>
+                <div class="hs-dropdown hs-dropdown-filter relative inline-flex [--auto-close:inside]">
+                    <button id="hs-dropdown-filter" type="button" class="hs-dropdown-toggle py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700" aria-haspopup="menu" aria-expanded="false" aria-label="Dropdown">
+                        Filter
+                      <svg class="hs-dropdown-open:rotate-180 size-4 text-gray-600 dark:text-neutral-600" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m6 9 6 6 6-6"></path>
+                      </svg>
+                    </button>
+                  
+                    <div class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 w-56 hidden z-10 mt-2 min-w-[300px] bg-white shadow-md rounded-lg p-2 dark:bg-neutral-800 dark:border dark:border-neutral-700 dark:divide-neutral-700" role="menu" aria-orientation="vertical" aria-labelledby="hs-dropdown-filter">
+                        <select required wire:model.lazy="no_kontrak_pihak_pertama" name="no_kontrak_pihak_pertama" id="no_kontrak_pihak_pertama_filter" class="w-full mb-4 rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
+                            <option selected value="0">No Kontrak Pihak Pertama</option>
+                            @foreach ($allDataKontrakRinci as $dataKontrak)
+                            <option value="{{$dataKontrak->no_kontrak_pihak_pertama}}">{{$dataKontrak->no_kontrak_pihak_pertama}}</option>
+                            @endforeach
+                        </select>
+                        <select required wire:model.lazy="kode_perusahaan" name="kode_perusahaan" id="kode_perusahaan" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
+                            <option selected value="0">Nama Perusahaan</option>
+                            @foreach ($allDataKontrakRinci as $dataKontrak)
+                            <option value="{{$dataKontrak->perusahaan->kode_perusahaan}}">{{$dataKontrak->perusahaan->nama_perusahaan}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
             <button type="submit" class="transition ease-in-out hover:bg-gray-100 hover:text-gray-950 inline-flex w-fit rounded-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6 justify-center my-auto">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 mr-1 h-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m6.75 12l-3-3m0 0l-3 3m3-3v6m-1.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
@@ -9,25 +66,22 @@
                 Preview
             </button>
         </form>
-    </div>     --}}    
-    <section class="justify-between flex max-sm:flex-col-reverse max-sm:mb-5">
-        @include('livewire.search-data')
-        <div class="my-5">
-            <button data-hs-overlay="#modal-create-kontrak-rinci" class="bg-blue-600 text-white font-medium px-4 py-2 rounded-md hover:bg-blue-700">+ Tambah Data</button>
-        </div>
-    </section>
+    </div>        
     <div class="max-w-full overflow-x-auto rounded-t-md">
         <table class="w-full table-auto">
             <thead class="bg-blue-600 text-white">
                 <tr class="text-left dark:bg-meta-4">
-                    <th rowspan="3" class="min-w-[50px] border-r border-[#eee] text-center font-medium text-white dark:text-white justify-center my-auto">
+                    <th rowspan="3" class="min-w-[50px] border-r border-b border-[#eee] text-center font-medium text-white dark:text-white justify-center my-auto sticky left-0 bg-blue-600">
                         No
                     </th>
                     <th width="200px" rowspan="3" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Aksi Kontrak
                     </th>
-                    <th width="400px" colspan="2" class="border-r border-b border-[#eee] text-center font-medium text-white dark:text-white">
+                    <th width="400px" colspan="3" class="border-r border-b border-[#eee] text-center font-medium text-white dark:text-white">
                         No Kontrak
+                    </th>
+                    <th rowspan="3" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+                        Perusahaan
                     </th>
                     <th rowspan="3" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Tanggal Kontrak
@@ -53,11 +107,6 @@
                     <th width="200px" rowspan="3" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Satuan
                     </th>
-                    @if ($loggedInUser->id_level_user == 1)                        
-                    <th width="200px" rowspan="3" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
-                        Harga
-                    </th>
-                    @endif
                     <th width="200px" rowspan="3" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         
                     </th>
@@ -65,19 +114,34 @@
                     <th width="200px" rowspan="3" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Total Harga
                     </th>
+                    <th width="150px" rowspan="3" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+                        
+                    </th>
+                    <th width="200px" rowspan="3" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+                        PPN ({{$dataPajak->ppn}}%)
+                    </th>
+                    <th width="200px" rowspan="3" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+                        Total Harga + PPN (11%)
+                    </th>
                     @endif
                     <th width="200px" rowspan="3" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Aksi Barang
                     </th>
+                    @if($columnsVisibility['proses_cutting'])
                     <th colspan="3" class="border-r border-b border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Proses Cutting
                     </th>
+                    @endif
+                    @if($columnsVisibility['proses_jahit'])
                     <th colspan="3" class="border-r border-b border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Proses Jahit
                     </th>
+                    @endif
+                    @if($columnsVisibility['proses_packing'])
                     <th colspan="3" class="border-r border-b border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Tanggal Packing
                     </th>
+                    @endif
                     <th width="200px" colspan="10" class="border-r border-b border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Status Kontrak
                     </th>
@@ -93,6 +157,9 @@
                     <th width="200px" rowspan="2" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         HP
                     </th>
+                    <th width="200px" rowspan="2" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+                        Pihak Pertama
+                    </th>
                     {{-- Jangka Waktu Kontrak Rinci --}}
                     <th width="100px" rowspan="2" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Masa KR
@@ -103,6 +170,7 @@
                     <th width="100px" rowspan="2" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Akhir KR
                     </th>
+                    @if($columnsVisibility['proses_cutting'])
                     {{-- Proses Cutting --}}
                     <th width="100px" rowspan="2" class="border-r border-[#eee] px-5 py-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Tanggal Masuk
@@ -113,6 +181,8 @@
                     <th width="100px" rowspan="2" class="border-r border-[#eee] px-5 py-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Durasi
                     </th>
+                    @endif
+                    @if($columnsVisibility['proses_jahit'])
                     {{-- Proses jahit --}}
                     <th width="100px" rowspan="2" class="border-r border-[#eee] px-5 py-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Tanggal Masuk
@@ -123,6 +193,8 @@
                     <th width="100px" rowspan="2" class="border-r border-[#eee] px-5 py-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Durasi
                     </th>
+                    @endif
+                    @if($columnsVisibility['proses_packing'])
                     {{-- Proses Packing --}}
                     <th width="100px" rowspan="2" class="border-r border-[#eee] px-5 py-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Tanggal Masuk
@@ -133,6 +205,7 @@
                     <th width="100px" rowspan="2" class="border-r border-[#eee] px-5 py-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Durasi
                     </th>
+                    @endif
                     {{-- Status Kontrak --}}
                     <th width="100px" rowspan="2" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Pengiriman
@@ -202,19 +275,34 @@
             <tbody class="dark:bg-meta-4">
                 @foreach ($dataKontrakRinci as $itemKontrak)                    
                     <tr>
-                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                            <h5 class="font-medium text-black dark:text-white">{{$loop->index + 1 }}</h5>
+                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark sticky left-0 bg-blue-600">
+                            <h5 class="font-medium text-white dark:text-white">{{$loop->index + 1 }}</h5>
                         </td>
                         <td class="mx-auto px-4 py-5 border-b border-[#eee] dark:border-strokedark">
                             <div class="flex items-center mx-auto justify-center">
-                                <a title="Export Detail Data" href="{{route('monitoring-kontrak-rinci.preview_export', $itemKontrak->id)}}"
-                                    class="transition ease-in-out hover:bg-amber-50 focus:bg-amber-50 hover:text-amber-500 focus:text-amber-500 inline-flex w-fit rounded-l-md p-2 text-gray-900 items-center hover:ring-1 ring-inset ring-gray-300 hover:ring-amber-500 focus:ring-2 focus:ring-amber-500 sm:text-sm sm:leading-6">
-                                    <svg class="w-5" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><title>file_type_excel2</title><path d="M28.781,4.405H18.651V2.018L2,4.588V27.115l16.651,2.868V26.445H28.781A1.162,1.162,0,0,0,30,25.349V5.5A1.162,1.162,0,0,0,28.781,4.405Zm.16,21.126H18.617L18.6,23.642h2.487v-2.2H18.581l-.012-1.3h2.518v-2.2H18.55l-.012-1.3h2.549v-2.2H18.53v-1.3h2.557v-2.2H18.53v-1.3h2.557v-2.2H18.53v-2H28.941Z" style="fill:#20744a;fill-rule:evenodd"/><rect x="22.487" y="7.439" width="4.323" height="2.2" style="fill:#20744a"/><rect x="22.487" y="10.94" width="4.323" height="2.2" style="fill:#20744a"/><rect x="22.487" y="14.441" width="4.323" height="2.2" style="fill:#20744a"/><rect x="22.487" y="17.942" width="4.323" height="2.2" style="fill:#20744a"/><rect x="22.487" y="21.443" width="4.323" height="2.2" style="fill:#20744a"/><polygon points="6.347 10.673 8.493 10.55 9.842 14.259 11.436 10.397 13.582 10.274 10.976 15.54 13.582 20.819 11.313 20.666 9.781 16.642 8.248 20.513 6.163 20.329 8.585 15.666 6.347 10.673" style="fill:#ffffff;fill-rule:evenodd"/></svg>
-                                </a>
+                                <form id="exportForm" action="{{ route('monitoring-kontrak-rinci.preview_export_detail', $itemKontrak->id) }}" method="GET">
+                                    <input type="hidden" name="checkbox_cutting" value="false">
+                                    <input type="checkbox" id="checkbox_cutting" class="hidden" name="checkbox_cutting" value="true" 
+                                    @if($columnsVisibility['proses_cutting']) checked @endif>
+                                
+                                    <input type="hidden" name="checkbox_jahit" value="false">
+                                    <input type="checkbox" id="checkbox_jahit" class="hidden" name="checkbox_jahit" value="true" 
+                                    @if($columnsVisibility['proses_jahit']) checked @endif>
+                                
+                                    <input type="hidden" name="checkbox_packing" value="false">
+                                    <input type="checkbox" id="checkbox_packing" class="hidden" name="checkbox_packing" value="true" 
+                                    @if($columnsVisibility['proses_packing']) checked @endif>
+                                
+                                    <button type="submit" title="Export Detail Data"
+                                        class="transition ease-in-out hover:bg-amber-50 focus:bg-amber-50 hover:text-amber-500 focus:text-amber-500 inline-flex w-fit rounded-l-md p-2 text-gray-900 items-center hover:ring-1 ring-inset ring-gray-300 hover:ring-amber-500 focus:ring-2 focus:ring-amber-500 sm:text-sm sm:leading-6">
+                                        <svg class="w-5" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><title>file_type_excel2</title><path d="M28.781,4.405H18.651V2.018L2,4.588V27.115l16.651,2.868V26.445H28.781A1.162,1.162,0,0,0,30,25.349V5.5A1.162,1.162,0,0,0,28.781,4.405Zm.16,21.126H18.617L18.6,23.642h2.487v-2.2H18.581l-.012-1.3h2.518v-2.2H18.55l-.012-1.3h2.549v-2.2H18.53l-.012-1.3h2.557v-2.2H18.53v-1.3h2.557v-2.2H18.53v-1.3h2.557v-2.2H18.53v-1.3h2.557v-2.2H18.53v-2H28.941Z" style="fill:#20744a;fill-rule:evenodd"/><rect x="22.487" y="7.439" width="4.323" height="2.2" style="fill:#20744a"/><rect x="22.487" y="10.94" width="4.323" height="2.2" style="fill:#20744a"/><rect x="22.487" y="14.441" width="4.323" height="2.2" style="fill:#20744a"/><rect x="22.487" y="17.942" width="4.323" height="2.2" style="fill:#20744a"/><rect x="22.487" y="21.443" width="4.323" height="2.2" style="fill:#20744a"/><polygon points="6.347 10.673 8.493 10.55 9.842 14.259 11.436 10.397 13.582 10.274 10.976 15.54 13.582 20.819 11.313 20.666 9.781 16.642 8.248 20.513 6.163 20.329 8.585 15.666 6.347 10.673" style="fill:#ffffff;fill-rule:evenodd"/></svg>
+                                    </button>
+                                </form>
                                 <button title="Edit Data" data-hs-overlay="#modal-edit-kontrak-rinci" type="button"
                                     data-id-kontrak-rinci="{{$itemKontrak->id}}"
                                     data-takon="{{$itemKontrak->takon}}"
                                     data-no-telepon="{{$itemKontrak->no_telepon}}"
+                                    data-no-kontrak-pihak-pertama="{{$itemKontrak->no_kontrak_pihak_pertama}}"
                                     data-tanggal-kontrak="{{$itemKontrak->tanggal_kontrak}}"
                                     data-id-perusahaan="{{$itemKontrak->id_perusahaan}}"
                                     data-no-kontrak-rinci="{{$itemKontrak->no_kontrak_rinci}}"
@@ -251,30 +339,44 @@
                             <p class="text-black dark:text-white">{{$itemKontrak->no_telepon}}</p>
                         </td>
                         <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white">{{$itemKontrak->no_kontrak_pihak_pertama}}</p>
+                        </td>
+                        <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white">{{$itemKontrak->perusahaan->nama_perusahaan}}</p>
+                        </td>
+                        <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white">{{ \Carbon\Carbon::parse($itemKontrak->tanggal_kontrak)->translatedFormat('d F Y') }}</p>
                         </td>
                         <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white">{{$itemKontrak->no_kontrak_rinci}}</p>
                         </td>
                         <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                            <p class="text-black dark:text-white">{{ \Carbon\Carbon::parse($itemKontrak->tanggal_kr)->translatedFormat('d F Y') }}</p>
+                            <p class="text-black dark:text-white">
+                                {{ $itemKontrak->tanggal_kr ? \Carbon\Carbon::parse($itemKontrak->tanggal_kr)->translatedFormat('d F Y') : '-' }}
+                            </p>
                         </td>
                         <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                            <p class="text-black dark:text-white">{{ \Carbon\Carbon::parse($itemKontrak->awal_kr)->translatedFormat('d F Y') }} - {{ \Carbon\Carbon::parse($itemKontrak->akhir_kr)->translatedFormat('d F Y') }} <br> ({{ \Carbon\Carbon::parse($itemKontrak->awal_kr)->diffInDays(\Carbon\Carbon::parse($itemKontrak->akhir_kr)) }} Hari)</p>
+                            <p class="text-black dark:text-white">
+                                {{ $itemKontrak->awal_kr && $itemKontrak->akhir_kr ? \Carbon\Carbon::parse($itemKontrak->awal_kr)->translatedFormat('d F Y') . ' - ' . \Carbon\Carbon::parse($itemKontrak->akhir_kr)->translatedFormat('d F Y') . ' (' . \Carbon\Carbon::parse($itemKontrak->awal_kr)->diffInDays(\Carbon\Carbon::parse($itemKontrak->akhir_kr)) . ' Hari)' : '-' }}
+                            </p>
                         </td>
                         <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                            <p class="text-black dark:text-white text-left">{{ \Carbon\Carbon::parse($itemKontrak->awal_kr)->translatedFormat('d F Y') }}</p>
-                        </td>   
+                            <p class="text-black dark:text-white text-left">
+                                {{ $itemKontrak->awal_kr ? \Carbon\Carbon::parse($itemKontrak->awal_kr)->translatedFormat('d F Y') : '-' }}
+                            </p>
+                        </td>
                         <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                            <p class="text-black dark:text-white text-left">{{ \Carbon\Carbon::parse($itemKontrak->akhir_kr)->translatedFormat('d F Y') }}</p>
-                        </td>   
-                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white text-left">
+                                {{ $itemKontrak->akhir_kr ? \Carbon\Carbon::parse($itemKontrak->akhir_kr)->translatedFormat('d F Y') : '-' }}
+                            </p>
+                        </td>                        
+                        <td class="text-center text-nowrap border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white text-left">{{$itemKontrak->uraian}}</p>
                         </td>
                         {{-- Item Barang --}}
                         <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark items-center mx-auto">
                             @foreach ($itemKontrak->barangKontrak as $barang)
-                                <p class="text-black dark:text-white text-left border-b border-slate-400 px-10">{{$barang->nama_barang}} </p>
+                                <p class="text-black dark:text-white text-left border-b border-slate-400 px-10">{{$barang->dataProduk->nama_barang}} </p>
                             @endforeach
                         </td>    
                         <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark items-center mx-auto">
@@ -287,22 +389,13 @@
                                 <p class="text-black dark:text-white text-left border-b border-slate-400 px-10">{{$barang->satuan->nama_satuan}}</p>
                             @endforeach
                         </td>    
-                        @if ($loggedInUser->id_level_user == 1)    
-                        <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark items-center mx-auto">
-                            @foreach ($itemKontrak->barangKontrak as $barang)
-                                <p class="text-black dark:text-white text-left border-b border-slate-400 px-10">
-                                    Rp. {{ number_format($barang->harga_barang, 2, ',', '.') }}
-                                </p>
-                            @endforeach
-                        </td>    
-                        @endif
                         <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark items-center mx-auto">
                             @foreach ($itemKontrak->barangKontrak as $barang)
                             <p class="text-black dark:text-white text-left border-b border-slate-400 px-10">
                                 <button
                                 data-hs-overlay="#modal-edit-barang"
-                                data-id-barang-kontrak="{{$barang->id}}"
-                                data-nama-barang-kontrak="{{$barang->nama_barang}}"
+                                data-id="{{$barang->id}}"
+                                data-id-barang-kontrak="{{$barang->id_produk}}"
                                 data-kuantitas-barang-kontrak="{{$barang->kuantitas}}"
                                 data-id-satuan-kontrak="{{$barang->satuan->id}}"
                                 data-volume-kontrak="{{$barang->volume_kontrak}}"
@@ -315,7 +408,7 @@
                                 <button
                                 data-hs-overlay="#modal-hapus-barang"
                                 data-id-barang-kontrak="{{$barang->id}}"
-                                data-nama-barang-kontrak="{{$barang->nama_barang}}"
+                                data-nama-barang-kontrak="{{$barang->dataProduk->nama_barang}}"
                                 id="hapus-barang-kontrak"
                                 class="hapus-barang-kontrak text-red-600 hover:underline">Hapus</button>
                             </p>
@@ -324,8 +417,31 @@
                         @if ($loggedInUser->id_level_user == 1)    
                         {{-- Harga --}}
                         <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
+                            @if ($itemKontrak)                                
                             <p class="text-black dark:text-white hover:underline">
                                 Rp. {{ number_format($itemKontrak->total_harga, 2, ',', '.') }}
+                            </p>
+                            @endif
+                        </td>
+                        <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
+                            <p class="text-black dark:text-white hover:underline px-4">
+                                <button 
+                                        data-hs-overlay="#modal-edit-total-harga"
+                                        data-id="{{$itemKontrak->id}}"
+                                        data-total-harga-kontrak="{{$itemKontrak->total_harga}}"
+                                        id="edit-total-harga" class="edit-total-harga text-blue-600 hover:underline">Edit</button>
+                            </p>
+                        </td>
+                        {{-- PPN --}}
+                        <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
+                            <p class="text-black dark:text-white hover:underline">
+                                Rp. {{ number_format(($itemKontrak->total_harga/100)*$dataPajak->ppn, 2, ',', '.') }}
+                            </p>
+                        </td>
+                        {{-- Total Harga + PPN --}}
+                        <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
+                            <p class="text-black dark:text-white hover:underline">
+                                Rp. {{ number_format($itemKontrak->total_harga + ($itemKontrak->total_harga/100)*$dataPajak->ppn, 2, ',', '.') }}
                             </p>
                         </td>
                         @endif
@@ -336,99 +452,105 @@
                                 data-id-kontrak-rinci="{{$itemKontrak->id}}"
                                 id="tambah-barang-kontrak"
                                 class="barang-kontrak text-blue-600 hover:underline">+ Tambah Barang</button>
-                        </td>    
-                        {{-- Proses Cutting --}}
-                        @if ($itemKontrak->prosesCutting->durasi == null && $itemKontrak->prosesCutting->tanggal_masuk == null && $itemKontrak->prosesCutting->tanggal_selesai == null)
-                            <td colspan="3" class="whitespace-nowrap text-center border-black dark:border-strokedark">
-                                <button 
-                                    data-hs-overlay="#modal-edit-proses-cutting"
-                                    data-id-proses-cutting="{{$itemKontrak->prosesCutting->id}}"
-                                    data-tanggal-masuk="{{$itemKontrak->prosesCutting->tanggal_masuk}}"
-                                    data-tanggal-selesai="{{$itemKontrak->prosesCutting->tanggal_selesai}}"
-                                    id="proses-cutting" class="proses-cutting text-blue-600 hover:underline">Update</button>
-                            </td>
-                        @else                            
-                            <td class="whitespace-nowrap text-center border-black dark:border-strokedark">
-                                <p class="text-black dark:text-white">{{$itemKontrak->prosesCutting->tanggal_masuk}}</p>
-                            </td>    
-                            <td class="whitespace-nowrap text-center border-black dark:border-strokedark">
-                                <p class="text-black dark:text-white">{{$itemKontrak->prosesCutting->tanggal_selesai}}</p>
-                            </td>   
-                            <td class="whitespace-nowrap text-center border-black dark:border-strokedark">
-                                @if ($itemKontrak->prosesCutting->durasi != null)                                
-                                    <p class="text-black dark:text-white">{{$itemKontrak->prosesCutting->durasi}} Hari</p>
-                                @endif
-                                @if ($itemKontrak->prosesCutting->tanggal_masuk != null || $itemKontrak->prosesCutting->tanggal_selesai != null)                                    
+                        </td>
+                        @if($columnsVisibility['proses_cutting'])    
+                            {{-- Proses Cutting --}}
+                            @if ($itemKontrak->prosesCutting->durasi == null && $itemKontrak->prosesCutting->tanggal_masuk == null && $itemKontrak->prosesCutting->tanggal_selesai == null)
+                                <td colspan="3" class="whitespace-nowrap text-center border-black dark:border-strokedark">
                                     <button 
                                         data-hs-overlay="#modal-edit-proses-cutting"
                                         data-id-proses-cutting="{{$itemKontrak->prosesCutting->id}}"
                                         data-tanggal-masuk="{{$itemKontrak->prosesCutting->tanggal_masuk}}"
                                         data-tanggal-selesai="{{$itemKontrak->prosesCutting->tanggal_selesai}}"
-                                        id="proses-cutting" class="proses-cutting text-blue-600 hover:underline">Edit</button>
-                                @endif
-                            </td>       
+                                        id="proses-cutting" class="proses-cutting text-blue-600 hover:underline">Update</button>
+                                </td>
+                            @else                            
+                                <td class="whitespace-nowrap text-center border-black dark:border-strokedark">
+                                    <p class="text-black dark:text-white">{{$itemKontrak->prosesCutting->tanggal_masuk}}</p>
+                                </td>    
+                                <td class="whitespace-nowrap text-center border-black dark:border-strokedark">
+                                    <p class="text-black dark:text-white">{{$itemKontrak->prosesCutting->tanggal_selesai}}</p>
+                                </td>   
+                                <td class="whitespace-nowrap text-center border-black dark:border-strokedark">
+                                    @if ($itemKontrak->prosesCutting->durasi != null)                                
+                                        <p class="text-black dark:text-white">{{$itemKontrak->prosesCutting->durasi}} Hari</p>
+                                    @endif
+                                    @if ($itemKontrak->prosesCutting->tanggal_masuk != null || $itemKontrak->prosesCutting->tanggal_selesai != null)                                    
+                                        <button 
+                                            data-hs-overlay="#modal-edit-proses-cutting"
+                                            data-id-proses-cutting="{{$itemKontrak->prosesCutting->id}}"
+                                            data-tanggal-masuk="{{$itemKontrak->prosesCutting->tanggal_masuk}}"
+                                            data-tanggal-selesai="{{$itemKontrak->prosesCutting->tanggal_selesai}}"
+                                            id="proses-cutting" class="proses-cutting text-blue-600 hover:underline">Edit</button>
+                                    @endif
+                                </td>       
+                            @endif
                         @endif
-                        {{-- Proses Jahit --}}
-                        @if ($itemKontrak->prosesJahit->durasi == null && $itemKontrak->prosesJahit->tanggal_masuk == null && $itemKontrak->prosesJahit->tanggal_selesai == null)
+                        @if($columnsVisibility['proses_jahit'])
+                            {{-- Proses Jahit --}}
+                            @if ($itemKontrak->prosesJahit->durasi == null && $itemKontrak->prosesJahit->tanggal_masuk == null && $itemKontrak->prosesJahit->tanggal_selesai == null)
+                                <td colspan="3" class="whitespace-nowrap text-center border-black dark:border-strokedark">
+                                    <button 
+                                        data-hs-overlay="#modal-edit-proses-jahit"
+                                        data-id-proses-jahit="{{$itemKontrak->prosesJahit->id}}"
+                                        data-tanggal-masuk="{{$itemKontrak->prosesJahit->tanggal_masuk}}"
+                                        data-tanggal-selesai="{{$itemKontrak->prosesJahit->tanggal_selesai}}"
+                                        id="proses-jahit" class="proses-jahit text-blue-600 hover:underline">Update</button>
+                                </td>   
+                            @else                            
+                                <td class="whitespace-nowrap text-center border-black dark:border-strokedark">
+                                    <p class="text-black dark:text-white">{{$itemKontrak->prosesJahit->tanggal_masuk}}</p>
+                                </td>    
+                                <td class="whitespace-nowrap text-center border-black dark:border-strokedark">
+                                    <p class="text-black dark:text-white">{{$itemKontrak->prosesJahit->tanggal_selesai}}</p>
+                                </td>   
+                                <td class="whitespace-nowrap text-center border-black dark:border-strokedark">
+                                    @if ($itemKontrak->prosesJahit->durasi != null)                                
+                                        <p class="text-black dark:text-white">{{$itemKontrak->prosesJahit->durasi}} Hari</p>
+                                    @endif
+                                    @if ($itemKontrak->prosesJahit->tanggal_masuk != null || $itemKontrak->prosesJahit->tanggal_selesai != null)
+                                        <button 
+                                        data-hs-overlay="#modal-edit-proses-jahit"
+                                        data-id-proses-jahit="{{$itemKontrak->prosesJahit->id}}"
+                                        data-tanggal-masuk-jahit="{{$itemKontrak->prosesJahit->tanggal_masuk}}"
+                                        data-tanggal-selesai-jahit="{{$itemKontrak->prosesJahit->tanggal_selesai}}"
+                                        id="proses-jahit" class="proses-jahit text-blue-600 hover:underline">Edit</button>  
+                                    @endif
+                                </td>       
+                            @endif
+                        @endif   
+                        @if($columnsVisibility['proses_packing'])    
+                            {{-- Proses Packing --}}
+                            @if ($itemKontrak->prosesPacking->tanggal_mulai == null && $itemKontrak->prosesPacking->tanggal_masuk == null && $itemKontrak->prosesPacking->tanggal_selesai == null)
                             <td colspan="3" class="whitespace-nowrap text-center border-black dark:border-strokedark">
                                 <button 
-                                    data-hs-overlay="#modal-edit-proses-jahit"
-                                    data-id-proses-jahit="{{$itemKontrak->prosesJahit->id}}"
-                                    data-tanggal-masuk="{{$itemKontrak->prosesJahit->tanggal_masuk}}"
-                                    data-tanggal-selesai="{{$itemKontrak->prosesJahit->tanggal_selesai}}"
-                                    id="proses-jahit" class="proses-jahit text-blue-600 hover:underline">Update</button>
-                            </td>   
-                        @else                            
-                            <td class="whitespace-nowrap text-center border-black dark:border-strokedark">
-                                <p class="text-black dark:text-white">{{$itemKontrak->prosesJahit->tanggal_masuk}}</p>
-                            </td>    
-                            <td class="whitespace-nowrap text-center border-black dark:border-strokedark">
-                                <p class="text-black dark:text-white">{{$itemKontrak->prosesJahit->tanggal_selesai}}</p>
-                            </td>   
-                            <td class="whitespace-nowrap text-center border-black dark:border-strokedark">
-                                @if ($itemKontrak->prosesJahit->durasi != null)                                
-                                    <p class="text-black dark:text-white">{{$itemKontrak->prosesJahit->durasi}} Hari</p>
-                                @endif
-                                @if ($itemKontrak->prosesJahit->tanggal_masuk != null || $itemKontrak->prosesJahit->tanggal_selesai != null)
-                                    <button 
-                                    data-hs-overlay="#modal-edit-proses-jahit"
-                                    data-id-proses-jahit="{{$itemKontrak->prosesJahit->id}}"
-                                    data-tanggal-masuk-jahit="{{$itemKontrak->prosesJahit->tanggal_masuk}}"
-                                    data-tanggal-selesai-jahit="{{$itemKontrak->prosesJahit->tanggal_selesai}}"
-                                    id="proses-jahit" class="proses-jahit text-blue-600 hover:underline">Edit</button>  
-                                @endif
-                            </td>       
-                        @endif       
-                        {{-- Proses Packing --}}
-                        @if ($itemKontrak->prosesPacking->tanggal_mulai == null && $itemKontrak->prosesPacking->tanggal_masuk == null && $itemKontrak->prosesPacking->tanggal_selesai == null)
-                        <td colspan="3" class="whitespace-nowrap text-center border-black dark:border-strokedark">
-                            <button 
-                                data-hs-overlay="#modal-edit-proses-packing"
-                                data-id-proses-packing="{{$itemKontrak->prosesPacking->id}}"
-                                data-tanggal-masuk-packing="{{$itemKontrak->prosesPacking->tanggal_masuk}}"
-                                data-tanggal-selesai-packing="{{$itemKontrak->prosesPacking->tanggal_selesai}}"
-                                id="proses-packing" class="proses-packing text-blue-600 hover:underline">Update</button>
-                        </td> 
-                        @else                            
-                            <td class="whitespace-nowrap text-center border-black dark:border-strokedark">
-                                <p class="text-black dark:text-white">{{$itemKontrak->prosesPacking->tanggal_masuk}}</p>
-                            </td>    
-                            <td class="whitespace-nowrap text-center border-black dark:border-strokedark">
-                                <p class="text-black dark:text-white">{{$itemKontrak->prosesPacking->tanggal_selesai}}</p>
-                            </td>   
-                            <td class="whitespace-nowrap text-center border-black dark:border-strokedark">
-                                @if ($itemKontrak->prosesPacking->durasi != null)                                
-                                    <p class="text-black dark:text-white">{{$itemKontrak->prosesPacking->durasi}} Hari</p>
-                                @endif
-                                @if ($itemKontrak->prosesPacking->tanggal_masuk != null || $itemKontrak->prosesPacking->tanggal_selesai != null)
-                                    <button 
                                     data-hs-overlay="#modal-edit-proses-packing"
                                     data-id-proses-packing="{{$itemKontrak->prosesPacking->id}}"
                                     data-tanggal-masuk-packing="{{$itemKontrak->prosesPacking->tanggal_masuk}}"
                                     data-tanggal-selesai-packing="{{$itemKontrak->prosesPacking->tanggal_selesai}}"
-                                    id="proses-packing" class="proses-packing text-blue-600 hover:underline">Edit</button>
-                                @endif
-                            </td>       
+                                    id="proses-packing" class="proses-packing text-blue-600 hover:underline">Update</button>
+                            </td> 
+                            @else                            
+                                <td class="whitespace-nowrap text-center border-black dark:border-strokedark">
+                                    <p class="text-black dark:text-white">{{$itemKontrak->prosesPacking->tanggal_masuk}}</p>
+                                </td>    
+                                <td class="whitespace-nowrap text-center border-black dark:border-strokedark">
+                                    <p class="text-black dark:text-white">{{$itemKontrak->prosesPacking->tanggal_selesai}}</p>
+                                </td>   
+                                <td class="whitespace-nowrap text-center border-black dark:border-strokedark">
+                                    @if ($itemKontrak->prosesPacking->durasi != null)                                
+                                        <p class="text-black dark:text-white">{{$itemKontrak->prosesPacking->durasi}} Hari</p>
+                                    @endif
+                                    @if ($itemKontrak->prosesPacking->tanggal_masuk != null || $itemKontrak->prosesPacking->tanggal_selesai != null)
+                                        <button 
+                                        data-hs-overlay="#modal-edit-proses-packing"
+                                        data-id-proses-packing="{{$itemKontrak->prosesPacking->id}}"
+                                        data-tanggal-masuk-packing="{{$itemKontrak->prosesPacking->tanggal_masuk}}"
+                                        data-tanggal-selesai-packing="{{$itemKontrak->prosesPacking->tanggal_selesai}}"
+                                        id="proses-packing" class="proses-packing text-blue-600 hover:underline">Edit</button>
+                                    @endif
+                                </td>       
+                            @endif
                         @endif 
                         {{-- Status Kontrak --}}
                         <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
@@ -631,8 +753,25 @@
     @include('pages.dashboard.monitoring_kontrak.kontrak_rinci.barang_kontrak.edit')
     @include('pages.dashboard.monitoring_kontrak.kontrak_rinci.barang_kontrak.delete')
 
+    {{-- Total Harga Kontrak --}}
+    @include('pages.dashboard.monitoring_kontrak.kontrak_rinci.total_harga.edit')
+
     {{-- Proses Pekerjaan --}}
     @include('pages.dashboard.monitoring_kontrak.kontrak_rinci.proses_pekerjaan.proses_cutting.edit')
     @include('pages.dashboard.monitoring_kontrak.kontrak_rinci.proses_pekerjaan.proses_jahit.edit')
     @include('pages.dashboard.monitoring_kontrak.kontrak_rinci.proses_pekerjaan.proses_packing.edit')
-</div>
+</div>                          
+<script>
+    document.getElementById('exportForm').onsubmit = function() {
+        // Jika checkbox dicentang, disable hidden input agar tidak terkirim
+        if (document.getElementById('checkbox_cutting').checked) {
+            document.querySelector('input[name="checkbox_cutting"][type="hidden"]').disabled = true;
+        }
+        if (document.getElementById('checkbox_jahit').checked) {
+            document.querySelector('input[name="checkbox_jahit"][type="hidden"]').disabled = true;
+        }
+        if (document.getElementById('checkbox_packing').checked) {
+            document.querySelector('input[name="checkbox_packing"][type="hidden"]').disabled = true;
+        }
+    };
+</script>

@@ -10,36 +10,56 @@
         <table class="w-full table-auto">
             <thead class="bg-blue-600 text-white">
                 <tr class="text-left dark:bg-meta-4">
-                    <th class="min-w-[50px] text-center px-4 py-4 font-medium text-white dark:text-white">
+                    <th class="min-w-[50px] text-center px-4 py-4 font-medium text-white dark:text-white sticky left-0 bg-blue-600 border-b">
                         No
                     </th>
                     <th class="min-w-[150px] px-4 py-4 text-center font-medium text-white dark:text-white">
                         Tanggal
                     </th>
-                    <th rowspan="3" class="text-center px-4 py-4 font-medium text-white dark:text-white">
+                    <th class="text-center px-4 py-4 font-medium text-white dark:text-white">
                         NO ID
                     </th>
-                    <th rowspan="3" class="min-w-[150px] px-4 py-4 text-center font-medium text-white dark:text-white">
+                    <th class="min-w-[150px] px-4 py-4 text-center font-medium text-white dark:text-white">
                         Nama Barang
                     </th>
-                    <th rowspan="3" class="px-4 py-4 text-center font-medium text-white dark:text-white">
+                    <th class="px-4 py-4 text-center font-medium text-white dark:text-white">
                         Warna
                     </th>
-                    <th rowspan="3" class="min-w-[150px] px-4 py-4 text-center font-medium text-white dark:text-white">
+                    <th class="min-w-[150px] px-4 py-4 text-center font-medium text-white dark:text-white">
                         Kode Warna
                     </th>
-                    <th rowspan="3" class="min-w-[150px] px-4 py-4 text-center font-medium text-white dark:text-white">
+                    <th class="min-w-[150px] px-4 py-4 text-center font-medium text-white dark:text-white">
                         Ukuran
                     </th>
-                    <th rowspan="3" class="min-w-[150px] px-4 py-4 text-center font-medium text-white dark:text-white">
+                    <th class="min-w-[150px] px-4 py-4 text-center font-medium text-white dark:text-white">
                         Stok Masuk
                     </th>
-                    <th rowspan="3" class="min-w-[150px] px-4 py-4 text-center font-medium text-white dark:text-white">
+                    <th class="min-w-[150px] px-4 py-4 text-center font-medium text-white dark:text-white">
                         Stok Keluar
                     </th>
-                    <th rowspan="3" class="min-w-[150px] px-4 py-4 text-center font-medium text-white dark:text-white">
+                    <th class="min-w-[150px] px-4 py-4 text-center font-medium text-white dark:text-white">
                         Sisa Stok
                     </th>
+                    @if ($loggedInUser->id_level_user == 1)   
+                    <th class="min-w-[150px] whitespace-nowrap px-4 py-4 text-center font-medium text-white dark:text-white">
+                        Harga Produksi Satuan
+                    </th>
+                    <th class="min-w-[150px] whitespace-nowrap px-4 py-4 text-center font-medium text-white dark:text-white">
+                        Harga Jual Satuan
+                    </th>
+                    <th class="min-w-[150px] whitespace-nowrap px-4 py-4 text-center font-medium text-white dark:text-white">
+                        Total Harga Produksi
+                    </th>
+                    <th class="min-w-[150px] whitespace-nowrap px-4 py-4 text-center font-medium text-white dark:text-white">
+                        Total Harga Jual
+                    </th>
+                    <th class="min-w-[150px] whitespace-nowrap px-4 py-4 text-center font-medium text-white dark:text-white">
+                        Margin Penjualan
+                    </th>
+                    <th class="min-w-[150px] whitespace-nowrap px-4 py-4 text-center font-medium text-white dark:text-white">
+                        Margin Penjualan (%)
+                    </th>
+                    @endif
                     <th class="px-4 py-4 text-center font-medium text-white dark:text-white">
                         Aksi
                     </th>
@@ -51,48 +71,104 @@
                     $tanggal = \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d F Y');
                 @endphp      
                     <tr>
-                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                            <h5 class="font-medium text-black dark:text-white">{{$loop->index + 1}}</h5>
+                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark sticky left-0 bg-blue-600 border-t">
+                            <h5 class="font-medium text-white dark:text-white">{{$loop->index + 1}}</h5>
                         </td>
                         <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                            <p class="text-black dark:text-white">{{$tanggal}}</p>
+                            <p class="text-black dark:text-white">{{$tanggal ?? ''}}</p>
                         </td>
                         <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                            <p class="text-black dark:text-white">{{$item->produk->id_no}}</p>
+                            <p class="text-black dark:text-white">{{$item->produk->id_no ?? ''}}</p>
                         </td>
                         <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                            <p class="text-black dark:text-white">{{$item->produk->nama_barang}}</p>
+                            <p class="text-black dark:text-white">{{$item->produk->nama_barang ?? ''}}</p>
                         </td>
                         <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                            <p class="text-black dark:text-white">{{$item->produk->warna->nama_warna}}</p>
+                            <p class="text-black dark:text-white">{{$item->produk->warna->nama_warna ?? ''}}</p>
                         </td>
                         <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                            <p class="text-black dark:text-white">{{$item->produk->warna->kode_warna}}</p>
+                            <p class="text-black dark:text-white">{{$item->produk->warna->kode_warna ?? ''}}</p>
                         </td>
                         <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                            <p class="text-black dark:text-white">{{$item->ukuran->nama_ukuran}}</p>
+                            <p class="text-black dark:text-white">{{$item->ukuran->nama_ukuran ?? ''}}</p>
                         </td>
                         <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                            <p class="text-black dark:text-white">{{$item->stok_masuk}} {{$item->satuan->nama_satuan}}</p>
+                            <p class="text-black dark:text-white">{{$item->stok_masuk ?? ''}} {{$item->satuan->nama_satuan ?? ''}}</p>
                         </td>
                         <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                            <p class="text-black dark:text-white">{{$item->stok_keluar}} {{$item->satuan->nama_satuan}}</p>
+                            <p class="text-black dark:text-white">{{$item->stok_keluar ?? ''}} {{$item->satuan->nama_satuan ?? ''}}</p>
                         </td>
                         <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                            <p class="text-black dark:text-white">{{$item->stok_masuk - $item->stok_keluar}} {{$item->satuan->nama_satuan}}</p>
+                            <p class="text-black dark:text-white">{{$item->stok_masuk - $item->stok_keluar ?? ''}} {{$item->satuan->nama_satuan ?? ''}}</p>
                         </td>
+                        @if ($loggedInUser->id_level_user == 1)   
+                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            @if ($item->hargaProduk)
+                                <p class="text-black dark:text-white">Rp. {{ number_format($item->hargaProduk->harga_produksi_satuan, 2, ',', '.') }}</p>
+                            @endif
+                        </td>
+                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            @if ($item->hargaProduk)
+                                <p class="text-black dark:text-white">Rp. {{ number_format($item->hargaProduk->harga_jual_satuan, 2, ',', '.') }}</p>
+                            @endif
+                        </td>
+                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            @if ($item->hargaProduk)
+                                <p class="text-black dark:text-white">Rp. {{ number_format($item->hargaProduk->harga_produksi_satuan * $item->stok_masuk, 2, ',', '.') }}</p>
+                            @endif
+                        </td>
+                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark whitespace-nowrap">
+                            @if ($item->hargaProduk)
+                                <p class="text-black dark:text-white">Rp. {{ number_format($item->hargaProduk->harga_jual_satuan * $item->stok_keluar, 2, ',', '.') }}</p>
+                            @endif
+                        </td>
+                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark whitespace-nowrap">
+                            @if ($item->hargaProduk)
+                                <p class="text-black dark:text-white">Rp. {{ number_format(($item->hargaProduk->harga_jual_satuan * $item->stok_keluar) - ($item->hargaProduk->harga_produksi_satuan * $item->stok_masuk), 2, ',', '.') }}</p>
+                            @endif
+                        </td>
+                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark whitespace-nowrap">
+                            @if ($item->hargaProduk)
+                                <p class="text-black dark:text-white">
+                                    {{
+                                        number_format(
+                                            (($item->hargaProduk->harga_jual_satuan * $item->stok_keluar) - ($item->hargaProduk->harga_produksi_satuan * $item->stok_masuk)) /
+                                            ($item->hargaProduk->harga_jual_satuan * $item->stok_keluar) * 100,
+                                            2,
+                                            ',',
+                                            '.'
+                                        )
+                                    }}%
+                                </p>
+                            @endif
+                        </td>
+                        @endif
                         <td class="mx-auto px-4 py-5 border-b border-[#eee] dark:border-strokedark">
                             <div class="flex items-center mx-auto justify-center">
-                                <button wire:click="editStokHarian({{$item->id}})" data-hs-overlay="#modal-edit-stok-harian" type="button"
-                                    class="transition ease-in-out hover:bg-amber-50 focus:bg-amber-50 hover:text-amber-500 focus:text-amber-500 inline-flex w-fit rounded-l-md p-2 text-gray-900 items-center hover:ring-1 ring-inset ring-gray-300 hover:ring-amber-500 focus:ring-2 focus:ring-amber-500 sm:text-sm sm:leading-6">
+                                <button data-hs-overlay="#modal-edit-stok-harian" type="button" id="edit-stok-pakaian"
+                                    data-id-stok = "{{$item->id ?? ''}}"
+                                    data-no-id = "{{$item->produk->id_no ?? ''}}"
+                                    data-nama-barang = "{{$item->produk->nama_barang ?? ''}}"
+                                    data-nama-warna = "{{$item->produk->warna->nama_warna ?? ''}}"
+                                    data-kode-warna = "{{$item->produk->warna->kode_warna ?? ''}}"
+                                    data-tanggal= "{{$item->tanggal ?? ''}}"
+                                    data-stok-masuk = "{{$item->stok_masuk ?? ''}}"
+                                    data-stok-keluar = "{{$item->stok_keluar ?? ''}}"
+                                    data-harga-beli-satuan = "{{$item->hargaProduk->harga_beli_satuan ?? ''}}"
+                                    data-id-ukuran = "{{$item->ukuran->id ?? ''}}"
+                                    data-id-satuan = "{{$item->satuan->id ?? ''}}"
+                                    data-harga-produksi-satuan = "{{$item->hargaProduk->harga_produksi_satuan ?? ''}}"
+                                    data-harga-jual-satuan = "{{$item->hargaProduk->harga_jual_satuan ?? ''}}"
+                                    class="edit-stok-pakaian transition ease-in-out hover:bg-amber-50 focus:bg-amber-50 hover:text-amber-500 focus:text-amber-500 inline-flex w-fit rounded-l-md p-2 text-gray-900 items-center hover:ring-1 ring-inset ring-gray-300 hover:ring-amber-500 focus:ring-2 focus:ring-amber-500 sm:text-sm sm:leading-6">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-5">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                                     </svg>
                                 </button>
-                                <button wire:click="deleteStokHarian({{$item->id}})" data-hs-overlay="#modal-delete-stok-harian" type="button"
-                                    class="transition ease-in-out hover:bg-rose-50 border-l rounded-r-md focus:bg-rose-50 hover:text-rose-500 focus:text-rose-500 inline-flex w-fit  p-2 text-gray-900 items-center hover:ring-1 ring-inset ring-gray-300 hover:ring-rose-500 focus:ring-2 focus:ring-rose-500 sm:text-sm sm:leading-6">
+                                <button data-hs-overlay="#modal-delete-stok-harian" type="button" id="delete-stok-pakaian"
+                                    data-id-stok = "{{$item->id ?? ''}}"
+                                    class="delete-stok-pakaian transition ease-in-out hover:bg-rose-50 border-l rounded-r-md focus:bg-rose-50 hover:text-rose-500 focus:text-rose-500 inline-flex w-fit  p-2 text-gray-900 items-center hover:ring-1 ring-inset ring-gray-300 hover:ring-rose-500 focus:ring-2 focus:ring-rose-500 sm:text-sm sm:leading-6">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-5">
                                         <path stroke-linecap="round" stroke-linejoin="round"

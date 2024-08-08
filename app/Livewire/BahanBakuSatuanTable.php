@@ -135,7 +135,7 @@ class BahanBakuSatuanTable extends Component
             'totalStokMasuk' => $totalStokMasuk,
             'totalStokKeluar' => $totalStokKeluar,
             'jumlahHari' => count($dateRange),
-            'satuanNamaTotal' => $satuanNamaTotal,
+            'satuanNamaTotal' => $satuanNamaTotal ?? '',
         ]);
     }
     

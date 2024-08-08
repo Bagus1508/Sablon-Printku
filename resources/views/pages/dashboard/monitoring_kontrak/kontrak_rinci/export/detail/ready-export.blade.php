@@ -25,23 +25,24 @@
             <th width="200px" rowspan="2" style="background-color: #C9DBF9; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Satuan
             </th>
-            @if ($loggedInUser->id_level_user === 1)                
-            <th width="200px" rowspan="2" style="background-color: #C9DBF9; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
-                Harga
-            </th>
-            @endif
             <th width="200px" rowspan="2" style="background-color: #C9DBF9; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Total Harga
             </th>
+            @if ($checkbox_cutting == 'true') 
             <th colspan="3" style="background-color: #EBD2DD; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Proses Cutting
             </th>
+            @endif
+            @if ($checkbox_jahit == 'true') 
             <th colspan="3" style="background-color: #D4A6BD; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Proses Jahit
             </th>
+            @endif
+            @if ($checkbox_packing == 'true') 
             <th colspan="3" style="background-color: #D9D3E9; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Tanggal Packing
             </th>
+            @endif
             <th colspan="5" style="background-color: #D9EAD3; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Pengiriman Barang
             </th>
@@ -79,6 +80,7 @@
                 Akhir KR
             </th>
             {{-- Proses Cutting --}}
+            @if ($checkbox_cutting == 'true') 
             <th width="100px" style="background-color: #EBD2DD; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Tanggal Masuk
             </th>
@@ -88,7 +90,9 @@
             <th width="100px" style="background-color: #EBD2DD; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Durasi
             </th>
+            @endif
             {{-- Proses jahit --}}
+            @if ($checkbox_jahit == 'true') 
             <th width="100px" style="background-color: #D4A6BD; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Tanggal Masuk
             </th>
@@ -98,7 +102,9 @@
             <th width="100px" style="background-color: #D4A6BD; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Durasi
             </th>
+            @endif
             {{-- Proses Packing --}}
+            @if ($checkbox_packing == 'true') 
             <th width="100px" style="background-color: #D9D3E9; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Tanggal Masuk
             </th>
@@ -108,6 +114,7 @@
             <th width="100px" style="background-color: #D9D3E9; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Durasi
             </th>
+            @endif
             {{-- Pengiriman Barang --}}
             <th width="100px" style="background-color: #D9EAD3; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Region
@@ -218,7 +225,7 @@
             </td>
             {{-- Item Barang Pertama --}}
             <td style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle; vertical-align: middle; vertical-align: middle;">
-                <p class="text-black dark:text-white">{{$dataKontrakRinci->barangKontrak->first()->nama_barang ?? ''}}</p>
+                <p class="text-black dark:text-white">{{$dataKontrakRinci->barangKontrak->first()->dataProduk->nama_barang ?? ''}}</p>
             </td>    
             <td  style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle; vertical-align: middle; vertical-align: middle;">
                 <p class="text-black dark:text-white">{{$dataKontrakRinci->barangKontrak->first()->kuantitas ?? ''}}</p>
@@ -226,17 +233,6 @@
             <td  style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle; vertical-align: middle; vertical-align: middle;">
                 <p class="text-black dark:text-white">{{$dataKontrakRinci->barangKontrak->first()->satuan->nama_satuan ?? ''}}</p>
             </td>
-            @if ($loggedInUser->id_level_user === 1)    
-            <td style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
-                <p class="text-black dark:text-white text-left">
-                    @if (isset($dataKontrakRinci->barangKontrak->first()->harga_barang))
-                        Rp {{ number_format($dataKontrakRinci->barangKontrak->first()->harga_barang, 0, ',', '.') }}
-                    @else
-                        
-                    @endif
-                </p>
-            </td>            
-            @endif
             {{-- Total Harga --}}
             @if ($loggedInUser->id_level_user === 1)              
             <td rowspan="{{ $totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
@@ -250,6 +246,7 @@
             </td>            
             @endif
             {{-- Proses Cutting --}}
+            @if ($checkbox_cutting == 'true') 
             <!-- Tanggal Masuk Proses Cutting -->
             <td rowspan="{{ $totalBarang }}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; vertical-align: middle; vertical-align: middle;">
                 <p class="text-black dark:text-white">
@@ -272,8 +269,10 @@
             </td>
             <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
                 <p class="text-black dark:text-white">{{$dataKontrakRinci->prosesCutting->durasi ?? ''}} Hari</p>
-            </td>       
+            </td>
+            @endif       
             {{-- Proses Jahit --}}
+            @if ($checkbox_jahit == 'true') 
             <!-- Tanggal Masuk Proses Jahit -->
             <td rowspan="{{ $totalBarang }}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; vertical-align: middle;">
                 <p class="text-black dark:text-white">
@@ -296,8 +295,10 @@
             </td>
             <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle; vertical-align: middle;">
                 <p class="text-black dark:text-white">{{$dataKontrakRinci->prosesJahit->durasi ?? ''}} Hari</p>
-            </td>           
+            </td>
+            @endif           
             {{-- Proses Packing --}}
+            @if ($checkbox_packing == 'true') 
             <!-- Tanggal Masuk Proses Packing -->
             <td rowspan="{{ $totalBarang }}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; vertical-align: middle; vertical-align: middle;">
                 <p class="text-black dark:text-white">
@@ -320,7 +321,8 @@
             </td>
             <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
                 <p class="text-black dark:text-white">{{$dataKontrakRinci->prosesPacking->durasi ?? ''}} Hari</p>
-            </td>           
+            </td>
+            @endif           
             {{-- Pengiriman Barang --}}
             <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
                 <p class="text-black dark:text-white">{{$dataKontrakRinci->pengirimanBarang->region->nama_region ?? ''}}</p>
@@ -405,7 +407,7 @@
             <td rowspan="{{ $totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
                 @if($dataKontrakRinci->invoice && $dataKontrakRinci->invoice->foto_invoice)
                 
-                <img src="{{ public_path('storage/upload/dokumen_pengiriman_barang/' . $dataKontrakRinci->pengirimanBarang->bukti_foto) }}" alt="Bukti Foto" width="200px">
+                <img src="{{ public_path('storage/upload/dokumen_invoice/' . $dataKontrakRinci->invoice->foto_invoice) }}" alt="Bukti Foto" width="200px">
                 
                 @else
                     <p class="text-black dark:text-white">Gambar tidak tersedia</p>
@@ -427,7 +429,7 @@
         @endif              
         <tr>
             <td style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
-                <p class="text-black dark:text-white">{{$itemBarang->nama_barang}}</p>
+                <p class="text-black dark:text-white">{{$itemBarang->dataProduk->nama_barang}}</p>
             </td>    
             <td  style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
                 <p class="text-black dark:text-white">{{$itemBarang->kuantitas}}</p>
@@ -435,11 +437,6 @@
             <td  style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
                 <p class="text-black dark:text-white">{{$itemBarang->satuan->nama_satuan}}</p>
             </td>
-            @if ($loggedInUser->id_level_user === 1)                
-            <td  style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
-                <p class="text-black dark:text-white">{{ 'Rp ' . number_format($itemBarang->harga_barang ?? '', 0, ',', '.') }}</p>
-            </td>
-            @endif
         </tr>
         @endforeach
     </tbody>

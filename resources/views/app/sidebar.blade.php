@@ -49,7 +49,7 @@
                         <!-- Menu Item Data Master -->
                         @if ((in_array($loggedInUser->id_level_user, [1,2])))
                         <li>
-                            <a class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
+                            <a class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out @if (Route::is(['data-akun.index', 'data-satuan.index', 'data-warna.index', 'data-ukuran.index', 'data-merek.index', 'data-pajak.index'])) {{ 'bg-graydark' }} @endif hover:bg-graydark dark:hover:bg-meta-4"
                                 href="#" @click.prevent="selected = (selected === 'Master' ? '':'Master')">
                                 <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" id="Layer_1"
                                     data-name="Layer 1" width="18" height="18" viewBox="0 0 24 24">
@@ -99,6 +99,20 @@
                                             :class="page === 'warna' && '!text-white'">Data Warna
                                         </a>
                                     </li>
+                                    <li>
+                                        <a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 @if (Route::is('data-merek.index')) {{ 'text-white' }} @endif duration-300 ease-in-out hover:text-white"
+                                            href="{{ route('data-merek.index') }}"
+                                            :class="page === 'merek' && '!text-white'">Data Merek
+                                        </a>
+                                    </li>
+                                    @if ($loggedInUser->id_level_user == 1)
+                                    <li>
+                                        <a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 @if (Route::is('data-merek.index')) {{ 'text-white' }} @endif duration-300 ease-in-out hover:text-white"
+                                            href="{{ route('data-pajak.index') }}"
+                                            :class="page === 'ppn' && '!text-white'">PPN
+                                        </a>
+                                    </li>    
+                                    @endif
                                 </ul>
                             </div>
                             <!-- Dropdown Menu End -->
@@ -172,7 +186,7 @@
                     <!-- Menu Item Monitoring Persediaan -->
                     <!-- Menu Item Bahan Baku -->
                     <li>
-                        <a class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark @if (Route::is(['persediaan-bahan-baku-satuan.index', 'bahan-baku-global.index'])) {{ 'bg-graydark' }} @endif dark:hover:bg-meta-4"
+                        <a class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark @if (Route::is(['persediaan-bahan-baku-satuan.index', 'persediaan-bahan-baku-global.index'])) {{ 'bg-graydark' }} @endif dark:hover:bg-meta-4"
                             href="#" @click.prevent="selected = (selected === 'BahanBaku' ? '':'BahanBaku')">
                             <svg class="fill-current" width="18" height="18" viewBox="0 0 24 24"
                                 id="_003_ECOMMERCE_03" data-name="003_ECOMMERCE_03"

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\MonitoringKontrakRinciAllExport;
 use App\Exports\MonitoringKontrakRinciDetailExport;
 use App\Helpers\LogHelper;
+use App\Helpers\TanggalHelper;
 use App\Models\BapbBapp;
 use App\Models\BaRikmatek;
 use App\Models\Bast;
@@ -11,6 +13,7 @@ use App\Models\DataPerusahaan;
 use App\Models\Invoice;
 use App\Models\KontrakGlobal;
 use App\Models\KontrakRinci;
+use App\Models\Pajak;
 use App\Models\PengirimanBarang;
 use App\Models\ProdukKontrak;
 use App\Models\ProsesCutting;
@@ -32,6 +35,7 @@ class MonitoringKontrakRinciController extends Controller
 
         return view('pages.dashboard.monitoring_kontrak.kontrak_rinci.index',[
             'dataPerusahaan' => $dataPerusahaan,
+            'dataPajak' => Pajak::get()->first(),
         ]);
     }
 
@@ -41,6 +45,7 @@ class MonitoringKontrakRinciController extends Controller
             $validated = $request->validate([
                 'takon' => 'nullable|unique:kontrak_rinci_table,takon',
                 'no_telepon' => 'required',
+                'no_kontrak_pihak_pertama' => 'required',
                 'tanggal_kontrak' => 'required|date',
                 'no_kontrak_rinci' => 'nullable',
                 'tanggal_kr' => 'nullable|date',
@@ -51,6 +56,7 @@ class MonitoringKontrakRinciController extends Controller
             ], [
                 'takon.unique' => 'No Kontrak Takon ini sudah digunakan dalam kontrak rinci lain.',
                 'no_telepon.required' => 'HP tidak boleh kosong.',
+                'no_kontrak_pihak_pertama.required' => 'No Kontrak Pihak Pertama tidak boleh kosong.',
                 'tanggal_kontrak.required' => 'Tanggal kontrak tidak boleh kosong.',
                 'tanggal_kontrak.date' => 'Tanggal kontrak harus berupa tanggal yang valid.',
                 'tanggal_kr.date' => 'Tanggal KR harus berupa tanggal yang valid.',
@@ -62,13 +68,14 @@ class MonitoringKontrakRinciController extends Controller
             $parameter = [
                 'takon' => $validated['takon'],
                 'no_telepon' => $validated['no_telepon'],
+                'no_kontrak_pihak_pertama' => $validated['no_kontrak_pihak_pertama'],
                 'tanggal_kontrak' => $validated['tanggal_kontrak'],
-                'no_kontrak_rinci' => $validated['no_kontrak_rinci'] ?? '',
-                'tanggal_kr' => $validated['tanggal_kr'] ?? '',
-                'awal_kr' => $validated['awal_kr'] ?? '',
-                'akhir_kr' => $validated['akhir_kr'] ?? '',
-                'uraian' => $validated['uraian'] ?? '',
-                'id_perusahaan' => $validated['id_perusahaan'] ?? '',
+                'no_kontrak_rinci' => $validated['no_kontrak_rinci'] ?? null,
+                'tanggal_kr' => $validated['tanggal_kr'] ?? null,
+                'awal_kr' => $validated['awal_kr'] ?? null,
+                'akhir_kr' => $validated['akhir_kr'] ?? null,
+                'uraian' => $validated['uraian'] ?? null,
+                'id_perusahaan' => $validated['id_perusahaan'] ?? null,
             ];
     
             $dataKontrakRinci = KontrakRinci::create($parameter);
@@ -117,6 +124,7 @@ class MonitoringKontrakRinciController extends Controller
             $validated = $request->validate([
                 'takon' => 'nullable',
                 'no_telepon' => 'required',
+                'no_kontrak_pihak_pertama' => 'required',
                 'tanggal_kontrak' => 'required|date',
                 'no_kontrak_rinci' => 'nullable',
                 'tanggal_kr' => 'nullable|date',
@@ -126,6 +134,7 @@ class MonitoringKontrakRinciController extends Controller
                 'id_perusahaan' => 'nullable|integer',
             ], [
                 'no_telepon.required' => 'HP tidak boleh kosong.',
+                'no_kontrak_pihak_pertama.required' => 'No Kontrak Pihak Pertama tidak boleh kosong.',
                 'tanggal_kontrak.required' => 'Tanggal kontrak tidak boleh kosong.',
                 'tanggal_kontrak.date' => 'Tanggal kontrak harus berupa tanggal yang valid.',
                 'tanggal_kr.date' => 'Tanggal KR harus berupa tanggal yang valid.',
@@ -138,17 +147,18 @@ class MonitoringKontrakRinciController extends Controller
 
             $dataKontrakRinci->takon = $validated['takon'];
             $dataKontrakRinci->no_telepon = $validated['no_telepon'];
+            $dataKontrakRinci->no_kontrak_pihak_pertama = $validated['no_kontrak_pihak_pertama'];
             $dataKontrakRinci->tanggal_kontrak = $validated['tanggal_kontrak'];
-            $dataKontrakRinci->no_kontrak_rinci = $validated['no_kontrak_rinci'] ?? '';
-            $dataKontrakRinci->tanggal_kr = $validated['tanggal_kr'] ?? '';
-            $dataKontrakRinci->awal_kr = $validated['awal_kr'] ?? '';
-            $dataKontrakRinci->akhir_kr = $validated['akhir_kr'] ?? '';
-            $dataKontrakRinci->uraian = $validated['uraian'] ?? '';
-            $dataKontrakRinci->id_perusahaan = $validated['id_perusahaan'] ?? '';
+            $dataKontrakRinci->no_kontrak_rinci = $validated['no_kontrak_rinci'] ?? null;
+            $dataKontrakRinci->tanggal_kr = $validated['tanggal_kr'] ?? null;
+            $dataKontrakRinci->awal_kr = $validated['awal_kr'] ?? null;
+            $dataKontrakRinci->akhir_kr = $validated['akhir_kr'] ?? null;
+            $dataKontrakRinci->uraian = $validated['uraian'] ?? null;
+            $dataKontrakRinci->id_perusahaan = $validated['id_perusahaan'] ?? null;
 
             // Cek apakah kode_ekspedisi sudah digunakan oleh kontrak rinci lain
-            if (KontrakRinci::where('no_kontrak_rinci', $validated['no_kontrak_rinci'])->where('id', '!=', $id)->exists()) {
-                Alert::error('Gagal!', 'kontrak rinci dengan kode '.$validated['no_kontrak_rinci'].' sudah digunakan oleh kontrak rinci lain.');
+            if (KontrakRinci::where('takon', $validated['takon'])->where('id', '!=', $id)->exists()) {
+                Alert::error('Gagal!', 'kontrak takon dengan kode '.$validated['takon'].' sudah digunakan oleh kontrak takon lain.');
                 return redirect()->back();
             }
 
@@ -179,7 +189,7 @@ class MonitoringKontrakRinciController extends Controller
             $data = ProsesCutting::find($request->input('id'));
             if (!$data) {
                 // Jika data tidak ditemukan, arahkan kembali dengan pesan error
-                Alert::error('Error!', 'Data Proses Cutting tidak ditemukan.');
+                Alert::error('Error!', 'Data Kontrak Rinci tidak ditemukan.');
                 return redirect()->back();
             }
         
@@ -196,8 +206,8 @@ class MonitoringKontrakRinciController extends Controller
         
             $data->save();
         
-            Alert::success('Berhasil!', 'Berhasil mengubah data Proses Cutting dengan No Kontrak Rinci '. ($data->kontrakRinci->no_kontrak_rinci ?? 'No Kontrak Rinci Kosong') . '.');
-            LogHelper::success('Berhasil mengubah data Proses Cutting dengan No Kontrak Rinci '. ($data->kontrakRinci->no_kontrak_rinci ?? 'No Kontrak Rinci Kosong') . '.');
+            Alert::success('Berhasil!', 'Berhasil mengubah data Kontrak Rinci dengan No Kontrak Rinci '. ($data->kontrakRinci->no_kontrak_rinci ?? 'No Kontrak Rinci Kosong') . '.');
+            LogHelper::success('Berhasil mengubah data Kontrak Rinci dengan No Kontrak Rinci '. ($data->kontrakRinci->no_kontrak_rinci ?? 'No Kontrak Rinci Kosong') . '.');
             return redirect()->back();
             // Additional logic here if needed
         } catch (Throwable $e) {
@@ -273,7 +283,6 @@ class MonitoringKontrakRinciController extends Controller
 
     public function updateBaRikmatek(Request $request)
     {
-        dd($request->all());
         try {
             $validated = $request->validate([
                 'no' => 'nullable',
@@ -344,7 +353,7 @@ class MonitoringKontrakRinciController extends Controller
         }
     }
 
-    public function preview_export(Request $request, $id) 
+    public function preview_export_detail(Request $request, $id) 
     {
         try {
             $query = KontrakRinci::with(['prosesCutting', 'prosesJahit', 'prosesPacking', 'barangKontrak', 'pengirimanBarang', 'ba_rikmatek', 
@@ -368,6 +377,9 @@ class MonitoringKontrakRinciController extends Controller
                 'durasiHari' => $durasiHari,
                 'totalBarang' => $totalBarang,
                 'idKontrakRinci' => $dataKontrakRinci->id,
+                "checkbox_cutting" => $request->input('checkbox_cutting'),
+                "checkbox_jahit" => $request->input('checkbox_jahit'),
+                "checkbox_packing" => $request->input('checkbox_packing'),
             ]);
         } catch (\Exception $e) {
             // Tangani error dan tampilkan pesan
@@ -379,8 +391,173 @@ class MonitoringKontrakRinciController extends Controller
     public function exportKontrakRinciDetail(Request $request)
     {
         $idKontrakRinci = $request->input('id_kontrak_rinci');
+        $checkboxCutting = $request->input('checkbox_cutting');
+        $checkboxJahit = $request->input('checkbox_jahit');
+        $checkboxPacking = $request->input('checkbox_packing');
+
         $filename = 'KONTRAK_RINCI_DETAIL_' . now()->format('Ymd_His') . '.xlsx';
-        return Excel::download(new MonitoringKontrakRinciDetailExport($idKontrakRinci), $filename);
+        return Excel::download(new MonitoringKontrakRinciDetailExport($idKontrakRinci, $checkboxCutting, $checkboxJahit, $checkboxPacking), $filename);
+    }
+
+    public function preview_export_all(Request $request) 
+    {
+        try {
+            // Tangkap rentang tanggal dari parameter query
+            $tanggal_kontrak_rinci = $request->input('tanggal'); // Ambil nilai dari parameter URL
+            $proses_jahit_checkbox = $request->input('proses_jahit_checkbox'); // Ambil nilai dari parameter URL
+            $proses_cutting_checkbox = $request->input('proses_cutting_checkbox'); // Ambil nilai dari parameter URL
+            $proses_packing_checkbox = $request->input('proses_packing_checkbox'); // Ambil nilai dari parameter URL
+            $no_kontrak_pihak_pertama = $request->input('no_kontrak_pihak_pertama'); // Ambil nilai dari parameter URL
+            $kode_perusahaan = $request->input('kode_perusahaan'); // Ambil nilai dari parameter URL
+            
+            $proses_cutting_boolean = $proses_cutting_checkbox ? "true" : "false";
+            $proses_jahit_boolean = $proses_jahit_checkbox ? "true" : "false";
+            $proses_packing_boolean = $proses_packing_checkbox ? "true" : "false";            
+
+            $startDateFormatted = '';
+            $endDateFormatted = '';
+
+            if($tanggal_kontrak_rinci == null){
+                // Mendapatkan tanggal awal tahun ini
+                $startDateStr = Carbon::now()->startOfYear()->format('Y-m-d');
+                // Mendapatkan tanggal akhir tahun ini
+                $endDateStr = Carbon::now()->endOfYear()->format('Y-m-d');
+
+                $startDate = Carbon::parse($startDateStr);
+                $endDate = Carbon::parse($endDateStr);
+
+                $startDateFormatted = Carbon::parse($startDate)->translatedFormat('j F Y');
+                $endDateFormatted = Carbon::parse($endDate)->translatedFormat('j F Y');
+            } else {
+                $tanggalKontrakRinci = explode(' - ', $tanggal_kontrak_rinci); // Membagi berdasarkan pemisah
+
+                if (count($tanggalKontrakRinci) == 1) {
+                    $startDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalKontrakRinci[0], 'en'))->format("Y-m-d");
+                    $startDate = Carbon::parse($startDateStr);
+                    $endDate = $startDate;
+                } else {
+                    $startDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalKontrakRinci[0], 'en'))->format("Y-m-d");
+                    $endDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalKontrakRinci[1], 'en'))->format("Y-m-d");
+
+                    $startDate = Carbon::parse($startDateStr);
+                    $endDate = Carbon::parse($endDateStr);
+                }
+            }
+
+            $query = KontrakRinci::whereBetween('tanggal_kontrak', [$startDate, $endDate])
+            ->orderBy('tanggal_kontrak', 'desc')
+            ->with(['prosesCutting', 'prosesJahit', 'prosesPacking', 'barangKontrak', 'pengirimanBarang', 'ba_rikmatek', 
+                    'bapb_bapp', 'bast', 'invoice'                 
+                   ]); 
+                   
+            if ($no_kontrak_pihak_pertama != 0) {
+                $query->where('no_kontrak_pihak_pertama', $no_kontrak_pihak_pertama);
+            }
+                    
+            if ($kode_perusahaan != 0) {
+                $query->whereHas('perusahaan', function ($query) use ($kode_perusahaan) {
+                    $query->where('kode_perusahaan', $kode_perusahaan);
+                });
+            }
+
+            $dataKontrakRinci = $query->get()->all();
+        
+            return view('pages.dashboard.monitoring_kontrak.kontrak_rinci.export.index', [
+                'dataKontrakRinci' => $dataKontrakRinci,
+                'startDateFormatted' => $startDateFormatted ?? '',
+                'endDateFormatted' => $endDateFormatted ?? '',
+                'startDate' => $startDate ?? '',
+                'endDate' => $endDate ?? '',
+                'tanggal_kontrak_rinci' => $tanggal_kontrak_rinci ?? '',
+                'proses_jahit_checkbox' => $proses_jahit_checkbox ?? '',
+                'proses_cutting_checkbox' => $proses_cutting_checkbox ?? '',
+                'proses_packing_checkbox' => $proses_packing_checkbox ?? '',
+                'checkbox_jahit' => $proses_jahit_boolean ?? '',
+                'checkbox_cutting' => $proses_cutting_boolean ?? '',
+                'checkbox_packing' => $proses_packing_boolean ?? '',
+                'no_kontrak_pihak_pertama' => $no_kontrak_pihak_pertama ?? '',
+                'kode_perusahaan' => $kode_perusahaan ?? '',
+                'dataPajak' => Pajak::get()->first(),
+            ]);
+        } catch (\Exception $e) {
+            // Tangani error dan tampilkan pesan
+            toast('Gagal menampilkan data: ' . $e->getMessage(), 'error', 'top-right');
+            return redirect()->back();
+        }
+    }
+
+    public function exportKontrakRinciAll(Request $request)
+    {
+        // Tangkap rentang tanggal dari parameter query
+        $tanggal_kontrak_rinci = $request->input('tanggal'); // Ambil nilai dari parameter URL
+
+        $startDateFormatted = '';
+        $endDateFormatted = '';
+
+        if($tanggal_kontrak_rinci == null){
+            // Mendapatkan tanggal awal tahun ini
+            $startDateStr = Carbon::now()->startOfYear()->format('Y-m-d');
+            // Mendapatkan tanggal akhir tahun ini
+            $endDateStr = Carbon::now()->endOfYear()->format('Y-m-d');
+
+            $startDate = Carbon::parse($startDateStr);
+            $endDate = Carbon::parse($endDateStr);
+
+            $startDateFormatted = Carbon::parse($startDate)->translatedFormat('j F Y');
+            $endDateFormatted = Carbon::parse($endDate)->translatedFormat('j F Y');
+        } else {
+            $tanggalKontrakRinci = explode(' - ', $tanggal_kontrak_rinci); // Membagi berdasarkan pemisah
+
+            if (count($tanggalKontrakRinci) == 1) {
+                $startDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalKontrakRinci[0], 'en'))->format("Y-m-d");
+                $startDate = Carbon::parse($startDateStr);
+                $endDate = $startDate;
+            } else {
+                $startDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalKontrakRinci[0], 'en'))->format("Y-m-d");
+                $endDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalKontrakRinci[1], 'en'))->format("Y-m-d");
+
+                $startDate = Carbon::parse($startDateStr);
+                $endDate = Carbon::parse($endDateStr);
+            }
+        }
+
+        $proses_jahit_checkbox = $request->input('proses_jahit_checkbox'); // Ambil nilai dari parameter URL
+        $proses_cutting_checkbox = $request->input('proses_cutting_checkbox'); // Ambil nilai dari parameter URL
+        $proses_packing_checkbox = $request->input('proses_packing_checkbox'); // Ambil nilai dari parameter URL
+        $no_kontrak_pihak_pertama = $request->input('no_kontrak_pihak_pertama'); // Ambil nilai dari parameter URL
+        $kode_perusahaan = $request->input('kode_perusahaan'); // Ambil nilai dari parameter URL
+
+        $filename = 'KONTRAK_RINCI_ALL_' . now()->format('Ymd_His') . '.xlsx';
+        return Excel::download(new MonitoringKontrakRinciAllExport($startDate, $endDate, $proses_jahit_checkbox, $proses_cutting_checkbox, $proses_packing_checkbox, $no_kontrak_pihak_pertama, $kode_perusahaan), $filename);
+    }
+
+    public function updateTotalHarga(Request $request, $id){
+        try {
+            $validated = $request->validate([
+                'total_harga' => 'nullable',
+            ]);
+
+            
+            $data = KontrakRinci::find($id);
+            if (!$data) {
+                // Jika data tidak ditemukan, arahkan kembali dengan pesan error
+                Alert::error('Error!', 'Data Kontrak Rinci tidak ditemukan.');
+                return redirect()->back();
+            }
+            
+            $totalHargaStr = str_replace(['Rp. ', '.'], '', $validated['total_harga'] ?? 0);
+            $data->total_harga = floatval($totalHargaStr) ;
+        
+            $data->save();
+        
+            Alert::success('Berhasil!', 'Berhasil mengubah total harga dengan No Kontrak Rinci '. ($data->no_kontrak_rinci ?? 'No Kontrak Rinci Kosong') . '.');
+            LogHelper::success('Berhasil mengubah total harga dengan No Kontrak Rinci '. ($data->no_kontrak_rinci ?? 'No Kontrak Rinci Kosong') . '.');
+            return redirect()->back();
+            // Additional logic here if needed
+        } catch (Throwable $e) {
+            LogHelper::error($e->getMessage());
+            return view('pages.utility.500');
+        }
     }
     
 }

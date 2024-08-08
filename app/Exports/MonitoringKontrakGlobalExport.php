@@ -21,6 +21,7 @@ use App\Models\DataSatuan;
 use App\Models\DataUkuran;
 use App\Models\DataWarna;
 use App\Models\KontrakRinci;
+use App\Models\Pajak;
 use App\Models\ProdukKategori;
 
 class MonitoringKontrakGlobalExport implements FromView
@@ -61,6 +62,7 @@ class MonitoringKontrakGlobalExport implements FromView
             'startDate' => $startDate,
             'endDate' => $endDate,
             'dataKontrak' => $dataKontrak,
+            'dataPajak' => Pajak::get()->first(),
         ]);
     }
 }

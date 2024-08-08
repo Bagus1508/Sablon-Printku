@@ -12,4 +12,8 @@ class DataWarna extends Model
     protected $table = 'data_warna_table';
 
     protected $guarded = ['id'];
+
+    public function dataMerek(){
+        return $this->hasOne(DataMerek::class, 'id', 'id_merek');
+    }
 }

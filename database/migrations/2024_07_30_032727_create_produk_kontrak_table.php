@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('produk_kontrak', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_kontrak_rinci');
-            $table->string('nama_barang', 100);
+            $table->unsignedBigInteger('id_produk');
             $table->integer('kuantitas');
             $table->unsignedBigInteger('id_satuan')->nullable();
             $table->integer('volume_kontrak')->nullable();
@@ -30,6 +30,7 @@ return new class extends Migration
                   ->onDelete('cascade')
                   ->onUpdate('cascade');
             $table->foreign('id_satuan')->references('id')->on('satuan_table');
+            $table->foreign('id_produk')->references('id')->on('produk_table');
         });
     }
 

@@ -40,6 +40,13 @@
                         </div>
                         <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                No Kontrak Pihak Pertama <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
+                            </label>
+                            <input type="text" id="no_kontrak_pihak_pertama" name="no_kontrak_pihak_pertama" placeholder="Masukan No Kontrak Pihak Pertama"
+                                class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                        </div>
+                        <div class="mb-4.5 w-full">
+                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 Tanggal Kontrak <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
                             </label>
                             <input type="date" id="tanggal_kontrak" name="tanggal_kontrak" placeholder="Masukan Tanggal Kontrak"
@@ -60,7 +67,7 @@
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 No Kontrak Rinci
                             </label>
-                            <input type="number" id="no_kontrak_rinci" name="no_kontrak_rinci" placeholder="Masukan No Kontrak HP"
+                            <input type="text" id="no_kontrak_rinci" name="no_kontrak_rinci" placeholder="Masukan No Kontrak HP"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div>
                         <div class="mb-4.5 w-full">
@@ -128,6 +135,7 @@ $(document).ready(function() {
         const id = $(this).data('id-kontrak-rinci');
         const takon = $(this).data('takon');
         const no_telepon = $(this).data('no-telepon');
+        const no_kontrak_pihak_pertama = $(this).data('no-kontrak-pihak-pertama');
         const tanggal_kontrak = $(this).data('tanggal-kontrak');
         const id_perusahaan_kontrak_rinci = $(this).data('id-perusahaan');
         const no_kontrak_rinci = $(this).data('no-kontrak-rinci');
@@ -140,6 +148,7 @@ $(document).ready(function() {
         $('#id_kontrak_rinci').val(id);
         $('#takon').val(takon);
         $('#no_telepon').val(no_telepon);
+        $('#no_kontrak_pihak_pertama').val(no_kontrak_pihak_pertama);
         $('#tanggal_kontrak').val(tanggal_kontrak);
         $('#id_perusahaan_kontrak_rinci').val(id_perusahaan_kontrak_rinci);
         $('#no_kontrak_rinci').val(no_kontrak_rinci);

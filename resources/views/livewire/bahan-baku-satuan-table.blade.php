@@ -31,7 +31,7 @@
         <table class="w-full table-auto">
             <thead class="bg-blue-600 text-white">
                 <tr class="text-left dark:bg-meta-4">
-                    <th rowspan="3" class="min-w-[50px] text-center px-4 py-4 font-medium text-white dark:text-white">
+                    <th rowspan="3" class="min-w-[50px] text-center px-4 py-4 font-medium text-white dark:text-white sticky left-0 border-b bg-blue-600 border-white">
                         No
                     </th>
                     <th rowspan="3" class="px-4 py-4 text-center font-medium text-white dark:text-white">
@@ -83,8 +83,8 @@
             <tbody class="dark:bg-meta-4">
                 @foreach ($data as $item)                    
                     <tr>
-                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                            <h5 class="font-medium text-black dark:text-white">{{$loop->index + 1}}</h5>
+                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark sticky left-0 bg-blue-600">
+                            <h5 class="font-medium text-white dark:text-white">{{$loop->index + 1}}</h5>
                         </td>
                         <td class="mx-auto px-4 py-5 border-b border-[#eee] dark:border-strokedark">
                             <div class="flex items-center mx-auto justify-center">

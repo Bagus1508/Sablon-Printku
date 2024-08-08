@@ -7,7 +7,7 @@
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                 </svg>
                 <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-white">Apakah anda yakin untuk menghapus warna ini?</h3>
-                <form class="formhapus-metode" method="POST" action="{{route('data-warna.destroy', (int)$ID)}}">
+                <form class="formhapus-metode" method="POST" action="{{route('data-warna.destroy', (int)$ID)}}" id="form-delete-warna">
                     {{ csrf_field() }}
                     {{ method_field('DELETE') }}
                     <button data-hs-overlay="#modal-delete-warna" type="submit" class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300  font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
@@ -20,3 +20,19 @@
         </div>
     </div>
 </div>
+<script>
+    // Ketika tombol edit diklik
+    $('.delete-warna').click(function() {
+    const id = $(this).data('id-warna');
+
+    console.log(id);
+
+    // Select the form element
+    const form = $('form');
+    
+    // Set the action attribute of the form
+    const url = '{{ route("data-warna.destroy", ":id") }}'.replace(':id', id);
+    $('#form-delete-warna').attr('action', url);
+});
+
+</script>

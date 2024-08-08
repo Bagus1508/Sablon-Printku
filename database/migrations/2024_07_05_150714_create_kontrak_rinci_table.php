@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('kontrak_rinci_table', function (Blueprint $table){
             $table->id();
             $table->string('takon', 100);
-            $table->bigInteger('no_telepon');
+            $table->string('no_kontrak_pihak_pertama');
+            $table->string('no_telepon');
             $table->date('tanggal_kontrak');
-            $table->bigInteger('no_kontrak_rinci')->nullable();
+            $table->string('no_kontrak_rinci')->nullable();
             $table->date('tanggal_kr')->nullable();
             $table->date('awal_kr')->nullable();
             $table->date('akhir_kr')->nullable();

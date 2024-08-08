@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\LogHelper;
 use App\Models\DataSatuan;
+use App\Models\HargaProduk;
 use App\Models\Produk;
 use App\Models\StokHarian;
 use Carbon\Carbon;
@@ -29,15 +30,25 @@ class StokBahanBakuController extends Controller
     public function store(Request $request)
     {
         try {
+            $hargaBeliSatuan = str_replace('Rp', '', $request->input('harga_beli_satuan'));
+            $hargaBeliSatuan = str_replace('.', '', $hargaBeliSatuan);
+            $hargaBeliSatuan = str_replace(',', '.', $hargaBeliSatuan);
+            $hargaBeliSatuan = (float) $hargaBeliSatuan;
+
             $validated = $request->validate([
                 'id_produk' => 'required',
-                'tanggal' => 'required',
-                'stok_masuk' => 'nullable',
-                'stok_keluar' => 'nullable',
-                'id_satuan' => 'required',
+                'tanggal' => 'nullable|date',
+                'stok_masuk' => 'nullable|numeric',
+                'stok_keluar' => 'nullable|numeric',
+                'id_satuan' => 'required|integer',
+                $hargaBeliSatuan => 'nullable|regex:/^\d{1,3}(\.\d{3})*$/'
             ], [
-                'id_produk.required' => 'Produk tidak ada.',
-                'id_satuan.required' => 'Satuan tidak boleh kosong',
+                'tanggal.date' => 'Tanggal harus berupa format tanggal yang valid.',
+                'stok_masuk.numeric' => 'Stok masuk harus berupa angka.',
+                'stok_keluar.numeric' => 'Stok keluar harus berupa angka.',
+                'id_satuan.required' => 'Satuan tidak boleh kosong.',
+                'id_satuan.integer' => 'Satuan tidak sesuai.',
+                $hargaBeliSatuan.'regex' => 'Harga beli satuan harus dalam format yang benar, contoh: 1.000'
             ]);
 
             $parameter = [
@@ -57,6 +68,13 @@ class StokBahanBakuController extends Controller
             }
     
             $dataStokHarian = StokHarian::create($parameter);
+
+            $parameterHarga = [
+                'id_stok_harian' => $dataStokHarian->id,
+                'harga_beli_satuan' => $hargaBeliSatuan,
+            ];
+
+            $hargaProduk = HargaProduk::create($parameterHarga);
     
             if (!$dataStokHarian) {
                 Alert::error('Gagal!', 'Gagal menambahkan stok harian');
@@ -84,17 +102,28 @@ class StokBahanBakuController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            $hargaBeliSatuan = str_replace('Rp', '', $request->input('harga_beli_satuan'));
+            $hargaBeliSatuan = str_replace('.', '', $hargaBeliSatuan);
+            $hargaBeliSatuan = str_replace(',', '.', $hargaBeliSatuan);
+            $hargaBeliSatuan = (float) $hargaBeliSatuan;
+
             $validated = $request->validate([
-                'id_produk' => 'required',
                 'tanggal' => 'nullable|date',
                 'stok_masuk' => 'nullable|numeric',
                 'stok_keluar' => 'nullable|numeric',
                 'id_satuan' => 'required|integer',
+                $hargaBeliSatuan => 'nullable|regex:/^\d{1,3}(\.\d{3})*$/'
             ], [
-                'id_satuan.required' => 'Satuan tidak boleh kosong',
+                'tanggal.date' => 'Tanggal harus berupa format tanggal yang valid.',
+                'stok_masuk.numeric' => 'Stok masuk harus berupa angka.',
+                'stok_keluar.numeric' => 'Stok keluar harus berupa angka.',
+                'id_satuan.required' => 'Satuan tidak boleh kosong.',
+                'id_satuan.integer' => 'Satuan tidak sesuai.',
+                $hargaBeliSatuan.'regex' => 'Harga beli satuan harus dalam format yang benar, contoh: 1.000'
             ]);
+            
     
-            $data = StokHarian::find($id);
+            $data = StokHarian::with('hargaProduk')->find($id);
     
             // Periksa apakah data ditemukan
             if (!$data) {
@@ -103,7 +132,7 @@ class StokBahanBakuController extends Controller
             }
 
 
-            $existingStokHarian = StokHarian::where('id_produk', $validated['id_produk'])                
+            $existingStokHarian = StokHarian::where('id_produk', $id)                
                             ->where('id', '!=', $id)
                             ->where('tanggal', $validated['tanggal'])->exists();
 
@@ -118,6 +147,19 @@ class StokBahanBakuController extends Controller
             $data->stok_keluar = $validated['stok_keluar'] ?? 0;
             $data->sisa_stok = $validated['stok_masuk'] ?? 0 - $validated['stok_keluar'] ?? 0;
             $data->id_satuan = $validated['id_satuan'];
+
+            /* Simpan Harga Produk */
+            if ($data->hargaProduk) {
+                $data->hargaProduk->harga_beli_satuan = $hargaBeliSatuan;
+                $data->hargaProduk->save();
+            } else {
+                $parameterHarga = [
+                    'id_stok_harian' => $data->id,
+                    'harga_beli_satuan' => $hargaBeliSatuan,
+                ];
+
+                HargaProduk::create($parameterHarga);
+            }
             
             // Simpan data
             $data->save();
@@ -131,17 +173,12 @@ class StokBahanBakuController extends Controller
         }
     }    
 
-    public function edit(){
-        return view('pages.dashboard.category.edit');
-    }
-
     public function destroy($id)
     {
         try{
             $data = StokHarian::find($id);
-            dd($data);
-            $user = $data->delete();
-            if(!$user){
+            $deleteStok = $data->delete();
+            if(!$deleteStok){
                 return redirect()->back()->with('gagal', 'menghapus');
             }
             LogHelper::success('Berhasil menghapus data stok harian!');

@@ -16,4 +16,8 @@ class ProdukKontrak extends Model
     public function satuan(){
         return $this->BelongsTo(DataSatuan::class, 'id_satuan');
     }
+
+    public function dataProduk(){
+        return $this->BelongsTo(Produk::class, 'id_produk');
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\LogHelper;
 use App\Models\DataSatuan;
 use App\Models\DataUkuran;
+use App\Models\HargaProduk;
 use App\Models\Produk;
 use App\Models\StokHarian;
 use Carbon\Carbon;
@@ -28,9 +29,21 @@ class StokPakaianCelanaController extends Controller
         return view('pages.dashboard.monitoring_persediaan.pakaian_celana.satuan.stok.show', compact('dataStokBahan', 'dataSatuan', 'dataUkuran'));
     }
 
+    public function hargaFormatted($inputHarga){
+        $hargaStrReplace = str_replace('Rp', '', $inputHarga);
+        $hargaStrReplace = str_replace('.', '', $hargaStrReplace);
+        $hargaStrReplace = str_replace(',', '.', $hargaStrReplace);
+        $hargaStrReplace = (float) $hargaStrReplace;
+
+        return $hargaStrReplace;
+    }
+
     public function store(Request $request)
     {
         try {
+            $hargaProduksiSatuan = $this->hargaFormatted($request->input('harga_produksi_satuan'));
+            $hargaJualSatuan = $this->hargaFormatted($request->input('harga_jual_satuan'));
+
             $validated = $request->validate([
                 'id_produk' => 'required',
                 'tanggal' => 'required',
@@ -38,10 +51,14 @@ class StokPakaianCelanaController extends Controller
                 'stok_keluar' => 'nullable',
                 'id_satuan' => 'required',
                 'id_ukuran' => 'required',
+                $hargaProduksiSatuan => 'nullable|regex:/^\d{1,3}(\.\d{3})*$/',
+                $hargaJualSatuan => 'nullable|regex:/^\d{1,3}(\.\d{3})*$/'
             ], [
                 'id_produk.required' => 'Produk tidak ada.',
                 'id_satuan.required' => 'Satuan tidak boleh kosong',
                 'id_ukuran.required' => 'Ukuran tidak boleh kosong',
+                $hargaProduksiSatuan.'regex' => 'Harga beli satuan harus dalam format yang benar, contoh: 1.000',
+                $hargaJualSatuan.'regex' => 'Harga jual satuan harus dalam format yang benar, contoh: 1.000'
             ]);
 
             $parameter = [
@@ -55,7 +72,6 @@ class StokPakaianCelanaController extends Controller
             ];
 
             $existingStokHarian = StokHarian::where('id_produk', $validated['id_produk'])                
-            ->where('id_ukuran', $validated['id_ukuran'])
             ->where('tanggal', $validated['tanggal'])
             ->exists();
 
@@ -67,6 +83,13 @@ class StokPakaianCelanaController extends Controller
             }        
     
             $dataStokHarian = StokHarian::create($parameter);
+
+            $parameterHarga = [
+                'id_stok_harian' => $dataStokHarian->id,
+                'harga_produksi_satuan' => $hargaProduksiSatuan,
+                'harga_jual_satuan' => $hargaJualSatuan,
+            ];
+            $hargaProduk = HargaProduk::create($parameterHarga);
     
             if (!$dataStokHarian) {
                 Alert::error('Gagal!', 'Gagal menambahkan stok harian');
@@ -94,16 +117,22 @@ class StokPakaianCelanaController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            $hargaProduksiSatuan = $this->hargaFormatted($request->input('harga_produksi_satuan'));
+            $hargaJualSatuan = $this->hargaFormatted($request->input('harga_jual_satuan'));
+
             $validated = $request->validate([
-                'id_produk' => 'required',
                 'tanggal' => 'nullable|date',
                 'stok_masuk' => 'nullable|numeric',
                 'stok_keluar' => 'nullable|numeric',
                 'id_satuan' => 'required|integer',
                 'id_ukuran' => 'required|integer',
+                $hargaProduksiSatuan => 'nullable|regex:/^\d{1,3}(\.\d{3})*$/',
+                $hargaJualSatuan => 'nullable|regex:/^\d{1,3}(\.\d{3})*$/'
             ], [
                 'id_satuan.required' => 'Satuan tidak boleh kosong',
-                'id_ukuran.required' => 'Ukuran tidak boleh kosong'
+                'id_ukuran.required' => 'Ukuran tidak boleh kosong',
+                $hargaProduksiSatuan.'regex' => 'Harga beli satuan harus dalam format yang benar, contoh: 1.000',
+                $hargaJualSatuan.'regex' => 'Harga jual satuan harus dalam format yang benar, contoh: 1.000'
             ]);
     
             $data = StokHarian::find($id);
@@ -114,7 +143,7 @@ class StokPakaianCelanaController extends Controller
                 return redirect()->back();
             }
 
-            $existingStokHarian = StokHarian::where('id_produk', $validated['id_produk'])    
+            $existingStokHarian = StokHarian::where('id_produk', $id)    
             ->where('id', '!=', $id)            
             ->where('id_ukuran', $validated['id_ukuran'])
             ->where('tanggal', $validated['tanggal'])
@@ -134,6 +163,22 @@ class StokPakaianCelanaController extends Controller
             $data->sisa_stok = $validated['stok_masuk'] ?? 0 - $validated['stok_keluar'] ?? 0;
             $data->id_satuan = $validated['id_satuan'];
             $data->id_ukuran = $validated['id_ukuran'];
+
+            /* Simpan Harga Produk */
+            if ($data->hargaProduk) {
+                $data->hargaProduk->harga_produksi_satuan = $hargaProduksiSatuan;
+                $data->hargaProduk->harga_jual_satuan = $hargaJualSatuan;
+                $data->hargaProduk->total_harga_produksi = $hargaJualSatuan;
+                $data->hargaProduk->save();
+            } else {
+                $parameterHarga = [
+                    'id_stok_harian' => $data->id,
+                    'harga_produksi_satuan' => $hargaProduksiSatuan,
+                    'harga_jual_satuan' => $hargaJualSatuan,
+                ];
+
+                HargaProduk::create($parameterHarga);
+            }
             
             // Simpan data
             $data->save();

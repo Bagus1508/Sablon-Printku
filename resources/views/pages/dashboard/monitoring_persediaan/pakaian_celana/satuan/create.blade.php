@@ -8,7 +8,7 @@
                 <div
                     class="border-b border-stroke px-6.5 py-4 dark:border-strokedark flex justify-between self-baseline">
                     <h3 class="font-medium text-black dark:text-white">
-                        Tambah Data Bahan
+                        Tambah Data Pakaian Celana
                     </h3>
                     <div>
                         <button data-hs-overlay="#modal-create-produk" type="button"
@@ -20,7 +20,7 @@
                         </button>
                     </div>
                 </div>
-                <form method="POST" action="{{route('persediaan-bahan-baku-satuan.store')}}">
+                <form method="POST" action="{{route('persediaan-pakaian-celana-satuan.store')}}">
                     @csrf
                     <div class="p-6.5">
                         <div class="mb-4.5 w-full">
@@ -54,6 +54,16 @@
                             <select required id="id_warna" name="id_warna" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
                                 @foreach ($dataWarna as $item)
                                 <option value="{{$item->id}}">{{$item->nama_warna}} ({{$item->kode_warna}})</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-4.5 w-full">
+                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                Perusahaan
+                            </label>
+                            <select required id="id_perusahaan" name="id_perusahaan" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
+                                @foreach ($dataPerusahaan as $item)
+                                <option value="{{$item->id}}">{{$item->nama_perusahaan}} ({{$item->kode_perusahaan}})</option>
                                 @endforeach
                             </select>
                         </div>

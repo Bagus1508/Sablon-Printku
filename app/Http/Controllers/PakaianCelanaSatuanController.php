@@ -6,9 +6,11 @@ use App\Exports\StokBahanBakuSatuanExport;
 use App\Exports\StokPakaianCelanaSatuanExport;
 use App\Helpers\LogHelper;
 use App\Helpers\TanggalHelper;
+use App\Models\DataPerusahaan;
 use App\Models\DataSatuan;
 use App\Models\DataUkuran;
 use App\Models\DataWarna;
+use App\Models\HargaProduk;
 use App\Models\Produk;
 use App\Models\ProdukKategori;
 use App\Models\StokHarian;
@@ -32,8 +34,9 @@ class PakaianCelanaSatuanController extends Controller
         $dataSatuan = DataSatuan::all();
         $dataUkuran = DataUkuran::all();
         $dataWarna = DataWarna::all();
+        $dataPerusahaan = DataPerusahaan::all();
 
-        return view('pages.dashboard.monitoring_persediaan.pakaian_celana.satuan.index', compact('produkKategori', 'dataSatuan', 'dataUkuran', 'dataWarna'));
+        return view('pages.dashboard.monitoring_persediaan.pakaian_celana.satuan.index', compact('produkKategori', 'dataSatuan', 'dataUkuran', 'dataWarna', 'dataPerusahaan'));
     }
     
     public function store(Request $request)
@@ -59,8 +62,8 @@ class PakaianCelanaSatuanController extends Controller
             $validated['id_perusahaan'] = $validated['id_perusahaan'] ?? null;
 
             // Cek apakah No ID Bahan sudah digunakan
-            if (Produk::where('id_no', '=', $validated['id_no'])->exists()) {
-                Alert::error('Gagal!', 'No ID Bahan sudah digunakan.');
+            if (Produk::where('id_no', '=', $validated['id_no'])->where('id_perusahaan', '=', $validated['id_perusahaan'])->exists()) {
+                Alert::error('Gagal!', 'No ID Pakaian dan Celana sudah digunakan di perusahaan yang sama.');
                 return redirect()->back();
             }
             
@@ -153,8 +156,8 @@ class PakaianCelanaSatuanController extends Controller
             $data->id_perusahaan = $validated['id_perusahaan'];
 
             // Cek apakah No ID Bahan sudah digunakan
-            if (Produk::where('id_no', '=', $validated['id_no'])->where('id', '!=', $id)->exists()) {
-                Alert::error('Gagal!', 'No ID '.$validated['id_no'].' Bahan sudah digunakan.');
+            if (Produk::where('id_no', '=', $validated['id_no'])->where('id_perusahaan', '=', $validated['id_perusahaan'])->where('id', '!=', $id)->exists()) {
+                Alert::error('Gagal!', 'No ID Pakaian dan Celana sudah digunakan di perusahaan yang sama.');
                 return redirect()->back();
             }
 
@@ -225,26 +228,37 @@ class PakaianCelanaSatuanController extends Controller
 
     public function destroy($id)
     {
+        $data = Produk::find($id);
+    
+        if (!$data) {
+            return redirect()->back()->with('gagal', 'Produk tidak ditemukan');
+        }
+
+        // Hapus data harga produk terkait
+        HargaProduk::whereIn('id_stok_harian', function($query) use ($id) {
+            $query->select('id')
+                ->from('stok_harian_table')
+                ->where('id_produk', $id);
+        })->delete();
+
+        // Hapus stok harian terkait
+        $data->stok()->delete();
+
+        // Hapus produk
+        $deleteDataProduk = $data->delete();
+    
+        if (!$deleteDataProduk) {
+            return redirect()->back()->with('gagal', 'Gagal menghapus produk');
+        }
+    
+        LogHelper::success('Berhasil menghapus data produk dan stok terkait!');
+        toast('Berhasil menghapus data produk dan stok terkait!', 'success', 'top-right');
+        return redirect()->back();
         try {
-            $data = Produk::find($id);
-    
-            if (!$data) {
-                return redirect()->back()->with('gagal', 'Produk tidak ditemukan');
-            }
-    
-            $dataProduk = $data->delete();
-    
-            if (!$dataProduk) {
-                return redirect()->back()->with('gagal', 'Gagal menghapus produk');
-            }
-    
-            LogHelper::success('Berhasil menghapus data produk!');
-            toast('Berhasil menghapus data produk!','success','top-right');
-            return redirect()->back();
         } catch (Throwable $e) {
             LogHelper::error($e->getMessage());
             return view('pages.utility.500');
-        }
+        }        
     }
     
     public function preview_export(Request $request) 
@@ -283,6 +297,7 @@ class PakaianCelanaSatuanController extends Controller
                     $endDate = Carbon::parse($endDateStr);
                 }
             }
+
 
             // Buat daftar tanggal dalam rentang
             $dateRange = [];

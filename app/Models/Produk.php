@@ -34,6 +34,10 @@ class Produk extends Model
     {
         return $this->hasMany(StokHarian::class, 'id_produk', 'id');
     }
+    public function stok()
+    {
+        return $this->hasMany(StokHarian::class, 'id_produk', 'id');
+    }
 
     // Event deleting untuk menghapus stok terkait
     protected static function boot()

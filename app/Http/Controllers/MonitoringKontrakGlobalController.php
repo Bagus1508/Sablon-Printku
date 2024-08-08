@@ -7,6 +7,7 @@ use App\Helpers\LogHelper;
 use App\Helpers\TanggalHelper;
 use App\Models\KontrakGlobal;
 use App\Models\KontrakRinci;
+use App\Models\Pajak;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -16,7 +17,9 @@ use Throwable;
 class MonitoringKontrakGlobalController extends Controller
 {
     public function index(){
-        return view('pages.dashboard.monitoring_kontrak.kontrak_global.index');
+        return view('pages.dashboard.monitoring_kontrak.kontrak_global.index', [
+            'dataPajak' => Pajak::get()->first(),
+        ]);
     }
 
     public function updateStatusSpk(Request $request, $id){
@@ -102,6 +105,7 @@ class MonitoringKontrakGlobalController extends Controller
                 'startDate' => $startDate,
                 'endDate' => $endDate,
                 'dataKontrak' => $dataKontrak,
+                'dataPajak' => Pajak::get()->first(),
             ]);
         } catch (\Exception $e) {
             // Tangani error dan tampilkan pesan

@@ -350,6 +350,8 @@ class BahanBakuSatuanController extends Controller
                 'satuanNamaTotal' => $satuanNamaTotal,
                 'tgl_stok_satuan' => $tgl_stok_satuan,
                 'id_satuan' => $id_satuan,
+                'startDateFormatted' => $startDateFormatted,
+                'endDateFormatted' => $endDateFormatted,
             ]);
         } catch (\Exception $e) {
             // Tangani error dan tampilkan pesan

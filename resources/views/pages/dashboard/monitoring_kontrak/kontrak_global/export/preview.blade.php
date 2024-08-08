@@ -27,7 +27,10 @@
                 Harga
             </th>
             <th rowspan="2" width="200px" style="background-color: #D0DFE2; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
-                Total Harga
+                PPN ({{$dataPajak->ppn}}%)
+            </th>
+            <th rowspan="2" width="200px" style="background-color: #D0DFE2; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
+                Harga + PPN ({{$dataPajak->ppn}}%)
             </th>
             @endif
             <th rowspan="1" colspan="2" style="background-color: #C9DBF9; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
@@ -95,7 +98,7 @@
                     <p>{{$itemKontrak->uraian ?? 'Kosong'}}</p>
                 </td>
                 <td style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
-                    <p>{{$itemKontrak->barangKontrak->first()->nama_barang ?? 'Kosong'}}</p>
+                    <p>{{$itemKontrak->barangKontrak->first()->dataProduk->nama_barang ?? 'Kosong'}}</p>
                 </td>    
                 <td style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
                     <p>{{$itemKontrak->barangKontrak->first()->satuan->nama_satuan ?? 'Kosong'}}</p>
@@ -109,19 +112,23 @@
                 <td style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
                     <p>{{$itemKontrak->barangKontrak->first()->volume_sisa ?? 'Kosong'}}</p>
                 </td>
-                @if ($loggedInUser->id_level_user === 1)   
-                <td style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
-                    <p>
-                        {{ 'Rp ' . number_format($itemKontrak->barangKontrak->first()->harga_barang ?? 'Kosong', 0, ',', '.') }}
-                    </p>
-                </td>
-                @endif
                 @if ($loggedInUser->id_level_user === 1)                    
                 <td rowspan="{{$barangKontrakCount}}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
                     <p>
                         {{ 'Rp ' . number_format($itemKontrak->total_harga ?? 'Kosong', 0, ',', '.') }}
                     </p>
-                </td>    
+                </td>
+                <td rowspan="{{$barangKontrakCount}}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
+                    <p class="text-black dark:text-white hover:underline">
+                        Rp. {{ number_format(($itemKontrak->total_harga/100)*$dataPajak->ppn, 2, ',', '.') }}
+                    </p>
+                </td>
+                <td rowspan="{{$barangKontrakCount}}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
+                    <p class="text-black dark:text-white hover:underline">
+                        Rp. {{ number_format($itemKontrak->total_harga + ($itemKontrak->total_harga/100)*$dataPajak->ppn, 2, ',', '.') }}
+                    </p>
+                </td>
+                    
                 @endif
                 <td rowspan="{{$barangKontrakCount}}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
                     <p>                    
@@ -141,7 +148,7 @@
                         @endif
                     </p>
                 </td>
-                @if ($itemKontrak->kontrakGlobal->status_spk === false)
+                @if ($itemKontrak->kontrakGlobal->status_spk == false)
                     <td rowspan="{{$barangKontrakCount}}" style="text-align: center; white-space: nowrap; color: #FFFFFF; background-color: #ff0000; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
                         <p>
                             Belum Selesai
@@ -161,7 +168,7 @@
             @endif    
                 <tr>
                     <td style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
-                        <p>{{$itemBarang->nama_barang}}</p>
+                        <p>{{$itemBarang->dataProduk->nama_barang}}</p>
                     </td>    
                     <td style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
                         <p>{{$itemBarang->satuan->nama_satuan}}</p>
@@ -175,11 +182,6 @@
                     <td style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
                         <p>{{$itemBarang->volume_sisa}}</p>
                     </td>
-                    @if ($loggedInUser->id_level_user === 1)   
-                    <td style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
-                        <p>{{ 'Rp ' . number_format($itemBarang->harga_barang ?? 'Kosong', 0, ',', '.') }}</p>
-                    </td>
-                    @endif
                 </tr>
             @endforeach
         @endforeach
