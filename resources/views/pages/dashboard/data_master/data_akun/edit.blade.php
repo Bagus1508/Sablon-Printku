@@ -20,7 +20,7 @@
                         </button>
                     </div>
                 </div>
-                <form method="POST" action="{{ route('data-akun.update', (int)$ID) }}">
+                <form method="POST" action="{{ route('data-akun.update', (int)$ID) }}" id="form-edit-akun">
                     @csrf
                     {{ method_field('PUT') }}
                     <div class="py-6.5">
@@ -29,7 +29,7 @@
                                 <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                     Nama
                                 </label>
-                                <input type="text" value="{{$Name}}" id="name" name="name" placeholder="Masukan Nama"
+                                <input type="text" id="nama_akun" name="name" placeholder="Masukan Nama"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                             </div>
                         </div>
@@ -38,7 +38,7 @@
                                 <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                     Username
                                 </label>
-                                <input type="text" value="{{$Email}}" name="email" placeholder="Masukan Username"
+                                <input type="text" id="email_akun" name="email" placeholder="Masukan Username"
                                     class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                             </div>
                         </div>
@@ -47,9 +47,9 @@
                                 <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                     Role
                                 </label>
-                                <select name="level" id="level" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
+                                <select name="level" id="level_akun" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
                                     @foreach ($dataLevelUser as $item)
-                                        <option value="{{ $item->id }}" {{ $item->id == $Id_level_user ? 'selected' : '' }}>
+                                        <option value="{{ $item->id }}">
                                             {{ $item->level }}
                                         </option>
                                     @endforeach
@@ -98,22 +98,43 @@
             </div>
         </div>
     </div>
-    <script>
-        document.getElementById('toggle-password').addEventListener('click', function() {
-            var passwordInputs = [document.getElementById('password1-update'), document.getElementById('password2-update')];
-            var showIcon = document.getElementById('show-icon');
-            var hideIcon = document.getElementById('hide-icon');
-
-            passwordInputs.forEach(function(passwordInput) {
-                if (passwordInput.type === 'password') {
-                    passwordInput.type = 'text';
-                } else {
-                    passwordInput.type = 'password';
-                }
-            });
-
-            showIcon.classList.toggle('hidden');
-            hideIcon.classList.toggle('hidden');
-        });
-    </script>
 </div>
+<script>
+    // Ketika tombol edit diklik
+    $('.edit-data-akun').click(function() {
+    const id = $(this).data('id-akun');
+    const nama_akun = $(this).data('nama-akun');
+    const email_akun = $(this).data('email-akun');
+    const level_akun = $(this).data('level-akun');
+    
+    // Mengatur nilai input ID pada form modal
+    $('#nama_akun').val(nama_akun);
+    $('#email_akun').val(email_akun);
+    $('#level_akun').val(level_akun);
+
+    // Select the form element
+    const form = $('form');
+    
+    // Set the action attribute of the form
+    const url = '{{ route("data-akun.update", ":id") }}'.replace(':id', id);
+    $('#form-edit-akun').attr('action', url);
+});
+</script>
+<script>
+    document.getElementById('toggle-password').addEventListener('click', function() {
+        var passwordInputs = [document.getElementById('password1-update'), document.getElementById('password2-update')];
+        var showIcon = document.getElementById('show-icon');
+        var hideIcon = document.getElementById('hide-icon');
+
+        passwordInputs.forEach(function(passwordInput) {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+            } else {
+                passwordInput.type = 'password';
+            }
+        });
+
+        showIcon.classList.toggle('hidden');
+        hideIcon.classList.toggle('hidden');
+    });
+</script>

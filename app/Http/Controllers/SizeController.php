@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\LogHelper;
 use App\Models\DataUkuran;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -101,9 +102,21 @@ class SizeController extends Controller
             LogHelper::success('Berhasil menghapus data ukuran!');
             toast('Berhasil menghapus data ukuran!','success','top-right');
             return redirect()->back();
-        }catch(Throwable $e){
-            LogHelper::error($e->getMessage());
-                return view('pages.utility.500');
+        } catch (QueryException $e) {
+            // Cek apakah kesalahan adalah Integrity constraint violation
+            if ($e->getCode() == 23000) {
+                LogHelper::error('Gagal menghapus data ukuran: Data terkait masih ada.');
+                Alert::error('Gagal!', 'Gagal menghapus data ukuran: Data terkait masih ada.');
+            } else {
+                LogHelper::error('Terjadi kesalahan saat mencoba menghapus data ukuran.');
+                Alert::error('Gagal!', 'Gagal menghapus data ukuran: Data terkait masih ada.');
+            }
+    
+            return redirect()->back();
+        } catch (Throwable $e) {
+            LogHelper::error('Terjadi kesalahan saat mencoba menghapus data ukuran.');
+            Alert::error('Gagal!', 'Gagal menghapus data ukuran: Data terkait masih ada.');
+            return redirect()->back();
         }
     }
 }

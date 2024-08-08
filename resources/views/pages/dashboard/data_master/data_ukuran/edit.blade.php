@@ -20,7 +20,7 @@
                         </button>
                     </div>
                 </div>
-                <form method="POST" action="{{route('data-ukuran.update', (int)$ID)}}">
+                <form method="POST" action="{{route('data-ukuran.update', (int)$ID)}}" id="form-edit-ukuran">
                     {{method_field('PUT')}}
                     @csrf
                     <div class="py-6.5">
@@ -29,7 +29,7 @@
                                 <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                     Nama Ukuran
                                 </label>
-                                <input type="text" name="nama_ukuran" id="nama_ukuran" value="{{$Nama_ukuran}}" placeholder="Masukan Nama Ukuran"
+                                <input type="text" name="nama_ukuran" id="nama_ukuran" placeholder="Masukan Nama Ukuran"
                                     class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                             </div>
                         </div>
@@ -38,7 +38,7 @@
                                 <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                     Singkatan Ukuran
                                 </label>
-                                <input type="text" name="singkatan_ukuran" id="singkatan_ukuran" value="{{$Singkatan_ukuran}}" placeholder="Masukan Singkatan Ukuran"
+                                <input type="text" name="singkatan_ukuran" id="singkatan_ukuran" placeholder="Masukan Singkatan Ukuran"
                                     class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                             </div>
                         </div>
@@ -54,3 +54,22 @@
         </div>
     </div>
 </div>
+<script>
+    // Ketika tombol edit diklik
+    $('.edit-data-ukuran').click(function() {
+        const id = $(this).data('id-ukuran');
+        const nama_ukuran = $(this).data('nama-ukuran');
+        const singkatan_ukuran = $(this).data('singkatan-ukuran');
+        
+        // Mengatur nilai input ID pada form modal
+        $('#nama_ukuran').val(nama_ukuran);
+        $('#singkatan_ukuran').val(singkatan_ukuran);
+
+        // Select the form element
+        const form = $('form');
+        
+        // Set the action attribute of the form
+        const url = '{{ route("data-ukuran.update", ":id") }}'.replace(':id', id);
+        $('#form-edit-ukuran').attr('action', url);
+    });
+</script>

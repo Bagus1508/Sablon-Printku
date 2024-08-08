@@ -20,7 +20,7 @@
                         </button>
                     </div>
                 </div>
-                <form method="POST" action="{{route('data-ekspedisi.update', (int)$ID)}}">
+                <form method="POST" action="{{route('data-ekspedisi.update', (int)$ID)}}" id="form-edit-ekspedisi">
                     @csrf
                     {{method_field('PUT')}}
                     <div class="p-6.5">
@@ -28,14 +28,14 @@
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 Nama Ekspedisi
                             </label>
-                            <input type="text" value="{{$Nama_ekspedisi}}" id="nama_ekspedisi" name="nama_ekspedisi" placeholder="Masukan Nama Ekspedisi"
+                            <input type="text" id="nama_ekspedisi" name="nama_ekspedisi" placeholder="Masukan Nama Ekspedisi"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div>
                         <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 Kode Ekspedisi
                             </label>
-                            <input type="text" value="{{$Kode_ekspedisi}}" id="kode_ekspedisi" name="kode_ekspedisi" placeholder="Masukan Nama Ekspedisi"
+                            <input type="text" id="kode_ekspedisi" name="kode_ekspedisi" placeholder="Masukan Nama Ekspedisi"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div>
                     </div>
@@ -49,3 +49,23 @@
         </div>
     </div>
 </div>
+<script>
+    // Ketika tombol edit diklik
+    $('.edit-ekspedisi').click(function() {
+        const id = $(this).data('id-ekspedisi');
+        const kode_ekspedisi = $(this).data('kode-ekspedisi');
+        const nama_ekspedisi = $(this).data('nama-ekspedisi');
+        
+        // Mengatur nilai input ID pada form modal
+        $('#kode_ekspedisi').val(kode_ekspedisi);
+        $('#nama_ekspedisi').val(nama_ekspedisi);
+
+        // Select the form element
+        const form = $('form');
+        
+        // Set the action attribute of the form
+        const url = '{{ route("data-ekspedisi.update", ":id") }}'.replace(':id', id);
+        $('#form-edit-ekspedisi').attr('action', url);
+    });
+
+</script>

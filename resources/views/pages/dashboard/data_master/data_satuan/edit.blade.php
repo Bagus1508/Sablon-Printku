@@ -20,7 +20,7 @@
                         </button>
                     </div>
                 </div>
-                <form method="POST" action="{{route('data-satuan.update', (int)$ID)}}">
+                <form method="POST" action="{{route('data-satuan.update', (int)$ID)}}" id="form-edit-satuan">
                     @csrf
                     {{ method_field('PUT') }}
                     <div class="py-6.5">
@@ -29,7 +29,7 @@
                                 <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                     Nama Satuan
                                 </label>
-                                <input type="text" name="nama_satuan" id="nama_satuan" value="{{$Nama_satuan}}" placeholder="Masukan Nama Satuan"
+                                <input type="text" name="nama_satuan" id="nama_satuan" placeholder="Masukan Nama Satuan"
                                     class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                             </div>
                         </div>
@@ -38,7 +38,7 @@
                                 <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                     Singkatan Satuan
                                 </label>
-                                <input type="text" name="singkatan" id="singkatan" value="{{$Singkatan}}" placeholder="Masukan Singkatan Satuan"
+                                <input type="text" name="singkatan" id="singkatan_satuan" placeholder="Masukan Singkatan Satuan"
                                     class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                             </div>
                         </div>
@@ -54,3 +54,22 @@
         </div>
     </div>
 </div>
+<script>
+    // Ketika tombol edit diklik
+    $('.edit-data-satuan').click(function() {
+    const id = $(this).data('id-satuan');
+    const nama_satuan = $(this).data('nama-satuan');
+    const singkatan_satuan = $(this).data('singkatan-satuan');
+    
+    // Mengatur nilai input ID pada form modal
+    $('#nama_satuan').val(nama_satuan);
+    $('#singkatan_satuan').val(singkatan_satuan);
+
+    // Select the form element
+    const form = $('form');
+    
+    // Set the action attribute of the form
+    const url = '{{ route("data-satuan.update", ":id") }}'.replace(':id', id);
+    $('#form-edit-satuan').attr('action', url);
+});
+</script>

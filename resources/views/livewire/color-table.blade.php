@@ -57,6 +57,8 @@
                                 </button>
                                 <button data-hs-overlay="#modal-delete-warna" type="button" id="delete-warna"
                                     data-id-warna="{{$item->id}}"
+                                    data-kode-warna="{{$item->kode_warna}}"
+                                    data-nama-warna="{{$item->nama_warna}}"
                                     class="delete-warna transition ease-in-out hover:bg-rose-50 border-l rounded-r-md focus:bg-rose-50 hover:text-rose-500 focus:text-rose-500 inline-flex w-fit  p-2 text-gray-900 items-center hover:ring-1 ring-inset ring-gray-300 hover:ring-rose-500 focus:ring-2 focus:ring-rose-500 sm:text-sm sm:leading-6">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-5">

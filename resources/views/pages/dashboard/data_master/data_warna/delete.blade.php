@@ -6,7 +6,7 @@
                 <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                 </svg>
-                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-white">Apakah anda yakin untuk menghapus warna ini?</h3>
+                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-white">Apakah anda yakin untuk menghapus warna <span id="nama_warna_text" class="text-red-600"></span>?</h3>
                 <form class="formhapus-metode" method="POST" action="{{route('data-warna.destroy', (int)$ID)}}" id="form-delete-warna">
                     {{ csrf_field() }}
                     {{ method_field('DELETE') }}
@@ -23,16 +23,18 @@
 <script>
     // Ketika tombol edit diklik
     $('.delete-warna').click(function() {
-    const id = $(this).data('id-warna');
+        const id = $(this).data('id-warna');
+        const nama_warna = $(this).data('nama-warna');
+        const kode_warna = $(this).data('kode-warna');
 
-    console.log(id);
+        $('#nama_warna_text').text(nama_warna+' ('+kode_warna+')');
 
-    // Select the form element
-    const form = $('form');
-    
-    // Set the action attribute of the form
-    const url = '{{ route("data-warna.destroy", ":id") }}'.replace(':id', id);
-    $('#form-delete-warna').attr('action', url);
-});
+        // Select the form element
+        const form = $('form');
+        
+        // Set the action attribute of the form
+        const url = '{{ route("data-warna.destroy", ":id") }}'.replace(':id', id);
+        $('#form-delete-warna').attr('action', url);
+    });
 
 </script>

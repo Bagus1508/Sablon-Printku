@@ -20,7 +20,7 @@
                         </button>
                     </div>
                 </div>
-                <form method="POST" action="{{route('data-kategori.update', (int)$ID)}}">
+                <form method="POST" action="{{route('data-kategori.update', (int)$ID)}}" id="form-edit-kategori">
                     @csrf
                     {{method_field('PUT')}}
                     <div class="p-6.5">
@@ -28,14 +28,14 @@
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 Kode Kategori
                             </label>
-                            <input type="text" value="{{$Kode_kategori}}" id="kode_kategori" name="kode_kategori" placeholder="Masukan Nama Kategori"
+                            <input type="text" id="kode_kategori" name="kode_kategori" placeholder="Masukan Nama Kategori"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div>
                         <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 Nama Kategori
                             </label>
-                            <input type="text" value="{{$Nama_kategori}}" id="nama_kategori" name="nama_kategori" placeholder="Masukan Nama Kategori"
+                            <input type="text" id="nama_kategori" name="nama_kategori" placeholder="Masukan Nama Kategori"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div>
                     </div>
@@ -49,3 +49,23 @@
         </div>
     </div>
 </div>
+<script>
+    // Ketika tombol edit diklik
+    $('.edit-kategori').click(function() {
+        const id = $(this).data('id-kategori');
+        const kode_kategori = $(this).data('kode-kategori');
+        const nama_kategori = $(this).data('nama-kategori');
+        
+        // Mengatur nilai input ID pada form modal
+        $('#kode_kategori').val(kode_kategori);
+        $('#nama_kategori').val(nama_kategori);
+
+        // Select the form element
+        const form = $('form');
+        
+        // Set the action attribute of the form
+        const url = '{{ route("data-kategori.update", ":id") }}'.replace(':id', id);
+        $('#form-edit-kategori').attr('action', url);
+    });
+
+</script>

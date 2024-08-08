@@ -25,7 +25,7 @@
             <th width="200px" rowspan="2" style="background-color: #C9DBF9; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Satuan
             </th>
-            @if ($loggedInUser->id_level_user === 1)                
+            @if ($loggedInUser->id_level_user == 1)                
             <th width="200px" rowspan="2" style="background-color: #C9DBF9; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 Harga
             </th>
@@ -246,7 +246,7 @@
                     <p class="text-black dark:text-white">{{$data->barangKontrak->first()->satuan->nama_satuan ?? '-'}}</p>
                 </td>
                 {{-- Total Harga --}}
-                @if ($loggedInUser->id_level_user === 1)              
+                @if ($loggedInUser->id_level_user == 1)              
                 <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle; vertical-align: middle; vertical-align: middle;">
                     <p class="text-black dark:text-white text-center">    
                         {{ $data->total_harga ? 'Rp ' . number_format($data->total_harga, 0, ',', '.') : '-' }}

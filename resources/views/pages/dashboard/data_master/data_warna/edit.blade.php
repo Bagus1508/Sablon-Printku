@@ -70,22 +70,22 @@
 <script>
     // Ketika tombol edit diklik
     $('.edit-warna').click(function() {
-    const id = $(this).data('id-warna');
-    const kode_warna = $(this).data('kode-warna');
-    const nama_warna = $(this).data('nama-warna');
-    const id_merek = $(this).data('id-merek-kain');
-    
-    // Mengatur nilai input ID pada form modal
-    $('#kode_warna').val(kode_warna);
-    $('#nama_warna').val(nama_warna);
-    $('#id_merek').val(id_merek);
+        const id = $(this).data('id-warna');
+        const kode_warna = $(this).data('kode-warna');
+        const nama_warna = $(this).data('nama-warna');
+        const id_merek = $(this).data('id-merek-kain');
+        
+        // Mengatur nilai input ID pada form modal
+        $('#kode_warna').val(kode_warna);
+        $('#nama_warna').val(nama_warna);
+        $('#id_merek').val(id_merek);
 
-    // Select the form element
-    const form = $('form');
-    
-    // Set the action attribute of the form
-    const url = '{{ route("data-warna.update", ":id") }}'.replace(':id', id);
-    $('#form-edit-warna').attr('action', url);
-});
+        // Select the form element
+        const form = $('form');
+        
+        // Set the action attribute of the form
+        const url = '{{ route("data-warna.update", ":id") }}'.replace(':id', id);
+        $('#form-edit-warna').attr('action', url);
+    });
 
 </script>
