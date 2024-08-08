@@ -76,15 +76,6 @@
                                 <input type="number" name="volume_sisa" id="volume_sisa" placeholder="Masukan Volume Sisa"
                                     class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                             </div>
-                            @if ($loggedInUser->id_level_user == 1)                                
-                            <div class="mb-4.5 w-full">
-                                <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                    Harga
-                                </label>
-                                <input type="text" name="harga_barang" id="harga_barang_kontrak" placeholder="Masukan Harga Barang"
-                                    class="harga-barang w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
-                            </div>
-                            @endif
                         </div>
                     </div>
                     <div class="bg-white dark:bg-boxdark flex justify-center">
@@ -148,7 +139,7 @@ $(document).ready(function() {
 });
 
 </script>
-<script>
+{{-- <script>
     document.addEventListener('DOMContentLoaded', function() {
         var hargaInput = document.getElementById('harga_barang_kontrak');
 
@@ -173,6 +164,6 @@ $(document).ready(function() {
             return prefix === undefined ? rupiah : (rupiah ? prefix + rupiah : '');
         }
     });
-</script>
+</script> --}}
 
     

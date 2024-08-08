@@ -23,7 +23,6 @@ class BarangKontrakRinciController extends Controller
             $volumeKontrak = $request->input('volume_kontrak', []);
             $volumeRealisasi = $request->input('volume_realisasi', []);
             $volumeSisa = $request->input('volume_sisa', []);
-            $totalHarga = $request->input('total_harga') ?? '0';
     
             // Validasi data
             $rules = [
@@ -33,7 +32,7 @@ class BarangKontrakRinciController extends Controller
                 'volume_kontrak.*' => 'nullable|numeric',
                 'volume_realisasi.*' => 'nullable|numeric',
                 'volume_sisa.*' => 'nullable|numeric',
-                'total_harga.*' => 'nullable',
+                /* 'total_harga.*' => 'nullable', */
             ];
     
             $validated = $request->validate($rules, [
@@ -51,7 +50,7 @@ class BarangKontrakRinciController extends Controller
 
                 // Siapkan data untuk disimpan
                 $parameter = [
-                    'id_kontrak_rinci' => $idKontrakRinci[0], // Atur sesuai kebutuhan
+                    'id_kontrak_rinci' => $idKontrakRinci, // Atur sesuai kebutuhan
                     'id_produk' => $itemNamaBarang,
                     'kuantitas' => $kuantitas[$index] ?? null,
                     'id_satuan' => $idSatuan[$index] ?? null,
@@ -73,10 +72,10 @@ class BarangKontrakRinciController extends Controller
             $dataKontrakRinci = KontrakRinci::find($idKontrakRinci[0]);
 
             // Ambil harga barang dan ubah menjadi format numerik
-            $totalHargaStr = str_replace(['Rp. ', '.'], '', $totalHarga ?? 0);
+            /* $totalHargaStr = str_replace(['Rp. ', '.'], '', $totalHarga ?? 0);
 
             $dataKontrakRinci->total_harga = floatval($totalHargaStr) ;
-            $dataKontrakRinci->save();
+            $dataKontrakRinci->save(); */
     
             Alert::success('Berhasil!', 'Berhasil menambah barang kontrak rinci');
             LogHelper::success('Berhasil menambahkan barang kontrak rinci.');

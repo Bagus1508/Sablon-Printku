@@ -19,14 +19,14 @@ class SizeController extends Controller
     {
         try {
             $validated = $request->validate([
-                'nama_ukuran' => 'required',
-                'singkatan_ukuran' => 'required',
+                'nama_ukuran' => 'required|max:100',
+                'singkatan_ukuran' => 'required|max:20',
             ], [
                 'nama_ukuran.required' => 'Nama Ukuran tidak boleh kosong.',
+                'nama_ukuran.max' => 'Nama Ukuran tidak boleh lebih dari 100 karakter.',
                 'singkatan_ukuran.required' => 'Singkatan Ukuran tidak boleh kosong.',
-            ]);
-            
-
+                'singkatan_ukuran.max' => 'Singkatan Ukuran tidak boleh lebih dari 20 karakter.',
+            ]);            
             $parameter = [
                 'nama_ukuran'          => $validated['nama_ukuran'],
                 'singkatan_ukuran'         => $validated['singkatan_ukuran'],
@@ -61,9 +61,14 @@ class SizeController extends Controller
 
         try {
             $validated = $request->validate([
-                'nama_ukuran' => 'nullable',
-                'singkatan_ukuran' => 'nullable',
-            ]);
+                'nama_ukuran' => 'required|max:100',
+                'singkatan_ukuran' => 'required|max:20',
+            ], [
+                'nama_ukuran.required' => 'Nama Ukuran tidak boleh kosong.',
+                'nama_ukuran.max' => 'Nama Ukuran tidak boleh lebih dari 100 karakter.',
+                'singkatan_ukuran.required' => 'Singkatan Ukuran tidak boleh kosong.',
+                'singkatan_ukuran.max' => 'Singkatan Ukuran tidak boleh lebih dari 20 karakter.',
+            ]);            
 
             $data = DataUkuran::find($id);
 

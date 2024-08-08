@@ -110,6 +110,7 @@ class DataPerusahaanController extends Controller
                 'kode_perusahaan' => 'required',
                 'nama_perusahaan' => 'required',
                 'no_telepon' => 'nullable|regex:/^[0-9]+$/',
+                'npwp' => 'nullable',
                 'email' => 'nullable|email',
                 'alamat' => 'nullable|string|max:255',
                 'provinsi' => 'nullable',
@@ -142,10 +143,10 @@ class DataPerusahaanController extends Controller
                 $dataAlamat = new DataAlamat();
             }
     
-            $provinsi = explode("|", $validated['provinsi']);
-            $kota = explode("|", $validated['kota']);
-            $kecamatan = explode("|", $validated['kecamatan']);
-            $kelurahan = explode("|", $validated['kelurahan']);
+            $provinsi = explode("|", $validated['provinsi'] ?? null);
+            $kota = explode("|", $validated['kota'] ?? null);
+            $kecamatan = explode("|", $validated['kecamatan'] ?? null);
+            $kelurahan = explode("|", $validated['kelurahan'] ?? null);            
     
             $dataAlamat->alamat = $validated['alamat'] ?? null;
             $dataAlamat->id_provinsi = $provinsi[0] ?? null;
@@ -165,6 +166,7 @@ class DataPerusahaanController extends Controller
             $dataPerusahaan->kode_perusahaan = $validated['kode_perusahaan'];
             $dataPerusahaan->nama_perusahaan = $validated['nama_perusahaan'];
             $dataPerusahaan->no_telepon = $validated['no_telepon'];
+            $dataPerusahaan->npwp = $validated['npwp'];
             $dataPerusahaan->email = $validated['email'];
             $dataPerusahaan->id_alamat = $dataAlamat->id; // Assign id_alamat dari dataAlamat yang baru disimpan
     

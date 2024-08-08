@@ -187,6 +187,7 @@ class MonitoringKontrakRinciController extends Controller
             ]);
         
             $data = ProsesCutting::find($request->input('id'));
+
             if (!$data) {
                 // Jika data tidak ditemukan, arahkan kembali dengan pesan error
                 Alert::error('Error!', 'Data Kontrak Rinci tidak ditemukan.');

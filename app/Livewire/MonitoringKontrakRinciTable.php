@@ -51,9 +51,9 @@ class MonitoringKontrakRinciTable extends Component
     }
 
     public $columnsVisibility = [
-        'proses_cutting' => false,
-        'proses_jahit' => false,
-        'proses_packing' => false,
+        'proses_cutting' => true,
+        'proses_jahit' => true,
+        'proses_packing' => true,
     ];
 
     public function toggleColumnVisibility($column)

@@ -69,7 +69,7 @@
                         <div>
                             <div class="mb-4.5 w-full">
                                 <label for="provinsi" class="mb-3 block text-sm font-medium text-black dark:text-white">Provinsi</label>
-                                <select id="id_provinsi" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" required="" name="provinsi">
+                                <select id="id_provinsi" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"  name="provinsi">
                                     <option selected>Pilih Provinsi</option>
                                 </select>
                             </div>
@@ -80,7 +80,7 @@
                             </div>
                             <div class="mb-4.5 w-full">
                                 <label for="kota" class="mb-3 block text-sm font-medium text-black dark:text-white">Kabupaten/Kota</label>
-                                <select id="id_kota" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" required="" name="kota">
+                                <select id="id_kota" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"  name="kota">
                                     <option selected>Pilih Kabupaten/Kota</option>
                                 </select>
                             </div>
@@ -91,7 +91,7 @@
                             </div>
                             <div wire:loading.remove wire:target='getDistricts' class="mb-4.5 w-full">
                                 <label for="kecamatan" class="mb-3 block text-sm font-medium text-black dark:text-white">Kecamatan</label>
-                                <select id="id_kecamatan" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" required="" name="kecamatan">
+                                <select id="id_kecamatan" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"  name="kecamatan">
                                     <option selected>Pilih Kecamatan</option>
                                 </select>
                             </div>
@@ -102,7 +102,7 @@
                             </div>
                             <div wire:loading.remove wire:target='getVillages' class="mb-4.5 w-full">
                                 <label for="kelurahan" class="mb-3 block text-sm font-medium text-black dark:text-white">Kelurahan/Desa</label>
-                                <select  wire:model="ID_kelurahan" id="id_kelurahan" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"required="" name="kelurahan" id="kelurahan" class="input-form-edit">
+                                <select  wire:model="ID_kelurahan" id="id_kelurahan" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" name="kelurahan" id="kelurahan" class="input-form-edit">
                                     <option selected >Pilih Kelurahan/Desa</option>
                                     @if ($apiVillages != null)
                                     @foreach ($apiVillages as $data)

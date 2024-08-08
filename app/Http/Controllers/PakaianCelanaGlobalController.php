@@ -13,6 +13,7 @@ use App\Models\ProdukKategori;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class PakaianCelanaGlobalController extends Controller
 {
@@ -51,15 +52,16 @@ class PakaianCelanaGlobalController extends Controller
                 $tanggalStokGlobal = explode(' - ', $tgl_stok_global); // Membagi berdasarkan pemisah
 
                 if (count($tanggalStokGlobal) == 1) {
-                    $startDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalStokGlobal[0], 'en'))->format("Y-m-d");
-                    $startDate = Carbon::parse($startDateStr);
-                    $endDate = $startDate;
+                    Alert::error('Gagal!', 'Rentang tanggal Export tidak boleh satu tanggal.');
                 } else {
                     $startDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalStokGlobal[0], 'en'))->format("Y-m-d");
                     $endDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalStokGlobal[1], 'en'))->format("Y-m-d");
             
                     $startDate = Carbon::parse($startDateStr);
                     $endDate = Carbon::parse($endDateStr);
+
+                    $startDateFormatted = Carbon::parse($startDate)->translatedFormat('j F Y');
+                    $endDateFormatted = Carbon::parse($endDate)->translatedFormat('j F Y');
                 }
             }
 
@@ -105,7 +107,7 @@ class PakaianCelanaGlobalController extends Controller
             ]);
         } catch (\Exception $e) {
             // Tangani error dan tampilkan pesan
-            toast('Gagal menampilkan data: ' . $e->getMessage(), 'error', 'top-right');
+            toast('Gagal menampilkan data: ', 'error', 'top-right');
             return redirect()->back();
         }
     }

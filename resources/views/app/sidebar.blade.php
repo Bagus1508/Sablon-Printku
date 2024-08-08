@@ -107,7 +107,7 @@
                                     </li>
                                     @if ($loggedInUser->id_level_user == 1)
                                     <li>
-                                        <a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 @if (Route::is('data-merek.index')) {{ 'text-white' }} @endif duration-300 ease-in-out hover:text-white"
+                                        <a class="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 @if (Route::is('data-pajak.index')) {{ 'text-white' }} @endif duration-300 ease-in-out hover:text-white"
                                             href="{{ route('data-pajak.index') }}"
                                             :class="page === 'ppn' && '!text-white'">PPN
                                         </a>

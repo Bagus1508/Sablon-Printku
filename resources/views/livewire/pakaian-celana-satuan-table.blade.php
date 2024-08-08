@@ -76,7 +76,7 @@
                 @foreach ($data as $item)                    
                     <tr>
                         <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark sticky bg-blue-600 left-0">
-                            <h5 class="font-medium text-black dark:text-white">{{$loop->index + 1}}</h5>
+                            <h5 class="font-medium text-white dark:text-white">{{$loop->index + 1}}</h5>
                         </td>
                         <td class="mx-auto px-4 py-5 border-b border-[#eee] dark:border-strokedark">
                             <div class="flex items-center mx-auto justify-center">

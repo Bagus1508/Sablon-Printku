@@ -61,7 +61,7 @@
                                 <div class="flex justify-between">
                                     <input type="password" name="password" id="password1" placeholder="Masukan Password"
                                         class="w-full rounded-l border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
-                                    <button type="button" id="toggle-password" class="flex justify-center items-center my-auto bg-blue-500 hover:bg-blue-700 py-[20px] px-3 rounded-r">
+                                    <button type="button" id="toggle-password-create" class="flex justify-center items-center my-auto bg-blue-500 hover:bg-blue-700 py-[20px] px-3 rounded-r">
                                         <svg id="show-icon" class="hidden" width="25" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M15.0007 12C15.0007 13.6569 13.6576 15 12.0007 15C10.3439 15 9.00073 13.6569 9.00073 12C9.00073 10.3431 10.3439 9 12.0007 9C13.6576 9 15.0007 10.3431 15.0007 12Z" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                             <path d="M12.0012 5C7.52354 5 3.73326 7.94288 2.45898 12C3.73324 16.0571 7.52354 19 12.0012 19C16.4788 19 20.2691 16.0571 21.5434 12C20.2691 7.94291 16.4788 5 12.0012 5Z" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -96,7 +96,7 @@
         </div>
     </div>
     <script>
-        document.getElementById('toggle-password').addEventListener('click', function() {
+        document.getElementById('toggle-password-create').addEventListener('click', function() {
             var passwordInputs = [document.getElementById('password1'), document.getElementById('password2')];
             var showIcon = document.getElementById('show-icon');
             var hideIcon = document.getElementById('hide-icon');

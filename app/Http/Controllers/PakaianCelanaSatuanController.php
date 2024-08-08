@@ -286,18 +286,18 @@ class PakaianCelanaSatuanController extends Controller
                 $tanggalStokSatuan = explode(' - ', $tgl_stok_satuan); // Membagi berdasarkan pemisah
 
                 if (count($tanggalStokSatuan) == 1) {
-                    $startDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalStokSatuan[0], 'en'))->format("Y-m-d");
-                    $startDate = Carbon::parse($startDateStr);
-                    $endDate = $startDate;
+                    Alert::error('Gagal!', 'Rentang tanggal Export tidak boleh satu tanggal.');
                 } else {
                     $startDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalStokSatuan[0], 'en'))->format("Y-m-d");
                     $endDateStr = Carbon::parse(TanggalHelper::translateBulan($tanggalStokSatuan[1], 'en'))->format("Y-m-d");
             
                     $startDate = Carbon::parse($startDateStr);
                     $endDate = Carbon::parse($endDateStr);
+
+                    $startDateFormatted = Carbon::parse($startDate)->translatedFormat('j F Y');
+                    $endDateFormatted = Carbon::parse($endDate)->translatedFormat('j F Y');
                 }
             }
-
 
             // Buat daftar tanggal dalam rentang
             $dateRange = [];
@@ -372,7 +372,7 @@ class PakaianCelanaSatuanController extends Controller
             ]);
         } catch (\Exception $e) {
             // Tangani error dan tampilkan pesan
-            toast('Gagal menampilkan data: ' . $e->getMessage(), 'error', 'top-right');
+            toast('Gagal menampilkan data: ', 'error', 'top-right');
             return redirect()->back();
         }
     }

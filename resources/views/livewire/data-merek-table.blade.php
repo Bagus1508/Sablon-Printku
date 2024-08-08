@@ -1,5 +1,6 @@
 <div>
-    <section class="justify-end flex max-sm:flex-col-reverse max-sm:mb-5">
+    <section class="justify-between flex max-sm:flex-col-reverse max-sm:mb-5">
+        @include('livewire.search-data')
         <div class="my-5">
             <button data-hs-overlay="#modal-create-merek" class="bg-blue-600 text-white font-medium px-4 py-2 rounded-md hover:bg-blue-700">+ Tambah Merek</button>
         </div>

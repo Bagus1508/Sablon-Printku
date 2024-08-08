@@ -129,16 +129,24 @@
                         </td>
                         <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark whitespace-nowrap">
                             @if ($item->hargaProduk)
+                                @php
+                                    $hargaJualSatuan = $item->hargaProduk->harga_jual_satuan;
+                                    $stokKeluar = $item->stok_keluar;
+                                    $hargaProduksiSatuan = $item->hargaProduk->harga_produksi_satuan;
+                                    $stokMasuk = $item->stok_masuk;
+
+                                    // Cek jika $hargaJualSatuan dan $stokKeluar tidak nol
+                                    if ($hargaJualSatuan != 0 && $stokKeluar != 0) {
+                                        $numerator = ($hargaJualSatuan * $stokKeluar) - ($hargaProduksiSatuan * $stokMasuk);
+                                        $denominator = $hargaJualSatuan * $stokKeluar;
+                                        $percentage = ($numerator / $denominator) * 100;
+                                    } else {
+                                        $percentage = 0; // atau nilai default lain jika pembagi nol
+                                    }
+                                @endphp
+
                                 <p class="text-black dark:text-white">
-                                    {{
-                                        number_format(
-                                            (($item->hargaProduk->harga_jual_satuan * $item->stok_keluar) - ($item->hargaProduk->harga_produksi_satuan * $item->stok_masuk)) /
-                                            ($item->hargaProduk->harga_jual_satuan * $item->stok_keluar) * 100,
-                                            2,
-                                            ',',
-                                            '.'
-                                        )
-                                    }}%
+                                    {{ number_format($percentage, 2, ',', '.') }}%
                                 </p>
                             @endif
                         </td>
