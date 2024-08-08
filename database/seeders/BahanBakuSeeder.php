@@ -2,11 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Models\HargaProduk;
 use App\Models\Produk;
 use App\Models\StokHarian;
 use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use PDO;
 
 class BahanBakuSeeder extends Seeder
 {
@@ -63,7 +65,7 @@ class BahanBakuSeeder extends Seeder
                     $idUkuran = rand(1,8);
                 }
     
-                StokHarian::create([
+                $stokHarian = StokHarian::create([
                     'tanggal' => $date->toDateString(),
                     'id_produk' => $produk->id,
                     'stok_masuk' => $stokMasuk,
@@ -72,6 +74,19 @@ class BahanBakuSeeder extends Seeder
                     'id_satuan' => $idSatuan,
                     'id_ukuran' => $idUkuran,
                 ]);
+
+                if($produk->id_kategori == 1){
+                    HargaProduk::create([
+                        'id_stok_harian' => $stokHarian->id,
+                        'harga_beli_satuan' => rand(10000,50000),
+                    ]);
+                } else {
+                    HargaProduk::create([
+                        'id_stok_harian' => $stokHarian->id,
+                        'harga_produksi_satuan' => rand(10000,50000),
+                        'harga_jual_satuan' => rand(50000,99000),
+                    ]);
+                }
             }
         }
     }

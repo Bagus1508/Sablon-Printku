@@ -159,6 +159,166 @@
             </tbody>
         </table>
     </div>
+
+    {{-- Harga Pakaian --}}
+    @if ($loggedInUser->id_level_user == 1)
+    <h1 class="text-[40px] font-bold text-black sticky left-0 mt-10">Harga Pakaian</h1>        
+    <div class="max-w-full overflow-x-auto rounded-t-md mt-10">
+        <table class="w-full table-auto">
+            <thead class="bg-blue-600 text-white">
+                <tr class="text-left dark:bg-meta-4">
+                    <th rowspan="3" class="min-w-[50px] text-center px-4 py-4 font-medium text-white dark:text-white sticky bg-blue-600 left-0 border-b">
+                        No
+                    </th>
+                    <th rowspan="3" class="whitespace-nowrap text-center px-4 py-4 font-medium text-white dark:text-white">
+                        NO ID
+                    </th>
+                    <th rowspan="3" class="min-w-[150px] px-4 py-4 text-center font-medium text-white dark:text-white">
+                        Nama Barang
+                    </th>
+                    <th rowspan="3" class="px-4 py-4 text-center font-medium text-white dark:text-white">
+                        Warna
+                    </th>
+                    <th rowspan="3" class="min-w-[150px] px-4 py-4 text-center font-medium text-white dark:text-white">
+                        Kode Warna
+                    </th>
+                    <th rowspan="3" class="whitespace-nowrap px-4 py-4 text-center font-medium text-white dark:text-white">
+                        Perusahaan
+                    </th>
+                    <th colspan="{{$jumlahHari*6}}" class="px-4 py-4 text-center font-medium text-white dark:text-white">
+                        Tanggal
+                    </th>
+                </tr>
+                <tr>
+                    @foreach ($dateRange as $item)                        
+                    <th colspan="6" class="text-center font-medium text-white dark:text-white border dark:bg-meta-4">
+                        {{$item}}{{-- //tanggalnya --}}
+                    </th>
+                    @endforeach
+                </tr>
+                <tr>
+                    @foreach ($dateRange as $item)                        
+                        <th class="whitespace-nowrap px-2 text-center font-medium bg-blue-600 text-white dark:text-white border">
+                            Harga Produksi Satuan
+                        </th>
+                        <th class="whitespace-nowrap px-2 text-center font-medium bg-blue-600 text-white dark:text-white border">
+                            Harga Jual Satuan
+                        </th>
+                        <th class="whitespace-nowrap px-2 text-center font-medium bg-blue-600 text-white dark:text-white border">
+                            Total Harga Produksi
+                        </th>
+                        <th class="whitespace-nowrap px-2 text-center font-medium bg-blue-600 text-white dark:text-white border">
+                            Total Harga Jual
+                        </th>
+                        <th class="whitespace-nowrap px-2 text-center font-medium bg-blue-600 text-white dark:text-white border">
+                            Margin Penjualan
+                        </th>
+                        <th class="whitespace-nowrap px-2 text-center font-medium bg-blue-600 text-white dark:text-white border">
+                            Margin Penjualan (%)
+                        </th>
+                    @endforeach
+                </tr>
+            </thead>
+            <tbody class="dark:bg-meta-4">
+                @foreach ($data as $item)                    
+                    <tr>
+                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark sticky bg-blue-600 left-0">
+                            <h5 class="font-medium text-white dark:text-white">{{$loop->index + 1}}</h5>
+                        </td>
+                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white">{{$item->id_no}}</p>
+                        </td>
+                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white">{{$item->nama_barang}}</p>
+                        </td>
+                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white">{{$item->warna->nama_warna}}</p>
+                        </td>
+                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white">{{$item->warna->kode_warna}}</p>
+                        </td>
+                        <td class="text-center whitespace-nowrap border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white">{{$item->perusahaan->nama_perusahaan}}</p>
+                        </td>
+                        @foreach ($dateRange as $range)
+                        @php
+                            $stok = $item->stokHarian->firstWhere('tanggal', $range);
+                            $stokMasuk = optional($stok)->stok_masuk ?? 0;
+                            $stokKeluar = optional($stok)->stok_keluar ?? 0;
+                        @endphp
+                        <td class="px-6 py-4 whitespace-nowrap text-center">
+                            @if (optional($stok)->hargaProduk)                                
+                                <p class="text-black dark:text-white">
+                                    Rp. {{ number_format(optional($stok)->hargaProduk->harga_produksi_satuan, 2, ',', '.') }}
+                                </p>
+                            @else
+                            -
+                            @endif
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-center">
+                            @if (optional($stok)->hargaProduk)                                
+                                <p class="text-black dark:text-white">
+                                    Rp. {{ number_format(optional($stok)->hargaProduk->harga_jual_satuan, 2, ',', '.') }}
+                                </p>
+                            @else
+                            -
+                            @endif
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-center">
+                            @if (optional($stok)->hargaProduk)                                
+                                <p class="text-black dark:text-white">
+                                    Rp. {{ number_format(optional($stok)->hargaProduk->harga_produksi_satuan * $stokMasuk, 2, ',', '.') }}
+                                </p>
+                            @else
+                            -
+                            @endif
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-center">
+                            @if (optional($stok)->hargaProduk)                                
+                                <p class="text-black dark:text-white">
+                                    Rp. {{ number_format(optional($stok)->hargaProduk->harga_jual_satuan * $stokKeluar, 2, ',', '.') }}
+                                </p>
+                            @else
+                            -
+                            @endif
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-center">
+                            @if (optional($stok)->hargaProduk)                                
+                                <p class="text-black dark:text-white">
+                                    Rp. {{ number_format((optional($stok)->hargaProduk->harga_jual_satuan * $stokKeluar) - (optional($stok)->hargaProduk->harga_produksi_satuan * $stokMasuk), 2, ',', '.') }}
+                                </p>
+                            @else
+                            -
+                            @endif
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-center">
+                            @if (optional($stok)->hargaProduk)
+                                @php
+                                    $hargaJualSatuan = optional($stok)->hargaProduk->harga_jual_satuan;
+                                    $hargaProduksiSatuan = optional($stok)->hargaProduk->harga_produksi_satuan;
+
+                                    // Cek jika $hargaJualSatuan dan $stokKeluar tidak nol
+                                    if ($hargaJualSatuan != 0 && $stokKeluar != 0) {
+                                        $numerator = ($hargaJualSatuan * $stokKeluar) - ($hargaProduksiSatuan * $stokMasuk);
+                                        $denominator = $hargaJualSatuan * $stokKeluar;
+                                        $percentage = ($numerator / $denominator) * 100;
+                                    } else {
+                                        $percentage = 0; // atau nilai default lain jika pembagi nol
+                                    }
+                                @endphp
+
+                                <p class="text-black dark:text-white">
+                                    {{ number_format($percentage, 2, ',', '.') }}%
+                                </p>
+                            @endif
+                        </td>
+                    @endforeach
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+    @endif
     <section class="place-items-center py-10 sm:py-10 lg:px-8
     @if ($nodata!=false)
         {{'grid'}}

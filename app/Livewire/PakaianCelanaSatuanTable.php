@@ -7,6 +7,7 @@ use App\Models\DataPerusahaan;
 use App\Models\DataSatuan;
 use App\Models\DataUkuran;
 use App\Models\DataWarna;
+use App\Models\Pajak;
 use App\Models\Produk;
 use App\Models\ProdukKategori;
 use App\Models\StokHarian;
@@ -139,6 +140,7 @@ class PakaianCelanaSatuanTable extends Component
             'jumlahHari' => count($dateRange) ?? '',
             'satuanNamaTotal' => $satuanNamaTotal??'',
             'dataPerusahaan' => $dataPerusahaan ?? '',
+            'dataPajak' => Pajak::get()->first(),
         ]);
     }
     
