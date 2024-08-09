@@ -17,7 +17,7 @@
         <table class="w-full table-auto">
             <thead class="bg-blue-600 text-white">
                 <tr class="text-left dark:bg-meta-4">
-                    <th rowspan="2" class="min-w-[50px] text-center font-medium text-white dark:text-white justify-center my-auto">
+                    <th rowspan="2" class="min-w-[50px] text-center font-medium text-white dark:text-white justify-center my-auto sticky bg-blue-600 left-0 dark:bg-meta-4">
                         No
                     </th>
                     <th width="400px" colspan="2" class="text-center font-medium text-white dark:text-white">
@@ -89,8 +89,8 @@
                         $barangKontrakCount = $itemKontrak->barangKontrak->count();
                     @endphp                    
                     <tr>
-                        <td rowspan="{{$barangKontrakCount}}" class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                            <h5 class="font-medium text-black dark:text-white">{{$loop->index + 1}}</h5>
+                        <td rowspan="{{$barangKontrakCount}}" class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark sticky bg-blue-600 left-0 dark:bg-meta-4">
+                            <h5 class="font-medium text-white dark:text-white">{{$loop->index + 1}}</h5>
                         </td>
                         <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white">{{$itemKontrak->takon}}</p>

@@ -67,4 +67,9 @@ class KontrakRinci extends Model
     {
         return $this->hasOne(DataPerusahaan::class, 'id', 'id_perusahaan');
     }
+
+    public function pajak()
+    {
+        return $this->hasOne(Pajak::class, 'id', 'id_pajak'); 
+    }
 }

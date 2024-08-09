@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\LogHelper;
 use App\Models\Pajak;
 use App\Models\PajakModel;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -26,7 +27,7 @@ class PajakController extends Controller
             $validated = $request->validate([
                 'ppn' => 'required|integer|unique:pajak_table,ppn|max:100',
             ], [
-                'ppn.unique' => 'PPN ' . $request->ppn . ' sudah digunakan oleh data pajak lain.',
+                'ppn.unique' => 'PPN ' . $request->ppn . '% sudah ada.',
                 'ppn.integer' => 'Format harus berupa angka.',
                 'ppn.max' => 'Nilai PPN tidak boleh lebih dari 100%.',
             ]);
@@ -74,9 +75,14 @@ class PajakController extends Controller
 
             $data = Pajak::find($id);
 
+            if($data->where('ppn', $validated['ppn'])->where('id', '!=', $id)->exists()){
+                Alert::error('Gagal!', 'PPN ' . $data->ppn . '% sudah ada.');
+                return redirect()->back();
+            }
+
             $data->ppn = $validated['ppn'];
 
-            $User = $data->save();
+            $deletePajak = $data->save();
 
             Alert::success('Berhasil!', 'Berhasil mengubah data pajak');
             LogHelper::success('Berhasil mengubah data pajak.');
@@ -88,6 +94,35 @@ class PajakController extends Controller
                 }
             }
             return redirect()->back()->withInput();
+        }
+    }
+
+    public function destroy($id)
+    {
+        try{
+            $data = Pajak::find($id);
+            $deletePajak = $data->delete();
+            if(!$deletePajak){
+                return redirect()->back()->with('gagal', 'menghapus');
+            }
+            LogHelper::success('Berhasil menghapus data pajak!');
+            toast('Berhasil menghapus data pajak!','success','top-right');
+            return redirect()->back();
+        } catch (QueryException $e) {
+            // Cek apakah kesalahan adalah Integrity constraint violation
+            if ($e->getCode() == 23000) {
+                LogHelper::error('Gagal menghapus data pajak: Data terkait masih ada.');
+                Alert::error('Gagal!', 'Gagal menghapus data pajak: Data terkait masih ada.');
+            } else {
+                LogHelper::error('Terjadi kesalahan saat mencoba menghapus data pajak.');
+                Alert::error('Gagal!', 'Gagal menghapus data pajak: Data terkait masih ada.');
+            }
+    
+            return redirect()->back();
+        } catch (Throwable $e) {
+            LogHelper::error('Terjadi kesalahan saat mencoba menghapus data pajak.');
+            Alert::error('Gagal!', 'Gagal menghapus data pajak: Data terkait masih ada.');
+            return redirect()->back();
         }
     }
 }

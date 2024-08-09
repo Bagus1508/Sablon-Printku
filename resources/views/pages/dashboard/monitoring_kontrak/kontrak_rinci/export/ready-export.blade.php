@@ -30,10 +30,10 @@
                 Harga
             </th>
             <th width="200px" rowspan="2" style="background-color: #C9DBF9; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
-                PPN ({{$dataPajak->ppn}}%)
+                PPN
             </th>
             <th width="200px" rowspan="2" style="background-color: #C9DBF9; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
-                Harga + PPN ({{$dataPajak->ppn}}%)
+                Harga + PPN
             </th>
             @endif
             @if ($checkbox_cutting == 'true')         
@@ -201,12 +201,7 @@
                 <!-- Periode KR dan Durasi Hari -->
                 <td rowspan="{{ $totalBarang }}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black;  vertical-align: middle;">
                     <p class="text-black dark:text-white">
-                        @if($data->awal_kr && $data->akhir_kr)
-                            {{ \Carbon\Carbon::parse($data->awal_kr)->translatedFormat('d F Y') }} - {{ \Carbon\Carbon::parse($data->akhir_kr)->translatedFormat('d F Y') }}
-                        @else
-                            -
-                        @endif
-                        <br> ({{\Carbon\Carbon::parse($data->awal_kr)->diffInDays(\Carbon\Carbon::parse($data->akhir_kr))}} Hari)
+                        {{\Carbon\Carbon::parse($data->awal_kr)->diffInDays(\Carbon\Carbon::parse($data->akhir_kr))}} Hari
                     </p>
                 </td>
 
@@ -255,13 +250,15 @@
                 {{-- PPN --}}
                 <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle; vertical-align: middle; vertical-align: middle;">
                     <p class="text-black dark:text-white text-center">    
-                        Rp. {{ number_format(($data->total_harga/100)*$dataPajak->ppn, 2, ',', '.') }}
+                        Rp. {{ number_format(($data->total_harga/100)*$data->pajak->ppn, 2, ',', '.') }}
+                        <br> 
+                        ({{$data->pajak->ppn}} %)
                     </p>
                 </td>
                 {{-- Total Harga + PPN --}}
                 <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle; vertical-align: middle; vertical-align: middle;">
                     <p class="text-black dark:text-white text-center">    
-                        Rp. {{ number_format($data->total_harga + ($data->total_harga/100)*$dataPajak->ppn, 2, ',', '.') }}
+                        Rp. {{ number_format($data->total_harga + ($data->total_harga/100)*$data->pajak->ppn, 2, ',', '.') }}
                     </p>
                 </td>
                 @endif

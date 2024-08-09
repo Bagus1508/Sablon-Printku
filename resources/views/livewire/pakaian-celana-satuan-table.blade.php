@@ -20,7 +20,7 @@
         <table class="w-full table-auto">
             <thead class="bg-blue-600 text-white">
                 <tr class="text-left dark:bg-meta-4">
-                    <th rowspan="3" class="min-w-[50px] text-center px-4 py-4 font-medium text-white dark:text-white sticky bg-blue-600 left-0 border-b">
+                    <th rowspan="3" class="min-w-[50px] text-center px-4 py-4 font-medium text-white dark:text-white sticky bg-blue-600 left-0 border-b dark:bg-meta-4">
                         No
                     </th>
                     <th rowspan="3" class="px-4 py-4 text-center font-medium text-white dark:text-white">
@@ -75,7 +75,7 @@
             <tbody class="dark:bg-meta-4">
                 @foreach ($data as $item)                    
                     <tr>
-                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark sticky bg-blue-600 left-0">
+                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark sticky bg-blue-600 left-0 dark:bg-meta-4">
                             <h5 class="font-medium text-white dark:text-white">{{$loop->index + 1}}</h5>
                         </td>
                         <td class="mx-auto px-4 py-5 border-b border-[#eee] dark:border-strokedark">
@@ -162,12 +162,12 @@
 
     {{-- Harga Pakaian --}}
     @if ($loggedInUser->id_level_user == 1)
-    <h1 class="text-[40px] font-bold text-black sticky left-0 mt-10">Harga Pakaian</h1>        
+    <h1 class="text-[40px] font-bold text-black sticky left-0 mt-10 dark:text-white">Harga Pakaian</h1>        
     <div class="max-w-full overflow-x-auto rounded-t-md mt-10">
         <table class="w-full table-auto">
             <thead class="bg-blue-600 text-white">
                 <tr class="text-left dark:bg-meta-4">
-                    <th rowspan="3" class="min-w-[50px] text-center px-4 py-4 font-medium text-white dark:text-white sticky bg-blue-600 left-0 border-b">
+                    <th rowspan="3" class="min-w-[50px] text-center px-4 py-4 font-medium text-white dark:text-white sticky bg-blue-600 left-0 border-b dark:bg-meta-4">
                         No
                     </th>
                     <th rowspan="3" class="whitespace-nowrap text-center px-4 py-4 font-medium text-white dark:text-white">
@@ -222,7 +222,7 @@
             <tbody class="dark:bg-meta-4">
                 @foreach ($data as $item)                    
                     <tr>
-                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark sticky bg-blue-600 left-0">
+                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark sticky bg-blue-600 left-0 dark:bg-meta-4">
                             <h5 class="font-medium text-white dark:text-white">{{$loop->index + 1}}</h5>
                         </td>
                         <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">

@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('perusahaan_table', function (Blueprint $table){
             $table->id();
             $table->string('nama_perusahaan');
-            $table->string('kode_perusahaan', 20);
-            $table->string('npwp', 20)->nullable();
+            $table->string('kode_perusahaan', 50);
+            $table->string('npwp', 50)->nullable();
             $table->bigInteger('no_telepon')->nullable();
             $table->string('email')->nullable();
             $table->timestamps();

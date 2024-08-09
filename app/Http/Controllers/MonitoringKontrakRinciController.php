@@ -535,7 +535,13 @@ class MonitoringKontrakRinciController extends Controller
     public function updateTotalHarga(Request $request, $id){
         try {
             $validated = $request->validate([
-                'total_harga' => 'nullable',
+                'total_harga' => 'required',
+                'id_pajak' => 'required|integer',
+            ],
+            [
+                'total_harga.required' => 'Kolom Harga wajib diisi.',
+                'id_pajak.required' => 'Kolom Pajak wajib diisi.',
+                'id_pajak.integer' => 'Input pajak tidak sesuai',
             ]);
 
             
@@ -545,9 +551,14 @@ class MonitoringKontrakRinciController extends Controller
                 Alert::error('Error!', 'Data Kontrak Rinci tidak ditemukan.');
                 return redirect()->back();
             }
-            
-            $totalHargaStr = str_replace(['Rp. ', '.'], '', $validated['total_harga'] ?? 0);
-            $data->total_harga = floatval($totalHargaStr) ;
+
+
+            $totalHargaStr = str_replace('Rp', '', $validated['total_harga']);
+            $totalHargaStr = str_replace('.', '', $totalHargaStr);
+            $totalHargaStr = str_replace(',', '.', $totalHargaStr);
+            $data->total_harga = (float)$totalHargaStr ;
+            $data->id_pajak = $validated['id_pajak'];
+
         
             $data->save();
         

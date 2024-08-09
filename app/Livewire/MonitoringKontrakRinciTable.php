@@ -115,7 +115,7 @@ class MonitoringKontrakRinciTable extends Component
             'dataRegion' => $dataRegion,
             'dataPerusahaan' => $dataPerusahaan,
             'dataProdukPakaian' => $dataProdukPakaian,
-            'dataPajak' => Pajak::get()->first(),
+            'dataPajak' => Pajak::get()->all(),
         ]);
     }
     

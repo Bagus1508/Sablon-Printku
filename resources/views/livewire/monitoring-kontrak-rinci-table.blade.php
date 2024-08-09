@@ -2,7 +2,7 @@
     <section class="justify-between flex max-sm:flex-col-reverse max-sm:mb-5">
         @include('livewire.search-data')
         <div class="my-5">
-            <button data-hs-overlay="#modal-create-kontrak-rinci" class="bg-blue-600 text-white font-medium px-4 py-2 rounded-md hover:bg-blue-700">+ Tambah Data</button>
+            <button data-hs-overlay="#modal-create-kontrak-rinci" class="bg-blue-600  text-white font-medium px-4 py-2 rounded-md hover:bg-blue-700">+ Tambah Data</button>
         </div>
     </section>
     <div class="my-5">
@@ -69,9 +69,9 @@
     </div>        
     <div class="max-w-full overflow-x-auto rounded-t-md">
         <table class="w-full table-auto">
-            <thead class="bg-blue-600 text-white">
+            <thead class="bg-blue-600 dark:bg-meta-4 text-white">
                 <tr class="text-left dark:bg-meta-4">
-                    <th rowspan="3" class="min-w-[50px] border-r border-b border-[#eee] text-center font-medium text-white dark:text-white justify-center my-auto sticky left-0 bg-blue-600">
+                    <th rowspan="3" class="min-w-[50px] border-r border-b border-[#eee] text-center font-medium text-white dark:text-white justify-center my-auto sticky left-0 bg-blue-600 dark:bg-meta-4">
                         No
                     </th>
                     <th width="200px" rowspan="3" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
@@ -118,10 +118,10 @@
                         
                     </th>
                     <th width="200px" rowspan="3" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
-                        PPN ({{$dataPajak->ppn}}%)
+                        PPN
                     </th>
                     <th width="200px" rowspan="3" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
-                        Total Harga + PPN (11%)
+                        Total Harga + PPN
                     </th>
                     @endif
                     <th width="200px" rowspan="3" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
@@ -275,7 +275,7 @@
             <tbody class="dark:bg-meta-4">
                 @foreach ($dataKontrakRinci as $itemKontrak)                    
                     <tr>
-                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark sticky left-0 bg-blue-600">
+                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark sticky left-0 bg-blue-600 dark:bg-meta-4">
                             <h5 class="font-medium text-white dark:text-white">{{$loop->index + 1 }}</h5>
                         </td>
                         <td class="mx-auto px-4 py-5 border-b border-[#eee] dark:border-strokedark">
@@ -357,7 +357,7 @@
                         </td>
                         <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white">
-                                {{ $itemKontrak->awal_kr && $itemKontrak->akhir_kr ? \Carbon\Carbon::parse($itemKontrak->awal_kr)->translatedFormat('d F Y') . ' - ' . \Carbon\Carbon::parse($itemKontrak->akhir_kr)->translatedFormat('d F Y') . ' (' . \Carbon\Carbon::parse($itemKontrak->awal_kr)->diffInDays(\Carbon\Carbon::parse($itemKontrak->akhir_kr)) . ' Hari)' : '-' }}
+                                {{ $itemKontrak->awal_kr && $itemKontrak->akhir_kr ? \Carbon\Carbon::parse($itemKontrak->awal_kr)->diffInDays(\Carbon\Carbon::parse($itemKontrak->akhir_kr)) . ' Hari' : '-' }}
                             </p>
                         </td>
                         <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
@@ -429,19 +429,22 @@
                                         data-hs-overlay="#modal-edit-total-harga"
                                         data-id="{{$itemKontrak->id}}"
                                         data-total-harga-kontrak="{{$itemKontrak->total_harga}}"
-                                        id="edit-total-harga" class="edit-total-harga text-blue-600 hover:underline">Edit</button>
+                                        data-id-pajak="{{$itemKontrak->pajak->id}}"
+                                        id="edit-total-harga" class="edit-total-harga text-blue-600 hover:underline">Update Harga</button>
                             </p>
                         </td>
                         {{-- PPN --}}
                         <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
-                            <p class="text-black dark:text-white hover:underline">
-                                Rp. {{ number_format(($itemKontrak->total_harga/100)*$dataPajak->ppn, 2, ',', '.') }}
+                            <p class="text-black dark:text-white hover:underline text-center px-4">
+                                Rp. {{ number_format(($itemKontrak->total_harga/100)*$itemKontrak->pajak->ppn, 2, ',', '.') }}
+                                <br> 
+                                ({{$itemKontrak->pajak->ppn}} %)
                             </p>
                         </td>
                         {{-- Total Harga + PPN --}}
                         <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
-                            <p class="text-black dark:text-white hover:underline">
-                                Rp. {{ number_format($itemKontrak->total_harga + ($itemKontrak->total_harga/100)*$dataPajak->ppn, 2, ',', '.') }}
+                            <p class="text-black dark:text-white hover:underline text-center px-4">
+                                Rp. {{ number_format($itemKontrak->total_harga + ($itemKontrak->total_harga/100)*$itemKontrak->pajak->ppn, 2, ',', '.') }}
                             </p>
                         </td>
                         @endif

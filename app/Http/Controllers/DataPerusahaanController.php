@@ -24,9 +24,9 @@ class DataPerusahaanController extends Controller
         
         try {
             $validated = $request->validate([
-                'kode_perusahaan' => 'required|unique:perusahaan_table,kode_perusahaan',
+                'kode_perusahaan' => 'required|unique:perusahaan_table,kode_perusahaan|max:50',
                 'nama_perusahaan' => 'required',
-                'npwp' => 'nullable',
+                'npwp' => 'nullable|max:50',
                 'no_telepon' => 'nullable|regex:/^[0-9]+$/',
                 'email' => 'nullable|email',
                 'alamat' => 'nullable|string|max:255',
@@ -40,6 +40,8 @@ class DataPerusahaanController extends Controller
                 'kode_perusahaan.required' => 'Kode perusahaan tidak boleh kosong.',
                 'kode_perusahaan.unique' => 'Perusahaan dengan kode ' . $request->kode_perusahaan . ' sudah digunakan oleh data perusahaan lain.',
                 'nama_perusahaan.required' => 'Nama perusahaan tidak boleh kosong.',
+                'kode_perusahaan.max' => 'NPWP tidak boleh lebih dari 50 digit.', 
+                'npwp.max' => 'NPWP tidak boleh lebih dari 50 digit.', 
                 'no_telepon.regex' => 'Nomor telepon harus berisi angka saja.',
                 'email.email' => 'Email harus merupakan alamat email yang valid.',
                 'alamat.string' => 'Alamat harus berupa teks.',

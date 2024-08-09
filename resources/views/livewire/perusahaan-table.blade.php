@@ -15,7 +15,7 @@
                     <th class="min-w-[200px] text-center px-4 py-4 font-medium text-white dark:text-white">
                         Nama Perusahaan
                     </th>
-                    <th class="text-center px-4 py-4 font-medium text-white dark:text-white">
+                    <th class="text-center whitespace-nowrap px-4 py-4 font-medium text-white dark:text-white">
                         Kode Perusahaan
                     </th>
                     <th class="text-center px-4 py-4 font-medium text-white dark:text-white">
@@ -41,13 +41,13 @@
                         <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <h5 class="font-medium text-black dark:text-white">{{$loop->index + 1}}</h5>
                         </td>
-                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                        <td class="text-center whitespace-nowrap border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white">{{$item->nama_perusahaan ?? '-'}}</p>
                         </td>
-                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                        <td class="text-center whitespace-nowrap border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white">{{$item->kode_perusahaan ?? '-'}}</p>
                         </td>
-                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                        <td class="text-center whitespace-nowrap border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white">{{$item->npwp ?? '-'}}</p>
                         </td>
                         <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">

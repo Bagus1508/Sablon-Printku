@@ -102,7 +102,6 @@ class BarangKontrakRinciController extends Controller
             'volume_kontrak' => 'nullable|numeric',
             'volume_realisasi' => 'nullable|numeric',
             'volume_sisa' => 'nullable|numeric',
-            'harga_barang' => 'nullable',
         ],[
             'id_produk.required' => 'Nama barang wajib diisi.',
             'kuantitas.nullable' => 'Kuantitas bersifat opsional.',
@@ -115,7 +114,7 @@ class BarangKontrakRinciController extends Controller
         $dataProdukKontrak = ProdukKontrak::find($id);
         $dataKontrakRinci = KontrakRinci::find($dataProdukKontrak->id_kontrak_rinci);
 
-        if (!is_null($validated['harga_barang'])) {
+        /* if (!is_null($validated['harga_barang'])) {
             $hargaString = $validated['harga_barang'] ?? '0';
             // Hapus "Rp " dari awal string dan ganti "." menjadi ""
             $harga = str_replace('Rp ', '', $hargaString); // Menghapus prefiks "Rp "
@@ -123,16 +122,16 @@ class BarangKontrakRinciController extends Controller
             $harga = str_replace('Rp ', '', $harga);
             $harga = (float) $harga; // Konversi ke float
             
-            /* Hitung Total harga baru */
+            // Hitung Total harga baru
             $totalHargaLama = (float)$dataKontrakRinci->total_harga - (float)$dataProdukKontrak->harga_barang; // Pengurangan total sebelumnya
             $totalHargaBaru = $totalHargaLama + $harga;
-            /* Update Harga Barang */
+            // Update Harga Barang
             $dataProdukKontrak->harga_barang = $harga;
-            /* Update dataKontrakRinci */
+            // Update dataKontrakRinci
             $dataKontrakRinci->total_harga = $totalHargaBaru;
-        }
+        } */
         
-        /* Update dataProdukKontrak */
+        // Update dataProdukKontrak
         $dataProdukKontrak->id_produk = $validated['id_produk'];
         $dataProdukKontrak->kuantitas = $validated['kuantitas'];
         $dataProdukKontrak->id_satuan = $validated['id_satuan'];

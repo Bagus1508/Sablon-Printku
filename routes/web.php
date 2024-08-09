@@ -51,6 +51,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::resource('data-kategori', CategoryController::class);
         Route::resource('data-pajak', PajakController::class);
         Route::post('data-pajak/update/{id}', [PajakController::class, 'update'])->name('data-pajak.update');
+        Route::delete('data-pajak/delete/{id}', [PajakController::class, 'destroy'])->name('data-pajak.destroy');
 
     });
     

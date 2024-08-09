@@ -7,12 +7,10 @@
             </h2>
         </div>
         <div>
-            <section class="justify-end flex max-sm:flex-col-reverse max-sm:mb-5">
-                @if (is_null($dataPajak))                    
+            <section class="justify-end flex max-sm:flex-col-reverse max-sm:mb-5">                
                 <div class="my-5">
                     <button data-hs-overlay="#modal-create-pajak" class="bg-blue-600 text-white font-medium px-4 py-2 rounded-md hover:bg-blue-700">+ Tambah Merek</button>
                 </div>
-                @endif
             </section>
             <div class="max-w-full overflow-x-auto rounded-t-md">
                 <table class="w-full table-auto">
@@ -39,12 +37,19 @@
                                 <p class="text-black dark:text-white">{{$item->ppn}}%</p>
                             </td>
                             <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                                <p class="text-blue-600 hover:underline dark:text-white">
+                                <p class="text-blue-600  dark:text-white">
                                     <button data-hs-overlay="#modal-edit-pajak" id="edit-pajak" 
                                     data-id-pajak="{{$item->id}}"
                                     data-ppn="{{$item->ppn}}"
                                     class="edit-pajak hover:underline">
                                         Edit
+                                    </button>
+                                    |
+                                    <button data-hs-overlay="#modal-delete-pajak" id="delete-pajak" 
+                                    data-id-pajak="{{$item->id}}"
+                                    data-ppn="{{$item->ppn}}"
+                                    class="delete-pajak hover:underline">
+                                        Hapus
                                     </button>
                                 </p>
                             </td>
@@ -54,6 +59,7 @@
                 </table>
             </div>
             @include('pages.dashboard.data_master.data_pajak.edit')
+            @include('pages.dashboard.data_master.data_pajak.delete')
         </div>
     </div>
     @include('pages.dashboard.data_master.data_pajak.create')

@@ -29,6 +29,12 @@ class KontrakRinciSeeder extends Seeder
         $startOfYear = "$currentYear-01-01";
         $endOfYear = "$currentYear-12-31";
 
+        for($i = 0; $i < 3; $i++){
+            $dataPajak = Pajak::create([
+                'ppn' => 10 + $i,
+            ]);
+        }
+
         for ($i = 0; $i < 10; $i++) {
             $noSuratPrefix = $faker->randomNumber(2);
             $noSuratMiddle = $faker->randomNumber(2);
@@ -66,6 +72,7 @@ class KontrakRinciSeeder extends Seeder
                 'uraian' => $faker->text(200),
                 'id_perusahaan' => $faker->numberBetween(1, 10),
                 'total_harga' => $faker->numberBetween(100000,10000000),
+                'id_pajak' => $faker->numberBetween(1,3),
             ]);
 
             for($j = 0; $j < 5; $j++){
@@ -115,10 +122,6 @@ class KontrakRinciSeeder extends Seeder
             ]);
 
         }
-
-        Pajak::create([
-            'ppn' => 11,
-        ]);
     }
 }
 

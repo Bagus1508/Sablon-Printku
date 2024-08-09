@@ -30,6 +30,16 @@
                             <input type="text" id="total_harga_kontrak" name="total_harga" placeholder="Masukan Total Harga"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div>
+                        <div class="mb-4 w-full">
+                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                PPN <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
+                            </label>
+                            <select required name="id_pajak" id="id_pajak" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
+                                @foreach ($dataPajak as $item)
+                                <option value="{{$item->id}}">{{$item->ppn}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                     <div class="bg-white dark:bg-boxdark flex justify-center">
                         <button type="submit" class="flex justify-center rounded w-full m-4 -mt-4 bg-primary font-medium p-2 text-gray hover:bg-opacity-90">
@@ -46,6 +56,7 @@
     $('.edit-total-harga').click(function() {
     const id = $(this).data('id');
     let total_harga_kontrak = $(this).data('total-harga-kontrak');
+    const id_pajak = $(this).data('id-pajak');
     
     function formatRupiah(angka, prefix) {
         var numberString = angka.toString(),
@@ -75,6 +86,7 @@
     
     // Mengatur nilai input ID pada form modal
     $('#total_harga_kontrak').val(formatRupiah(total_harga, 'Rp'));
+    $('#id_pajak').val(id_pajak);
 
     // Select the form element
     const form = $('form');
