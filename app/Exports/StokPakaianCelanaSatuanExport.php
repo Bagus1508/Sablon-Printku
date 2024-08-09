@@ -29,13 +29,15 @@ class StokPakaianCelanaSatuanExport implements FromView
     protected $startDateStr;
     protected $endDateStr;
     protected $id_satuan;
+    protected $selected_table;
     public $search = "";
 
-    public function __construct($tanggalAwal, $tanggalAkhir, $IdSatuan)
+    public function __construct($tanggalAwal, $tanggalAkhir, $IdSatuan, $selectedTable)
     {   
         $this->startDate = Carbon::parse($tanggalAwal);
         $this->endDate = Carbon::parse($tanggalAkhir);
         $this->id_satuan = $IdSatuan;
+        $this->selected_table = $selectedTable;
     }
     
     public function view(): View
@@ -45,6 +47,7 @@ class StokPakaianCelanaSatuanExport implements FromView
         $startDateStr = $startDate->format('Y-m-d');
         $endDateStr = $endDate->format('Y-m-d');
         $id_satuan = $this->id_satuan;
+        $selectedTable = $this->selected_table;
 
         // Buat daftar tanggal dalam rentang
         $dateRange = [];
@@ -116,6 +119,7 @@ class StokPakaianCelanaSatuanExport implements FromView
             'jumlahHari' => count($dateRange),
             'satuanNamaTotal' => $satuanNamaTotal,
             'id_satuan' => $id_satuan,
+            'selectedTable' => $selectedTable,
         ]);
     }
 }

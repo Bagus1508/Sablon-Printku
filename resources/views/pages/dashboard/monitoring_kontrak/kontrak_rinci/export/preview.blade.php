@@ -243,23 +243,35 @@
                 {{-- Total Harga --}}
                 @if ($loggedInUser->id_level_user == 1)              
                 <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle; vertical-align: middle; vertical-align: middle;">
+                    @if ($data->total_harga)                        
                     <p class="text-black dark:text-white text-center">    
                         {{ $data->total_harga ? 'Rp ' . number_format($data->total_harga, 0, ',', '.') : '-' }}
                     </p>
+                    @else
+                    -
+                    @endif
                 </td>
                 {{-- PPN --}}
                 <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle; vertical-align: middle; vertical-align: middle;">
+                    @if ($data->total_harga)  
                     <p class="text-black dark:text-white text-center">    
                         Rp. {{ number_format(($data->total_harga/100)*$data->pajak->ppn, 2, ',', '.') }}
                         <br> 
                         ({{$data->pajak->ppn}} %)
                     </p>
+                    @else
+                    -
+                    @endif
                 </td>
                 {{-- Total Harga + PPN --}}
                 <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle; vertical-align: middle; vertical-align: middle;">
+                    @if ($data->total_harga)                        
                     <p class="text-black dark:text-white text-center">    
                         Rp. {{ number_format($data->total_harga + ($data->total_harga/100)*$data->pajak->ppn, 2, ',', '.') }}
                     </p>
+                    @else
+                    -
+                    @endif
                 </td>
                 @endif
                 {{-- Proses Cutting --}}

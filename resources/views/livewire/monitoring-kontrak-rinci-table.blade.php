@@ -427,25 +427,29 @@
                             <p class="text-black dark:text-white hover:underline px-4">
                                 <button 
                                         data-hs-overlay="#modal-edit-total-harga"
-                                        data-id="{{$itemKontrak->id}}"
-                                        data-total-harga-kontrak="{{$itemKontrak->total_harga}}"
-                                        data-id-pajak="{{$itemKontrak->pajak->id}}"
+                                        data-id="{{$itemKontrak->id ?? ''}}"
+                                        data-total-harga-kontrak="{{$itemKontrak->total_harga ?? ''}}"
+                                        data-id-pajak="{{$itemKontrak->pajak->id ?? ''}}"
                                         id="edit-total-harga" class="edit-total-harga text-blue-600 hover:underline">Update Harga</button>
                             </p>
                         </td>
                         {{-- PPN --}}
                         <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
+                            @if ($itemKontrak->total_harga)                                
                             <p class="text-black dark:text-white hover:underline text-center px-4">
                                 Rp. {{ number_format(($itemKontrak->total_harga/100)*$itemKontrak->pajak->ppn, 2, ',', '.') }}
                                 <br> 
                                 ({{$itemKontrak->pajak->ppn}} %)
                             </p>
+                            @endif
                         </td>
                         {{-- Total Harga + PPN --}}
                         <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
+                            @if ($itemKontrak->total_harga)                                
                             <p class="text-black dark:text-white hover:underline text-center px-4">
                                 Rp. {{ number_format($itemKontrak->total_harga + ($itemKontrak->total_harga/100)*$itemKontrak->pajak->ppn, 2, ',', '.') }}
                             </p>
+                            @endif
                         </td>
                         @endif
                         {{-- Tombol Tambah Barang --}}                           

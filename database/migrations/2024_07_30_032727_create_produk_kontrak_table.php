@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_kontrak_rinci');
             $table->unsignedBigInteger('id_produk');
-            $table->integer('kuantitas');
+            $table->integer('kuantitas')->nullable();
             $table->unsignedBigInteger('id_satuan')->nullable();
             $table->integer('volume_kontrak')->nullable();
             $table->integer('volume_realisasi')->nullable();

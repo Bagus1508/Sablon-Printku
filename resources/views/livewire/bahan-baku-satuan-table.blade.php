@@ -27,20 +27,19 @@
                     Preview
                 </button>
               
-                <div class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-1 space-y-0.5 mt-2 dark:bg-neutral-800 dark:border dark:border-neutral-700 dark:divide-neutral-700 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full" role="menu" aria-orientation="vertical" aria-labelledby="hs-dropdown-default">
-                  <button type="submit" class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700" href="#">
-                    Persediaan
-                  </button>
-                  @if ($loggedInUser->id_level_user == 1)                      
-                  <button type="submit" class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700" href="#">
-                    Harga
-                  </button>
-                  <button  type="submit" class="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700" href="#">
-                    Persediaan dan Harga 
-                  </button>
-                  @endif
+                <div class="hs-dropdown-menu transition-[opacity,margin] duration hs-dropdown-open:opacity-100 px-4 py-4 opacity-0 hidden min-w-60 bg-white shadow-md rounded-lg p-1 space-y-0.5 gap-4 mt-2 dark:bg-neutral-800 dark:border dark:border-neutral-700 dark:divide-neutral-700 after:h-4 after:absolute after:-bottom-4 after:start-0 after:w-full before:h-4 before:absolute before:-top-4 before:start-0 before:w-full" role="menu" aria-orientation="vertical" aria-labelledby="hs-dropdown-default">
+                    <select wire:model.lazy='selectedTable' id="selected_table" name="selected_table" class="dark:bg-boxdark ring-1 mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm rounded-md">
+                        <option value="tabel_persediaan" selected>Tabel Persediaan</option>
+                        @if ($loggedInUser->id_level_user == 1)                            
+                        <option value="tabel_harga">Tabel Harga</option>
+                        <option value="tabel_persediaan_harga">Tabel Persediaan dan Harga</option>
+                        @endif
+                    </select>
+                    <div class="flex justify-end"> 
+                        <button type="submit" class=" bg-blue-600 px-2 py-1 rounded-md text-white mt-3">Preview</button>
+                    </div>
                 </div>
-              </div>
+            </div>
         </form>
     </div>        
     <div class="max-w-full overflow-x-auto rounded-t-md">

@@ -449,7 +449,30 @@ class MonitoringKontrakRinciController extends Controller
             ->orderBy('tanggal_kontrak', 'desc')
             ->with(['prosesCutting', 'prosesJahit', 'prosesPacking', 'barangKontrak', 'pengirimanBarang', 'ba_rikmatek', 
                     'bapb_bapp', 'bast', 'invoice'                 
-                   ]); 
+                   ])
+            ->whereHas('barangKontrak', function ($query) {
+            // Hanya lanjutkan jika ada `id_kontrak_rinci` yang terkait di `barangKontrak`
+            $query->whereNotNull('id_kontrak_rinci');
+            }); 
+
+            $checkingBarangKontrak = KontrakRinci::whereBetween('tanggal_kontrak', [$startDate, $endDate])
+                ->orderBy('tanggal_kontrak', 'desc')
+                ->with(['prosesCutting', 'prosesJahit', 'prosesPacking', 'barangKontrak', 'pengirimanBarang', 'ba_rikmatek', 'bapb_bapp', 'bast', 'invoice'])
+                ->get();
+
+            // Filter KontrakRinci yang valid
+            $validBarangKontrak = $checkingBarangKontrak->filter(function ($item) {
+                // Cek apakah barangKontrak terkait dengan id_kontrak_rinci
+                return !$item->barangKontrak->isEmpty() && $item->barangKontrak->every(function ($barang) {
+                    return $barang->id_kontrak_rinci !== null;
+                });
+            });
+
+            // Jika ada KontrakRinci yang tidak valid
+            if ($validBarangKontrak->count() !== $checkingBarangKontrak->count()) {
+                Alert::error('Error!', 'Ada barang pada kontrak rinci yang belum terisi.');
+                return redirect()->back();
+            }
                    
             if ($no_kontrak_pihak_pertama != 0) {
                 $query->where('no_kontrak_pihak_pertama', $no_kontrak_pihak_pertama);
@@ -462,6 +485,12 @@ class MonitoringKontrakRinciController extends Controller
             }
 
             $dataKontrakRinci = $query->get()->all();
+
+            if ($query->get()->isEmpty()) {
+                // Jika data tidak ditemukan, arahkan kembali dengan pesan error
+                Alert::error('Error!', 'Ada barang pada kontrak rinci yang belum terisi.');
+                return redirect()->back();
+            }
         
             return view('pages.dashboard.monitoring_kontrak.kontrak_rinci.export.index', [
                 'dataKontrakRinci' => $dataKontrakRinci,

@@ -241,25 +241,37 @@
                     <p class="text-black dark:text-white">{{$data->barangKontrak->first()->satuan->nama_satuan ?? '-'}}</p>
                 </td>
                 {{-- Total Harga --}}
-                @if ($loggedInUser->id_level_user == 1)              
+                @if ($loggedInUser->id_level_user == 1)
                 <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle; vertical-align: middle; vertical-align: middle;">
+                    @if ($data->total_harga)
                     <p class="text-black dark:text-white text-center">    
                         {{ $data->total_harga ? 'Rp ' . number_format($data->total_harga, 0, ',', '.') : '-' }}
                     </p>
+                    @else
+                    -                    
+                    @endif              
                 </td>
                 {{-- PPN --}}
                 <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle; vertical-align: middle; vertical-align: middle;">
+                    @if ($data->total_harga)
                     <p class="text-black dark:text-white text-center">    
                         Rp. {{ number_format(($data->total_harga/100)*$data->pajak->ppn, 2, ',', '.') }}
                         <br> 
                         ({{$data->pajak->ppn}} %)
                     </p>
+                    @else         
+                    -           
+                    @endif     
                 </td>
                 {{-- Total Harga + PPN --}}
                 <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle; vertical-align: middle; vertical-align: middle;">
+                    @if ($data->total_harga)
                     <p class="text-black dark:text-white text-center">    
                         Rp. {{ number_format($data->total_harga + ($data->total_harga/100)*$data->pajak->ppn, 2, ',', '.') }}
                     </p>
+                    @else
+                    -                    
+                    @endif     
                 </td>
                 @endif
                 {{-- Proses Cutting --}}
@@ -362,7 +374,7 @@
                 <img src="{{ public_path('storage/upload/dokumen_pengiriman_barang/' . $data->pengirimanBarang->bukti_foto) }}" alt="Bukti Foto" width="200px">
                 
                     @else
-                        <p class="text-black dark:text-white">Gambar tidak tersedia</p>
+                        <p class="text-black dark:text-white">-</p>
                     @endif
                 </td>                
                 <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black; vertical-align: middle;">
@@ -425,7 +437,7 @@
                     @if($data->invoice && $data->invoice->foto_invoice)
                     <img src="{{ public_path('storage/upload/dokumen_invoice/' . $data->invoice->foto_invoice) }}" alt="Bukti Foto" width="200px">
                     @else
-                        <p class="text-black dark:text-white">Gambar tidak tersedia</p>
+                        <p class="text-black dark:text-white">-</p>
                     @endif
                 </td>             
                 <td rowspan="{{ $totalBarang }}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; vertical-align: middle;">

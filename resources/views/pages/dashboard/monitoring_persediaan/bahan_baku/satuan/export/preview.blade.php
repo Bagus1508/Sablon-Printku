@@ -1,3 +1,4 @@
+@if ($selectedTable == 'tabel_persediaan' || $selectedTable == 'tabel_persediaan_harga')    
 <table class="w-full table-auto">
     <thead>
         <tr class="text-left dark:bg-meta-4">
@@ -107,10 +108,13 @@
         @endforeach
     </tbody>
 </table>
+@endif
+@if ($selectedTable == 'tabel_persediaan_harga')    
 <table></table>
 <table></table>
 <table></table>
-@if ($loggedInUser->id_level_user == 1)
+@endif
+@if ($loggedInUser->id_level_user == 1 && $selectedTable == 'tabel_harga' || $loggedInUser->id_level_user == 1 && $selectedTable == 'tabel_persediaan_harga')
 <table class="w-full table-auto mt-20">
     <thead>
         <tr class="text-left dark:bg-meta-4">
@@ -142,7 +146,7 @@
         </tr>
         <tr>
             @foreach ($dateRange as $item)                        
-                <th class="dark:text-white" style="background-color: darkgreen; text-align: center; font-weight: 500; padding-left: 8px; padding-right: 8px; color:white; border: 1px solid black;" width="200px">
+                <th class="dark:text-white" style="background-color: darkgreen; text-align: center; font-weight: 500; padding-left: 8px; padding-right: 8px; color:white; border: 1px solid black;" width="150px">
                     Harga Beli Satuan
                 </th>
             @endforeach

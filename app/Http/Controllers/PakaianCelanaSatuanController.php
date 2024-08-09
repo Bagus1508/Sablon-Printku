@@ -267,6 +267,7 @@ class PakaianCelanaSatuanController extends Controller
             // Tangkap rentang tanggal dari parameter query
             $tgl_stok_satuan = $request->input('tanggal'); // Ambil nilai dari parameter URL
             $id_satuan = $request->input('id_satuan'); // Ambil nilai dari parameter URL
+            $selectedTable = $request->input('selected_table'); // Ambil nilai dari parameter URL
 
             $startDateFormatted = '';
             $endDateFormatted = '';
@@ -366,6 +367,7 @@ class PakaianCelanaSatuanController extends Controller
                 'satuanNamaTotal' => $satuanNamaTotal,
                 'tgl_stok_satuan' => $tgl_stok_satuan,
                 'id_satuan' => $id_satuan,
+                'selectedTable' => $selectedTable,
                 'startDate' => $startDateFormatted,
                 'endDate' => $endDateFormatted,
                 'dataCount' => $query->count(),
@@ -382,6 +384,7 @@ class PakaianCelanaSatuanController extends Controller
         // Tangkap rentang tanggal dari parameter query
         $tgl_stok_satuan = $request->input('tanggal'); // Ambil nilai dari parameter URL
         $IdSatuan = $request->input('id_satuan'); // Ambil nilai dari parameter URL
+        $selectedTable = $request->input('selected_table'); // Ambil nilai dari parameter URL
 
         if($tgl_stok_satuan == null){
             // Mendapatkan tanggal awal tahun ini
@@ -404,6 +407,6 @@ class PakaianCelanaSatuanController extends Controller
             }
         }
         $filename = 'PERSEDIAAN PAKAIAN DAN CELANA SATUAN_' . $startDate . ' - '. $endDate .'.xlsx';
-        return Excel::download(new StokPakaianCelanaSatuanExport($startDate, $endDate ,$IdSatuan), $filename);
+        return Excel::download(new StokPakaianCelanaSatuanExport($startDate, $endDate ,$IdSatuan, $selectedTable), $filename);
     }
 }

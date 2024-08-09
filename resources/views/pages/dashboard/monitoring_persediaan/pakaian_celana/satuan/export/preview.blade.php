@@ -1,3 +1,4 @@
+@if ($selectedTable == 'tabel_persediaan' || $selectedTable == 'tabel_persediaan_harga')   
 <table class="w-full table-auto">
     <thead>
         <tr class="text-left dark:bg-meta-4">
@@ -103,11 +104,13 @@
         @endforeach
     </tbody>
 </table>
+@endif
+@if ($selectedTable == 'tabel_persediaan_harga')    
 <table></table>
 <table></table>
 <table></table>
-
-@if ($loggedInUser->id_level_user == 1)    
+@endif
+@if ($loggedInUser->id_level_user == 1 && $selectedTable == 'tabel_harga' || $loggedInUser->id_level_user == 1 && $selectedTable == 'tabel_persediaan_harga')
 <table class="w-full table-auto mt-20">
     <thead>
         <tr class="text-left dark:bg-meta-4">
