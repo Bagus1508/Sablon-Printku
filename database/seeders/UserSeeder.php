@@ -17,19 +17,19 @@ class UserSeeder extends Seeder
         $superAdmin = User::create([
             'name' => 'Super Admin',
             'email' => 'superadmin@takon.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('ql2Aq0rmOuH9'),
             'id_level_user' => 1,
         ]);
         $midAdmin = User::create([
             'name' => 'Mid Admin',
             'email' => 'midadmin@takon.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('uXSKyzBNTd35'),
             'id_level_user' => 2,
         ]);
         $admin = User::create([
             'name' => 'Admin',
             'email' => 'admin@takon.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('VtQlcJmYZlxQ'),
             'id_level_user' => 3,
         ]);
     }
