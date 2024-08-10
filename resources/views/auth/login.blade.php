@@ -38,7 +38,7 @@
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
                             <div class="mb-4">
-                                <label class="mb-2.5 block font-medium text-black dark:text-white">Email</label>
+                                <label class="mb-2.5 block font-medium text-black dark:text-white">Username</label>
                                 <div class="relative">
                                     <input type="email" name="email" id="email" placeholder="Masukan Email Anda"
                                         class="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
