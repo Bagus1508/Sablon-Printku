@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Pajak;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,14 +20,18 @@ class DatabaseSeeder extends Seeder
             LevelUser::class,
             UserSeeder::class,
             KategoriSeeder::class,
-            WarnaSeeder::class,
+            /* WarnaSeeder::class, */
             SatuanSeeder::class,
-            UkuranSeeder::class,
+            /* UkuranSeeder::class,
             PerusahaanSeeder::class,
             BahanBakuSeeder::class,
             EkspedisiSeeder::class,
             RegionSeeder::class,
-            KontrakRinciSeeder::class,
+            KontrakRinciSeeder::class, */
+        ]);
+
+        $dataPajak = Pajak::create([
+            'ppn' => 11,
         ]);
     }
 }
