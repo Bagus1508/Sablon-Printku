@@ -8,7 +8,7 @@
                 <div
                     class="border-b border-stroke px-6.5 py-4 dark:border-strokedark flex justify-between self-baseline">
                     <h3 class="font-medium text-black dark:text-white">
-                        Tambah Data Pakaian Celana
+                        Tambah Data Pakaian dan Celana
                     </h3>
                     <div>
                         <button data-hs-overlay="#modal-create-produk" type="button"
@@ -25,9 +25,9 @@
                     <div class="p-6.5">
                         <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                NO ID Bahan <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
+                                NO ID Bahan
                             </label>
-                            <input required type="text" id="id_no" name="id_no" placeholder="Masukan NO ID Bahan"
+                            <input type="text" id="id_no" name="id_no" placeholder="Masukan NO ID Bahan"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div>
                         <div class="mb-4.5 w-full">
