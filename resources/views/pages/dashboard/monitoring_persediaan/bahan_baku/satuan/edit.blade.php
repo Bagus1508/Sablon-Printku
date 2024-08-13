@@ -26,9 +26,9 @@
                     <div class="p-6.5">
                         <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                NO ID Bahan <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
+                                NO ID Bahan
                             </label>
-                            <input required type="text" id="no_id" name="id_no" placeholder="Masukan NO ID Bahan"
+                            <input type="text" id="no_id" name="id_no" placeholder="Masukan NO ID Bahan"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div>
                         <div class="mb-4.5 w-full">

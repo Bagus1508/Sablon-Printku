@@ -6,13 +6,14 @@ use App\Models\DataPerusahaan;
 use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class PerusahaanSeeder extends Seeder
 {
      /**
      * Run the database seeds.
      */
-    protected $data = [
+    /* protected $data = [
         ['PT. Sejahtera', '845634', '082313123123', 'ptsejahtera@gmail.com'],
         ['PT. Maju Jaya', '789654', '081234567890', 'ptmajujaya@gmail.com'],
         ['PT. Makmur Sentosa', '456123', '085612345678', 'ptmakmursentosa@gmail.com'],
@@ -23,14 +24,14 @@ class PerusahaanSeeder extends Seeder
         ['PT. Maju Terus', '789123', '085712345678', 'ptmajutrus@gmail.com'],
         ['PT. Sentosa Abadi', '456789', '081812345678', 'ptsentosaabadi@gmail.com'],
         ['PT. Jaya Sentosa', '321456', '083112345678', 'ptjayasentosa@gmail.com'],
-    ];    
+    ];  */   
 
     /**
      * Run the database seeds.
      *
      * @return void
      */
-    public function run()
+    /* public function run()
     {
         foreach ($this->data as $d) {
             $perusahaan = DataPerusahaan::create([
@@ -40,5 +41,41 @@ class PerusahaanSeeder extends Seeder
                 'email' => $d[3],
             ]);
         }
+    } */
+
+    public function run()
+    {
+        $csvFile = storage_path('import/data-perusahaan.csv');
+
+        if (($handle = fopen($csvFile, "r")) !== false) {
+            $header = null;
+            
+            DB::beginTransaction();
+
+            try {
+                while (($row = fgetcsv($handle, 0, ",")) !== false) {
+                    if (!$header) {
+                        $header = $row;
+                        continue;
+                    }
+
+                    $data = array_combine($header, $row);
+
+                    $dataPerusahaan = DataPerusahaan::create([
+                        'nama_perusahaan' => $data['nama_perusahaan'],
+                        'kode_perusahaan' => $data['kode_perusahaan'],
+                        'npwp' => $data['npwp'] ?? '',
+                    ]);
+
+                }
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollback();
+                throw $e;
+            } finally {
+                fclose($handle);
+            }
+        }
     }
+
 }

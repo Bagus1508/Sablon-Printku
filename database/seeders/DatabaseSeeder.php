@@ -20,13 +20,15 @@ class DatabaseSeeder extends Seeder
             LevelUser::class,
             UserSeeder::class,
             KategoriSeeder::class,
-            /* WarnaSeeder::class, */
+            WarnaSeeder::class,
             SatuanSeeder::class,
-            /* UkuranSeeder::class,
+            UkuranSeeder::class,
             PerusahaanSeeder::class,
-            BahanBakuSeeder::class,
             EkspedisiSeeder::class,
             RegionSeeder::class,
+            MerekSeeder::class,
+            BahanKainSeeder::class,
+            /* BahanBakuSeeder::class,
             KontrakRinciSeeder::class, */
         ]);
 

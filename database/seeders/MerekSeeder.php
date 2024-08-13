@@ -2,44 +2,19 @@
 
 namespace Database\Seeders;
 
-use App\Models\Region;
+use App\Models\DataMerek;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class RegionSeeder extends Seeder
+class MerekSeeder extends Seeder
 {
-     /**
-     * Run the database seeds.
-     */
-    /* protected $data = [
-        ['UP 1'],
-        ['UP 2'],
-        ['UP 3'],
-        ['UP 4'],
-        ['UP 5'],
-        ['UP 6'],
-        ['UP 7'],
-    ]; */
-
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    /* public function run()
-    {
-        foreach ($this->data as $d) {
-            $region = Region::create([
-                'nama_region' => $d[0], 
-            ]);
-        }
-    } */
-
-
     public function run()
     {
-        $csvFile = storage_path('import/data-region.csv');
+        $csvFile = storage_path('import/data-merek.csv');
 
         if (($handle = fopen($csvFile, "r")) !== false) {
             $header = null;
@@ -55,8 +30,10 @@ class RegionSeeder extends Seeder
 
                     $data = array_combine($header, $row);
 
-                    $dataRegion = Region::create([
-                        'nama_region' => $data['nama_region'],
+                    $dataMerek = DataMerek::create([
+                        'nama_merek' => $data['nama_merek'],
+                        'kode_merek' => $data['kode_merek'],
+                        'id_kategori' => 1,
                     ]);
 
                 }

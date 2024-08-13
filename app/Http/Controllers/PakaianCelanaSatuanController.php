@@ -43,7 +43,7 @@ class PakaianCelanaSatuanController extends Controller
     {
         try {
             $validated = $request->validate([
-                'id_no' => 'required',
+                'id_no' => 'nullable',
                 'id_kategori' => 'required',
                 'nama_barang' => 'required',
                 'id_warna' => 'required',
@@ -51,7 +51,6 @@ class PakaianCelanaSatuanController extends Controller
                 'id_ukuran' => 'nullable|integer',
                 'id_perusahaan' => 'nullable|integer',
             ], [
-                'id_no.required' => 'NO ID bahan tidak boleh kosong.',
                 'id_kategori.required' => 'Kategori bahan tidak boleh kosong.',
                 'nama_barang.required' => 'Nama tidak boleh kosong.',
                 'id_warna.required' => 'Warna tidak boleh kosong.',
@@ -68,7 +67,7 @@ class PakaianCelanaSatuanController extends Controller
             }
             
             $parameter = [
-                'id_no' => $validated['id_no'],
+                'id_no' => $validated['id_no'] ?? null,
                 'id_kategori' => $validated['id_kategori'],
                 'nama_barang' => $validated['nama_barang'],
                 'id_warna' => $validated['id_warna'],
@@ -127,7 +126,7 @@ class PakaianCelanaSatuanController extends Controller
 
         try {
             $validated = $request->validate([
-                'id_no' => 'required',
+                'id_no' => 'nullable',
                 'id_kategori' => 'required',
                 'nama_barang' => 'required',
                 'id_warna' => 'required',
@@ -135,7 +134,6 @@ class PakaianCelanaSatuanController extends Controller
                 'id_ukuran' => 'nullable|integer',
                 'id_perusahaan' => 'nullable|integer',
             ], [
-                'id_no.required' => 'NO ID bahan tidak boleh kosong.',
                 'id_kategori.required' => 'Kategori bahan tidak boleh kosong.',
                 'nama_barang.required' => 'Nama tidak boleh kosong.',
                 'id_warna.required' => 'Warna tidak boleh kosong.',
@@ -147,7 +145,7 @@ class PakaianCelanaSatuanController extends Controller
 
             $data = Produk::find($id);
 
-            $data->id_no = $validated['id_no'];
+            $data->id_no = $validated['id_no'] ?? null;
             $data->id_kategori = $validated['id_kategori'];
             $data->nama_barang = $validated['nama_barang'];
             $data->id_warna = $validated['id_warna'];

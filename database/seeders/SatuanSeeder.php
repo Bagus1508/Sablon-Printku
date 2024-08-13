@@ -15,6 +15,7 @@ class SatuanSeeder extends Seeder
         ['Meter', 'm'],
         ['Yard', 'yd'],
         ['Pieces', 'pcs'],
+        ['Stell', 'stell'],
     ];
 
     /**
