@@ -97,9 +97,14 @@ class BahanBakuGlobalTable extends Component
             // Hitung total sisa stok dalam Meter per Produk
             $this->selectedUnit = 1;
             $data->getCollection()->transform(function($item) {
+                $stokMasuk = 0;
+                $stokKeluar = 0;
                 $totalSisaStok = 0;
                 foreach ($item->stokHarian as $stokHarian) {
-                    $totalSisaStok += $this->convertToMeter($stokHarian->sisa_stok, $stokHarian->id_satuan);
+                    $stokMasuk += $this->convertToMeter($stokHarian->stok_masuk, $stokHarian->id_satuan);
+                    $stokKeluar += $this->convertToMeter($stokHarian->stok_keluar, $stokHarian->id_satuan);
+
+                    $totalSisaStok = $stokMasuk - $stokKeluar;
                 }
                 $item->totalSisaStok = number_format($totalSisaStok, 2);
                 $item->satuanNamaTotal = DataSatuan::where('id', $this->selectedUnit)->pluck('nama_satuan')->first();
@@ -108,9 +113,14 @@ class BahanBakuGlobalTable extends Component
         } elseif ($this->selectedUnit == '2') { // Meter to Yard
             // Hitung total sisa stok dalam Meter per Produk
             $data->getCollection()->transform(function($item) {
+                $stokMasuk = 0;
+                $stokKeluar = 0;
                 $totalSisaStok = 0;
                 foreach ($item->stokHarian as $stokHarian) {
-                    $totalSisaStok += $this->convertToYard($stokHarian->sisa_stok, $stokHarian->id_satuan);
+                    $stokMasuk += $this->convertToYard($stokHarian->stok_masuk, $stokHarian->id_satuan);
+                    $stokKeluar += $this->convertToYard($stokHarian->stok_keluar, $stokHarian->id_satuan);
+
+                    $totalSisaStok = $stokMasuk - $stokKeluar;
                 }
                 $item->totalSisaStok = number_format($totalSisaStok, 2);
                 $item->satuanNamaTotal = DataSatuan::where('id', $this->selectedUnit)->pluck('nama_satuan')->first();

@@ -37,12 +37,13 @@ class StokBahanBakuController extends Controller
 
             $validated = $request->validate([
                 'id_produk' => 'required',
-                'tanggal' => 'nullable|date',
+                'tanggal' => 'required|date',
                 'stok_masuk' => 'nullable|numeric',
                 'stok_keluar' => 'nullable|numeric',
                 'id_satuan' => 'required|integer',
                 $hargaBeliSatuan => 'nullable|regex:/^\d{1,3}(\.\d{3})*$/'
             ], [
+                'tanggal.required' => 'Kolom Tanggal wajib diisi.',
                 'tanggal.date' => 'Tanggal harus berupa format tanggal yang valid.',
                 'stok_masuk.numeric' => 'Stok masuk harus berupa angka.',
                 'stok_keluar.numeric' => 'Stok keluar harus berupa angka.',
