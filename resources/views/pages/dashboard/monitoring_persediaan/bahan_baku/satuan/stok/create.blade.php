@@ -56,6 +56,13 @@
                             <input type="date" id="tanggal" name="tanggal" placeholder="Masukan Tanggal"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div>
+                        <div class="mb-4.5 w-full">
+                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                Panjang Roll
+                            </label>
+                            <input type="number" name="roll_length" placeholder="Masukan Panjang Roll"
+                                class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                        </div>
                         <div class="flex gap-3 justify-between">
                             <div class="mb-4.5 w-full">
                                 <label class="mb-3 block text-sm font-medium text-black dark:text-white">

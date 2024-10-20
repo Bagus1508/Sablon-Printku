@@ -28,4 +28,14 @@ class StokHarian extends Model
     public function hargaProduk(){
         return $this->hasOne(HargaProduk::class, 'id_stok_harian', 'id');
     }
+
+    public function getTotalRollsAttribute()
+    {
+        return floor($this->stok_masuk / $this->roll_length);
+    }
+
+    public function getUsedRollsAttribute()
+    {
+        return floor($this->stok_keluar / $this->roll_length);
+    }
 }

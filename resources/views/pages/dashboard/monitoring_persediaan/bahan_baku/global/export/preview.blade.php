@@ -4,7 +4,7 @@
             @php
                 $currentYear = date('Y');
             @endphp
-            <th colspan="7" rowspan="2" style="border:1px solid black; background: #FFFF00; font-size: 20px; color: black; text-align: center; font-weight: bold;" class="py-[20px] dark:bg-meta-4">PERSEDIAAN KAIN {{$currentYear}}</th>
+            <th colspan="10" rowspan="2" style="border:1px solid black; background: #FFFF00; font-size: 20px; color: black; text-align: center; font-weight: bold;" class="py-[20px] dark:bg-meta-4">PERSEDIAAN KAIN {{$currentYear}}</th>
         </tr>
         <tr></tr>
         <tr class="dark:bg-meta-4">
@@ -28,6 +28,15 @@
             </th>
             <th class="font-medium dark:text-white" style="border:1px solid black; text-align: left; color:#FFFFFF; background: #ff0000;" width="150px">
                 Satuan
+            </th>
+            <th class="font-medium dark:text-white" style="border:1px solid black; text-align: left; color:#FFFFFF; background: #ff0000;" width="150px">
+                Total Roll Masuk
+            </th>
+            <th class="font-medium dark:text-white" style="border:1px solid black; text-align: left; color:#FFFFFF; background: #ff0000;" width="150px">
+                Roll Terpakai
+            </th>
+            <th class="font-medium dark:text-white" style="border:1px solid black; text-align: left; color:#FFFFFF; background: #ff0000;" width="150px">
+                Sisa Roll
             </th>
         </tr>
     </thead>
@@ -54,6 +63,15 @@
             </td>               
             <td class="border-b border-[#eee] dark:border-strokedark" style="border:1px solid black;">
                 <p class="text-black dark:text-white">{{$item->satuanNamaTotal}}</p>
+            </td>                                          
+            <td class="border-b border-[#eee] dark:border-strokedark" style="border:1px solid black;">
+                <p class="text-black dark:text-white">{{$item->total_rolls}}</p>
+            </td>                                          
+            <td class="border-b border-[#eee] dark:border-strokedark" style="border:1px solid black;">
+                <p class="text-black dark:text-white">{{$item->used_rolls}}</p>
+            </td>                                          
+            <td class="border-b border-[#eee] dark:border-strokedark" style="border:1px solid black;">
+                <p class="text-black dark:text-white">{{$item->total_rolls - $item->used_rolls}}</p>
             </td>                                          
         </tr>
         @endforeach

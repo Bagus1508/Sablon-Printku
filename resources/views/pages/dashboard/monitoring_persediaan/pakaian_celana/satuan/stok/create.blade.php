@@ -79,10 +79,10 @@
                             <select required id="id_ukuran" name="id_ukuran" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
                                 @foreach ($dataUkuran as $item)
                                     <option value="{{ $item->id }}">
-                                        {{ $item->nama_ukuran }}
+                                        {{ $item->singkatan_ukuran }}
                                     </option>
                                 @endforeach
-                            </select>                            
+                            </select>                     
                         </div>
                         <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">

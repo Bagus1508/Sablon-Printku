@@ -103,12 +103,12 @@
                         </td>
                         <td class="mx-auto px-4 py-5 border-b border-[#eee] dark:border-strokedark">
                             <div class="flex items-center mx-auto justify-center">
-                                <button wire:click="showDetails({{$item->id}})" title="Show Detail Data" type="button"
+                                <a href="{{route('stok-bahan-baku-satuan.index', $item->id)}}" title="Show Detail Data" type="button"
                                     class="transition ease-in-out hover:bg-amber-50 focus:bg-amber-50 hover:text-amber-500 focus:text-amber-500 inline-flex w-fit rounded-l-md p-2 text-gray-900 items-center hover:ring-1 ring-inset ring-gray-300 hover:ring-amber-500 focus:ring-2 focus:ring-amber-500 sm:text-sm sm:leading-6">
                                     <svg class="w-5" viewBox="0 0 24 24" fill="currentColor" id="_003_ECOMMERCE_03" data-name="003_ECOMMERCE_03" xmlns="http://www.w3.org/2000/svg"  stroke="currentColor"><title>Update Stok</title>
                                         <path d="M20,21H4a.99974.99974,0,0,1-1-1V4A.99974.99974,0,0,1,4,3h9a1,1,0,0,1,0,2H5V19H19V5H17a1,1,0,0,1,0-2h3a.99974.99974,0,0,1,1,1V20A.99974.99974,0,0,1,20,21Z"/><polygon points="10 4 10 11 12 9 14 11 14 4 10 4" />
                                     </svg>
-                                </button>
+                                </a>
                                 <button title="Edit Data" data-hs-overlay="#modal-edit-produk" type="button" id="edit-bahan-baku"
                                     data-id-bahan="{{$item->id}}"
                                     data-no-id-bahan="{{$item->id_no}}"

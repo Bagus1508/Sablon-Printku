@@ -104,6 +104,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('export-stok-bahan-satuan-global-preview', [BahanBakuSatuanController::class, 'preview_export'])->name('preview-export-stok-satuan');
         Route::get('export-stok-bahan-satuan-global', [BahanBakuSatuanController::class, 'exportBahanBakuSatuan'])->name('export-bahan-baku-stok-satuan');
         Route::resource('stok-bahan-baku-satuan', StokBahanBakuController::class);
+        Route::get('stok-bahan-baku-satuan?stok-bahan={id}', [StokBahanBakuController::class, 'index'])->name('stok-bahan-baku-satuan.index');
     
         /* Pakaian dan Celana */
         Route::resource('persediaan-pakaian-celana-global', PakaianCelanaGlobalController::class);

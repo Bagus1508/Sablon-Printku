@@ -44,7 +44,7 @@ class MonitoringKontrakRinciController extends Controller
         try {
             $validated = $request->validate([
                 'takon' => 'nullable|unique:kontrak_rinci_table,takon',
-                'no_telepon' => 'required',
+                // 'no_telepon' => 'required',
                 'no_kontrak_pihak_pertama' => 'required',
                 'tanggal_kontrak' => 'required|date',
                 'no_kontrak_rinci' => 'nullable',
@@ -55,7 +55,7 @@ class MonitoringKontrakRinciController extends Controller
                 'id_perusahaan' => 'nullable|integer'
             ], [
                 'takon.unique' => 'No Kontrak Takon ini sudah digunakan dalam kontrak rinci lain.',
-                'no_telepon.required' => 'HP tidak boleh kosong.',
+                // 'no_telepon.required' => 'HP tidak boleh kosong.',
                 'no_kontrak_pihak_pertama.required' => 'No Kontrak Pihak Pertama tidak boleh kosong.',
                 'tanggal_kontrak.required' => 'Tanggal kontrak tidak boleh kosong.',
                 'tanggal_kontrak.date' => 'Tanggal kontrak harus berupa tanggal yang valid.',
@@ -67,7 +67,7 @@ class MonitoringKontrakRinciController extends Controller
             
             $parameter = [
                 'takon' => $validated['takon'],
-                'no_telepon' => $validated['no_telepon'],
+                'no_telepon' => $validated['no_telepon'] ?? 0,
                 'no_kontrak_pihak_pertama' => $validated['no_kontrak_pihak_pertama'],
                 'tanggal_kontrak' => $validated['tanggal_kontrak'],
                 'no_kontrak_rinci' => $validated['no_kontrak_rinci'] ?? null,
@@ -123,7 +123,7 @@ class MonitoringKontrakRinciController extends Controller
         try {
             $validated = $request->validate([
                 'takon' => 'nullable',
-                'no_telepon' => 'required',
+                // 'no_telepon' => 'required',
                 'no_kontrak_pihak_pertama' => 'required',
                 'tanggal_kontrak' => 'required|date',
                 'no_kontrak_rinci' => 'nullable',
@@ -133,7 +133,7 @@ class MonitoringKontrakRinciController extends Controller
                 'uraian' => 'nullable',
                 'id_perusahaan' => 'nullable|integer',
             ], [
-                'no_telepon.required' => 'HP tidak boleh kosong.',
+                // 'no_telepon.required' => 'HP tidak boleh kosong.',
                 'no_kontrak_pihak_pertama.required' => 'No Kontrak Pihak Pertama tidak boleh kosong.',
                 'tanggal_kontrak.required' => 'Tanggal kontrak tidak boleh kosong.',
                 'tanggal_kontrak.date' => 'Tanggal kontrak harus berupa tanggal yang valid.',
@@ -146,7 +146,7 @@ class MonitoringKontrakRinciController extends Controller
             $dataKontrakRinci = KontrakRinci::find($id);
 
             $dataKontrakRinci->takon = $validated['takon'];
-            $dataKontrakRinci->no_telepon = $validated['no_telepon'];
+            $dataKontrakRinci->no_telepon = $validated['no_telepon'] ?? 0;
             $dataKontrakRinci->no_kontrak_pihak_pertama = $validated['no_kontrak_pihak_pertama'];
             $dataKontrakRinci->tanggal_kontrak = $validated['tanggal_kontrak'];
             $dataKontrakRinci->no_kontrak_rinci = $validated['no_kontrak_rinci'] ?? null;

@@ -10,42 +10,51 @@
         <table class="w-full table-auto">
             <thead class="bg-blue-600 text-white">
                 <tr class="text-left dark:bg-meta-4">
-                    <th class="min-w-[50px] text-center px-4 py-4 font-medium text-white dark:text-white sticky left-0 border-b bg-blue-600 border-white">
+                    <th class="min-w-[50px] text-center px-4 py-4 font-medium text-white dark:text-white sticky left-0 border-b border-r bg-blue-600 border-white">
                         No
                     </th>
-                    <th class="min-w-[150px] px-4 py-4 text-center font-medium text-white dark:text-white">
+                    <th class="min-w-[150px] px-4 py-4 text-center font-medium text-white border-r dark:text-white">
                         Tanggal
                     </th>
-                    <th class="text-center px-4 py-4 font-medium text-white dark:text-white">
+                    <th class="text-center px-4 py-4 font-medium text-white border-r dark:text-white">
                         NO ID
                     </th>
-                    <th class="min-w-[150px] px-4 py-4 text-center font-medium text-white dark:text-white">
+                    <th class="min-w-[150px] px-4 py-4 text-center font-medium text-white border-r dark:text-white">
                         Nama Barang
                     </th>
-                    <th class="px-4 py-4 text-center font-medium text-white dark:text-white">
+                    <th class="px-4 py-4 text-center font-medium text-white border-r dark:text-white">
                         Warna
                     </th>
-                    <th class="min-w-[150px] px-4 py-4 text-center font-medium text-white dark:text-white">
+                    <th class="min-w-[150px] px-4 py-4 text-center font-medium text-white border-r dark:text-white">
                         Kode Warna
                     </th>
                     @if ($loggedInUser->id_level_user == 1)   
-                    <th class="min-w-[150px] whitespace-nowrap px-4 py-4 text-center font-medium text-white dark:text-white">
+                    <th class="min-w-[150px] whitespace-nowrap px-4 py-4 text-center font-medium text-white border-r dark:text-white">
                         Harga Beli Satuan
                     </th>
-                    <th class="min-w-[300px] whitespace-nowrap px-4 py-4 text-center font-medium text-white dark:text-white">
+                    <th class="min-w-[300px] whitespace-nowrap px-4 py-4 text-center font-medium text-white border-r dark:text-white">
                         Total Harga Beli
                     </th>
                     @endif
-                    <th class="min-w-[150px] px-4 py-4 text-center font-medium text-white dark:text-white">
+                    <th class="min-w-[150px] px-4 py-4 text-center font-medium text-white border-r dark:text-white">
                         Stok Masuk
                     </th>
-                    <th class="min-w-[150px] px-4 py-4 text-center font-medium text-white dark:text-white">
+                    <th class="min-w-[150px] px-4 py-4 text-center font-medium text-white border-r dark:text-white">
                         Stok Keluar
                     </th>
-                    <th class="min-w-[150px] px-4 py-4 text-center font-medium text-white dark:text-white">
+                    <th class="min-w-[150px] px-4 py-4 text-center font-medium text-white border-r dark:text-white">
                         Sisa Stok
                     </th>
-                    <th class="px-4 py-4 text-center font-medium text-white dark:text-white">
+                    <th class="min-w-[150px] px-4 py-4 text-center font-medium text-white border-r dark:text-white">
+                        Total Roll Masuk
+                    </th>
+                    <th class="min-w-[150px] px-4 py-4 text-center font-medium text-white border-r dark:text-white">
+                        Roll Terpakai
+                    </th>
+                    <th class="min-w-[150px] px-4 py-4 text-center font-medium text-white border-r dark:text-white">
+                        Sisa Roll
+                    </th>
+                    <th class="px-4 py-4 text-center font-medium text-white border-r dark:text-white">
                         Aksi
                     </th>
                 </tr>
@@ -95,6 +104,15 @@
                         <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white">{{$item->stok_masuk - $item->stok_keluar ?? ''}} {{$item->satuan->nama_satuan ?? ''}}</p>
                         </td>
+                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white">{{$item->total_rolls ?? '0'}}</p>
+                        </td>
+                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white">{{$item->used_rolls ?? '0'}}</p>
+                        </td>
+                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white">{{number_format($item->remaining_rolls ?? '0', 0)}}</p>
+                        </td>
                         <td class="mx-auto px-4 py-5 border-b border-[#eee] dark:border-strokedark">
                             <div class="flex items-center mx-auto justify-center">
                                 <button data-hs-overlay="#modal-edit-stok-harian" type="button" id="edit-stok-harian"
@@ -104,6 +122,7 @@
                                     data-nama-warna = "{{$item->produk->warna->nama_warna ?? ''}}"
                                     data-kode-warna = "{{$item->produk->warna->kode_warna ?? ''}}"
                                     data-tanggal= "{{$item->tanggal ?? ''}}"
+                                    data-roll-length= "{{$item->roll_length ?? ''}}"
                                     data-stok-masuk = "{{$item->stok_masuk ?? ''}}"
                                     data-stok-keluar = "{{$item->stok_keluar ?? ''}}"
                                     data-harga-beli-satuan = "{{$item->hargaProduk->harga_beli_satuan ?? ''}}"

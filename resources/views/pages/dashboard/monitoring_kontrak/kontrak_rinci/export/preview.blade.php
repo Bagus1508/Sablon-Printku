@@ -75,7 +75,7 @@
                 Takon
             </th>
             <th width="200px" style="background-color: #C9DBF9; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
-                HP
+                Pihak Pertama
             </th>
             {{-- Jangka Waktu Kontrak Rinci --}}
             <th width="100px" style="background-color: #C9DBF9; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
@@ -187,7 +187,7 @@
                     <p class="text-black dark:text-white">{{$data->takon ?? '-'}}</p>
                 </td>
                 <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black;  vertical-align: middle;">
-                    <p class="text-black dark:text-white">{{$data->no_telepon ?? '-'}}</p>
+                    <p class="text-black dark:text-white">{{$data->no_kontrak_pihak_pertama ?? '-'}}</p>
                 </td>
                 <td rowspan="{{ $totalBarang }}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black;  vertical-align: middle;">
                     <p class="text-black dark:text-white">

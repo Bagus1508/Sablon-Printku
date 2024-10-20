@@ -91,22 +91,34 @@ class BahanBakuGlobalController extends Controller
                 $selectedUnit = 1;
                 $data->transform(function($item) {
                     $totalSisaStok = 0;
+                    $totalRolls = 0;
+                    $usedRolls = 0;
                     foreach ($item->stokHarian as $stokHarian) {
                         $totalSisaStok += $this->convertToMeter($stokHarian->sisa_stok, $stokHarian->id_satuan);
+                        $totalRolls += $stokHarian->total_rolls;
+                        $usedRolls += $stokHarian->used_rolls;
                     }
                     $item->totalSisaStok = number_format($totalSisaStok, 2);
                     $item->satuanNamaTotal = DataSatuan::where('id', 1)->pluck('nama_satuan')->first();
+                    $item->total_rolls = $totalRolls;
+                    $item->used_rolls = $usedRolls;
                     return $item;
                 });
             } elseif ($selectedUnit == '2') { // Meter to Yard
                 // Hitung total sisa stok dalam Meter per Produk
                 $data->transform(function($item) {
                     $totalSisaStok = 0;
+                    $totalRolls = 0;
+                    $usedRolls = 0;
                     foreach ($item->stokHarian as $stokHarian) {
                         $totalSisaStok += $this->convertToYard($stokHarian->sisa_stok, $stokHarian->id_satuan);
+                        $totalRolls += $stokHarian->total_rolls;
+                        $usedRolls += $stokHarian->used_rolls;
                     }
                     $item->totalSisaStok = number_format($totalSisaStok, 2);
                     $item->satuanNamaTotal = DataSatuan::where('id', 2)->pluck('nama_satuan')->first();
+                    $item->total_rolls = $totalRolls;
+                    $item->used_rolls = $usedRolls;
                     return $item;
                 });
             }

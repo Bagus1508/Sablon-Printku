@@ -23,7 +23,7 @@ class StokBahanBakuSatuanTable extends Component
     public function mount()
     {
         // Ambil parameter 'stok_bahan' dari URL
-        $this->ID = request()->query('stok_bahan');
+        $this->ID = request()->query('stok-bahan');
         if (is_numeric($this->ID)) {
             $this->ID = (int) $this->ID;
         } else {

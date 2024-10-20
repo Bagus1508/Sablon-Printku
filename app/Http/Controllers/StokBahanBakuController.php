@@ -18,12 +18,12 @@ class StokBahanBakuController extends Controller
 {
     public function index(Request $request)
     {
-        $id = $request->query('stok_bahan');
+        $id = $request->query('stok-bahan');
 
         $dataStokBahan = Produk::where('id', $id)->get()->first();
 
         $dataSatuan = DataSatuan::all();
-
+        
         return view('pages.dashboard.monitoring_persediaan.bahan_baku.satuan.stok.show', compact('dataStokBahan', 'dataSatuan'));
     }
 
@@ -38,6 +38,7 @@ class StokBahanBakuController extends Controller
             $validated = $request->validate([
                 'id_produk' => 'required',
                 'tanggal' => 'required|date',
+                'roll_length' => 'nullable|numeric',
                 'stok_masuk' => 'nullable|numeric',
                 'stok_keluar' => 'nullable|numeric',
                 'id_satuan' => 'required|integer',
@@ -52,12 +53,23 @@ class StokBahanBakuController extends Controller
                 $hargaBeliSatuan.'regex' => 'Harga beli satuan harus dalam format yang benar, contoh: 1.000'
             ]);
 
+            $used_rolls = floor($validated['stok_keluar'] ?? 0 / $validated['roll_length'] ?? 0);
+            $total_meter = $validated['stok_masuk'] ?? 0;
+            $used_meter = $validated['stok_keluar'] ?? 0;
+            $remaining_meter = $total_meter - $used_meter;
+            $remaining_rolls = floor(($total_meter - $used_meter) / $validated['roll_length'] ?? 0);
+
             $parameter = [
                 'id_produk' => $validated['id_produk'],
                 'tanggal' => $validated['tanggal'],
                 'stok_masuk' => $validated['stok_masuk'] ?? 0,
                 'stok_keluar' => $validated['stok_keluar'] ?? 0,
                 'sisa_stok' => $validated['stok_masuk'] ?? 0 - $validated['stok_keluar'] ?? 0,
+                'roll_length' => $validated['roll_length'] ?? 0,
+                'used_meter' => $validated['stok_keluar'] ?? 0,
+                'used_rolls' => $used_rolls,
+                'remaining_meter' => $remaining_meter,
+                'remaining_rolls' => $remaining_rolls,
                 'id_satuan' => $validated['id_satuan'],
             ];
 
@@ -109,12 +121,14 @@ class StokBahanBakuController extends Controller
             $hargaBeliSatuan = (float) $hargaBeliSatuan;
 
             $validated = $request->validate([
-                'tanggal' => 'nullable|date',
+                'tanggal' => 'required|date',
+                'roll_length' => 'nullable|numeric',
                 'stok_masuk' => 'nullable|numeric',
                 'stok_keluar' => 'nullable|numeric',
                 'id_satuan' => 'required|integer',
                 $hargaBeliSatuan => 'nullable|regex:/^\d{1,3}(\.\d{3})*$/'
             ], [
+                'tanggal.required' => 'Kolom Tanggal wajib diisi.',
                 'tanggal.date' => 'Tanggal harus berupa format tanggal yang valid.',
                 'stok_masuk.numeric' => 'Stok masuk harus berupa angka.',
                 'stok_keluar.numeric' => 'Stok keluar harus berupa angka.',
@@ -122,7 +136,12 @@ class StokBahanBakuController extends Controller
                 'id_satuan.integer' => 'Satuan tidak sesuai.',
                 $hargaBeliSatuan.'regex' => 'Harga beli satuan harus dalam format yang benar, contoh: 1.000'
             ]);
-            
+
+            $used_rolls = floor($validated['stok_keluar'] ?? 0 / $validated['roll_length'] ?? 0);
+            $total_meter = $validated['stok_masuk'] ?? 0;
+            $used_meter = $validated['stok_keluar'] ?? 0;
+            $remaining_meter = $total_meter - $used_meter;
+            $remaining_rolls = floor(($total_meter - $used_meter) / $validated['roll_length'] ?? 0);
     
             $data = StokHarian::with('hargaProduk')->find($id);
     
@@ -147,6 +166,11 @@ class StokBahanBakuController extends Controller
             $data->stok_masuk = $validated['stok_masuk'] ?? 0;
             $data->stok_keluar = $validated['stok_keluar'] ?? 0;
             $data->sisa_stok = $validated['stok_masuk'] ?? 0 - $validated['stok_keluar'] ?? 0;
+            $data->roll_length = $validated['roll_length'] ?? 0;
+            $data->used_meter = $validated['stok_keluar'] ?? 0;
+            $data->used_rolls = $used_rolls;
+            $data->remaining_meter = $remaining_meter;
+            $data->remaining_rolls = $remaining_rolls;
             $data->id_satuan = $validated['id_satuan'];
 
             /* Simpan Harga Produk */

@@ -30,20 +30,29 @@
                     <th class="text-center px-4 py-4 font-medium text-white dark:text-white">
                         NO ID
                     </th>
-                    <th class="px-4 py-4 text-center font-medium text-white dark:text-white">
+                    <th class="px-4 py-4 text-center whitespace-nowrap font-medium text-white dark:text-white">
                         Nama Barang
                     </th>
                     <th class="px-4 py-4 text-center font-medium text-white dark:text-white">
                         Warna
                     </th>
-                    <th class="px-4 py-4 text-center font-medium text-white dark:text-white">
+                    <th class="px-4 py-4 text-center whitespace-nowrap font-medium text-white dark:text-white">
                         Kode Warna
                     </th>
-                    <th class="px-4 py-4 text-center font-medium text-white dark:text-white">
+                    <th class="px-4 py-4 text-center whitespace-nowrap font-medium text-white dark:text-white">
                         Total Panjang
                     </th>
                     <th class="px-4 py-4 text-center font-medium text-white dark:text-white">
                         Satuan
+                    </th>
+                    <th class="px-4 py-4 text-center whitespace-nowrap font-medium text-white dark:text-white">
+                        Total Roll Masuk
+                    </th>
+                    <th class="px-4 py-4 text-center whitespace-nowrap font-medium text-white dark:text-white">
+                        Roll Terpakai
+                    </th>
+                    <th class="px-4 py-4 text-center whitespace-nowrap font-medium text-white dark:text-white">
+                        Sisa Roll
                     </th>
                 </tr>
             </thead>
@@ -66,10 +75,19 @@
                         <p class="text-black dark:text-white">{{$item->warna->kode_warna}}</p>
                     </td>
                     <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                        <p class="text-black dark:text-white">{{$item->totalSisaStok}}</p>
+                        <p class="text-black dark:text-white">{{$item->totalStokAwal}}</p>
                     </td>               
                     <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                         <p class="text-black dark:text-white">{{$item->satuanNamaTotal}}</p>
+                    </td>                    
+                    <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                        <p class="text-black dark:text-white">{{$item->total_rolls}}</p>
+                    </td>                    
+                    <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                        <p class="text-black dark:text-white">{{$item->used_rolls}}</p>
+                    </td>                    
+                    <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                        <p class="text-black dark:text-white">{{$item->total_rolls - $item->used_rolls}}</p>
                     </td>                    
                 </tr>
                 @endforeach

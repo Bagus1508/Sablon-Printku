@@ -17,19 +17,19 @@ class UserSeeder extends Seeder
         $superAdmin = User::create([
             'name' => 'Super Admin',
             'email' => 'superadmin',
-            'password' => Hash::make('ql2Aq0rmOuH9'),
+            'password' => Hash::make('admin'),
             'id_level_user' => 1,
         ]);
         $midAdmin = User::create([
             'name' => 'Mid Admin',
             'email' => 'midadmin',
-            'password' => Hash::make('uXSKyzBNTd35'),
+            'password' => Hash::make('admin'),
             'id_level_user' => 2,
         ]);
         $admin = User::create([
             'name' => 'Admin',
             'email' => 'admin',
-            'password' => Hash::make('VtQlcJmYZlxQ'),
+            'password' => Hash::make('admin'),
             'id_level_user' => 3,
         ]);
     }

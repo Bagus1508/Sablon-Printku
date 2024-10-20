@@ -55,6 +55,13 @@
                             <input type="date" id="tanggal" name="tanggal" placeholder="Masukan Tanggal"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div>
+                        <div class="mb-4.5 w-full">
+                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                Panjang Roll
+                            </label>
+                            <input type="number" id="roll_length" name="roll_length" placeholder="Masukan Panjang Roll"
+                                class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                        </div>
                         <div class="flex gap-3 justify-between">
                             <div class="mb-4.5 w-full">
                                 <label class="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -110,6 +117,7 @@
     const nama_warna = $(this).data('nama-warna');
     const kode_warna = $(this).data('kode-warna');
     const tanggal = $(this).data('tanggal');
+    const roll_length = Math.floor($(this).data('roll-length'));
     const stok_masuk = $(this).data('stok-masuk');
     const stok_keluar = $(this).data('stok-keluar');
     let harga_beli_satuan = $(this).data('harga-beli-satuan');
@@ -147,6 +155,7 @@
     $('#nama_barang').val(nama_barang);
     $('#warna').val(nama_warna + ' - ' + kode_warna);
     $('#tanggal').val(tanggal);
+    $('#roll_length').val(roll_length);
     $('#stok_masuk').val(stok_masuk);
     $('#stok_keluar').val(stok_keluar);
     $('#harga_beli_satuan').val(formatRupiah(harga_beli_satuan, 'Rp'));

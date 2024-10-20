@@ -77,7 +77,7 @@
                     <th width="200px" rowspan="3" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Aksi Kontrak
                     </th>
-                    <th width="400px" colspan="3" class="border-r border-b border-[#eee] text-center font-medium text-white dark:text-white">
+                    <th width="400px" colspan="2" class="border-r border-b border-[#eee] text-center font-medium text-white dark:text-white">
                         No Kontrak
                     </th>
                     <th rowspan="3" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
@@ -154,9 +154,9 @@
                     <th width="200px" rowspan="2" class="border-r border-[#eee] px-5 text-center font-medium text-white dark:text-white">
                         Takon
                     </th>
-                    <th width="200px" rowspan="2" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+                    <!-- <th width="200px" rowspan="2" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         HP
-                    </th>
+                    </th> -->
                     <th width="200px" rowspan="2" class="border-r border-[#eee] px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
                         Pihak Pertama
                     </th>
@@ -301,7 +301,7 @@
                                 <button title="Edit Data" data-hs-overlay="#modal-edit-kontrak-rinci" type="button"
                                     data-id-kontrak-rinci="{{$itemKontrak->id}}"
                                     data-takon="{{$itemKontrak->takon}}"
-                                    data-no-telepon="{{$itemKontrak->no_telepon}}"
+                                    {{-- data-no-telepon="{{$itemKontrak->no_telepon}}" --}}
                                     data-no-kontrak-pihak-pertama="{{$itemKontrak->no_kontrak_pihak_pertama}}"
                                     data-tanggal-kontrak="{{$itemKontrak->tanggal_kontrak}}"
                                     data-id-perusahaan="{{$itemKontrak->id_perusahaan}}"
@@ -335,9 +335,9 @@
                         <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white">{{$itemKontrak->takon}}</p>
                         </td>
-                        <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                        {{-- <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white">{{$itemKontrak->no_telepon}}</p>
-                        </td>
+                        </td> --}}
                         <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white">{{$itemKontrak->no_kontrak_pihak_pertama}}</p>
                         </td>

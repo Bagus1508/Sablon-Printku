@@ -31,13 +31,13 @@
                             <input type="text" id="takon" name="takon" placeholder="Masukan No Kontrak Takon"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div>
-                        <div class="mb-4.5 w-full">
+                        <!-- <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 No Kontrak (HP) <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
                             </label>
                             <input type="text" id="no_telepon" name="no_telepon" placeholder="Masukan No Kontrak HP"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
-                        </div>
+                        </div> -->
                         <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 No Kontrak Pihak Pertama <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
@@ -67,7 +67,7 @@
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 No Kontrak Rinci
                             </label>
-                            <input type="text" id="no_kontrak_rinci" name="no_kontrak_rinci" placeholder="Masukan No Kontrak HP"
+                            <input type="text" id="no_kontrak_rinci" name="no_kontrak_rinci" placeholder="Masukan No Kontrak Rinci"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div>
                         <div class="mb-4.5 w-full">
@@ -85,16 +85,23 @@
                                 <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                     Awal Kontrak
                                 </label>
-                                <input type="date" id="awal_kr_update" name="awal_kr" placeholder="Masukan Nama Perusahaan" onchange="updateMasaKontrak()"
+                                <input type="date" id="awal_kr_update" name="awal_kr" placeholder="Masukan Nama Perusahaan"
                                     class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                             </div>
                             <div>
                                 <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                     Akhir Kontrak
                                 </label>
-                                <input type="date" id="akhir_kr_update" name="akhir_kr" placeholder="Masukan Nama Perusahaan" onchange="updateMasaKontrak()"
+                                <input type="date" readonly id="akhir_kr_update" name="akhir_kr" placeholder="Masukan Nama Perusahaan"
                                     class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                             </div>
+                        </div>
+                        <div class="mb-4.5 w-full">
+                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                Durasi Hari <span class="text-red-500 text-[10px]">*Otomatis Terisi</span>
+                            </label>
+                            <input onchange="updateAkhirKontrak()" type="text" id="durasi_hari_update" name="durasi_hari" placeholder="Masukan Nama Perusahaan"
+                                class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div>
                         <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -105,16 +112,9 @@
                         </div>
                         <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                Durasi Hari <span class="text-red-500 text-[10px]">*Otomatis Terisi</span>
-                            </label>
-                            <input readonly type="text" id="durasi_hari_update" name="durasi_hari" placeholder="Masukan Nama Perusahaan"
-                                class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
-                        </div>
-                        <div class="mb-4.5 w-full">
-                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 Uraian
                             </label>
-                            <textarea id="uraian" name="uraian" placeholder="Masukan No Kontrak HP"
+                            <textarea id="uraian" name="uraian" placeholder="Masukan Uraian"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"></textarea>
                         </div>
                     </div>
@@ -130,7 +130,6 @@
 </div>
 <script>
 $(document).ready(function() {
-    // Gunakan event delegation untuk elemen yang di-generate secara dinamis
     $(document).on('click', '.edit-kontrak-rinci', function() {
         const id = $(this).data('id-kontrak-rinci');
         const takon = $(this).data('takon');
@@ -157,47 +156,54 @@ $(document).ready(function() {
         $('#akhir_kr_update').val(akhir_kr);
         $('#uraian').val(uraian);
 
-        // Memanggil fungsi untuk menghitung dan menampilkan masa kontrak setelah data diatur
-        updateMasaKontrak();
+        // Menghitung durasi_hari secara simpel
+        if (awal_kr && akhir_kr) {
+            const awalDate = new Date(awal_kr);
+            const akhirDate = new Date(akhir_kr);
+            const timeDiff = akhirDate - awalDate;
+            const durasi_hari = Math.ceil(timeDiff / (1000 * 3600 * 24)); // Menghitung dalam hari
+            $('#durasi_hari_update').val(durasi_hari);
+        }
+
+        // Hanya jalankan update jika semua nilai ada
+        if (awal_kr && $('#durasi_hari_update').val()) {
+            updateAkhirKontrak();
+        }
 
         // Set the action attribute of the form
         const url = '{{ route("monitoring-kontrak-rinci.update", ":id") }}'.replace(':id', id);
         $('#form-edit-kontrak-rinci').attr('action', url);
     });
 
-    // Event listener untuk perubahan pada input tanggal awal dan akhir
-    $('#awal_kr_update, #akhir_kr_update').on('change', function() {
-        updateMasaKontrak();
+    // Event listener untuk perubahan pada input tanggal awal dan durasi hari
+    $('#awal_kr_update, #durasi_hari_update').on('change', function() {
+        updateAkhirKontrak();
     });
 
-    function updateMasaKontrak() {
+    function updateAkhirKontrak() {
         var awalKontrak = document.getElementById('awal_kr_update').value;
-        var akhirKontrak = document.getElementById('akhir_kr_update').value;
+        var durasiHari = document.getElementById('durasi_hari_update').value;
+        var akhirKontrakInput = document.getElementById('akhir_kr_update');
         var masaKontrakInput = document.getElementById('masa_kr_update');
-        var durasiHariInput = document.getElementById('durasi_hari_update');
 
-        if (awalKontrak && akhirKontrak) {
+        if (awalKontrak && durasiHari) {
             // Mengubah string tanggal menjadi objek Date
             var awalDate = new Date(awalKontrak);
-            var akhirDate = new Date(akhirKontrak);
 
-            // Menghitung perbedaan dalam milidetik
-            var timeDifference = akhirDate - awalDate;
+            // Menambahkan durasi hari ke awal kontrak
+            awalDate.setDate(awalDate.getDate() + parseInt(durasiHari));
 
-            // Menghitung perbedaan dalam hari
-            var dayDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+            // Format tanggal hasil ke string dengan format yyyy-mm-dd
+            var akhirKontrak = awalDate.toISOString().split('T')[0];
 
-            // Menampilkan masa kontrak
+            // Menampilkan akhir kontrak dan masa kontrak
+            akhirKontrakInput.value = akhirKontrak;
             masaKontrakInput.value = `${awalKontrak} - ${akhirKontrak}`;
-            
-            // Menampilkan durasi dalam hari
-            durasiHariInput.value = dayDifference + " hari";
         } else {
+            akhirKontrakInput.value = '';
             masaKontrakInput.value = '';
-            durasiHariInput.value = '';
         }
     }
 });
-
 </script>
 
