@@ -12,73 +12,85 @@
     </div>        
     <section class="justify-between flex max-sm:flex-col-reverse max-sm:mb-5 mb-5 max-sm:gap-5">
         @include('livewire.search-data')
+        <div class="my-5">
+            <button data-hs-overlay="#modal-create-kontrak-global" class="bg-blue-600  text-white font-medium px-4 py-2 rounded-md hover:bg-blue-700">+ Tambah Data</button>
+        </div>
     </section>
     <div class="max-w-full overflow-x-auto rounded-t-md">
         <table class="w-full table-auto">
             <thead class="bg-blue-600 text-white">
                 <tr class="text-left dark:bg-meta-4">
-                    <th rowspan="2" class="min-w-[50px] text-center font-medium text-white dark:text-white justify-center my-auto sticky bg-blue-600 left-0 dark:bg-meta-4">
+                    <th rowspan="2" class="min-w-[50px] text-center border-r border-white font-medium text-white dark:text-white justify-center my-auto sticky bg-blue-600 left-0 dark:bg-meta-4">
                         No
                     </th>
-                    <th width="400px" colspan="2" class="text-center font-medium text-white dark:text-white">
+                    <th width="400px" colspan="2" class="text-center border-r border-b border-white font-medium text-white dark:text-white">
                         No Kontrak
                     </th>
-                    <th rowspan="2" class="px-5 text-center font-medium text-white dark:text-white">
+                    <th rowspan="2" class="px-5 text-center border-r border-white font-medium text-white dark:text-white">
                         Tanggal
                     </th>
-                    <th width="200px" rowspan="2" class="text-center font-medium text-white dark:text-white">
+                    <th width="200px" rowspan="2" class="text-center border-r border-white font-medium text-white dark:text-white">
                         Perusahaan
                     </th>
-                    <th width="200px" rowspan="2" class="px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+                    <th width="200px" rowspan="2" class="px-5 whitespace-nowrap text-center border-r border-white font-medium text-white dark:text-white">
                         Uraian Pekerjaan
                     </th>
-                    <th width="200px" rowspan="2" class="px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+                    <th width="200px" rowspan="2" class="px-5 whitespace-nowrap text-center border-r border-white font-medium text-white dark:text-white">
                         Nama Barang
                     </th>
-                    <th rowspan="1" colspan="4" class="px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+                    <th rowspan="1" colspan="4" class="px-5 whitespace-nowrap text-center border-r border-b border-white font-medium text-white dark:text-white">
                         Volume
                     </th>
+                    <th rowspan="2" class="px-5 whitespace-nowrap text-center border-r border-white font-medium text-white dark:text-white">
+                        
+                    </th>
+                    <th rowspan="2" class="px-5 whitespace-nowrap text-center border-r border-white font-medium text-white dark:text-white">
+                        Aksi Barang
+                    </th>
                     @if ($loggedInUser->id_level_user === 1) 
-                    <th rowspan="2" class="px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+                    <th rowspan="2" class="px-5 whitespace-nowrap text-center border-r border-white font-medium text-white dark:text-white">
                         Harga
                     </th>
-                    <th rowspan="2" class="px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+                    <th rowspan="2" class="px-5 whitespace-nowrap text-center border-r border-white font-medium text-white dark:text-white">
                         PPN ({{$dataPajak->ppn}}%)
                     </th>
-                    <th rowspan="2" class="px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+                    <th rowspan="2" class="px-5 whitespace-nowrap text-center border-r border-white font-medium text-white dark:text-white">
                         Harga + PPN
                     </th>
+                    <th rowspan="2" class="px-5 whitespace-nowrap text-center border-r border-white font-medium text-white dark:text-white">
+                        
+                    </th>
                     @endif
-                    <th rowspan="1" colspan="2" class="px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+                    <th rowspan="1" colspan="2" class="px-5 whitespace-nowrap text-center border-r border-b border-white font-medium text-white dark:text-white">
                         Jangka Waktu Kontrak
                     </th>
-                    <th rowspan="2" class="px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+                    <th rowspan="2" class="px-5 whitespace-nowrap text-center border-r border-white font-medium text-white dark:text-white">
                         SPK Selesai
                     </th>
                 </tr>
                 <tr class="text-left dark:bg-meta-4">
-                    <th width="200px" class="px-5 text-center font-medium text-white dark:text-white">
+                    <th width="200px" class="px-5 text-center border-r border-white font-medium text-white dark:text-white">
                         Takon
                     </th>
-                    <th width="200px" class="px-5 whitespace-nowrap text-center font-medium text-white dark:text-white">
+                    <th width="200px" class="px-5 whitespace-nowrap text-center border-r border-white font-medium text-white dark:text-white">
                         Pihak Pertama
                     </th>
-                    <th width="100px" class="px-5 text-center font-medium text-white dark:text-white">
+                    <th width="100px" class="px-5 text-center border-r border-white font-medium text-white dark:text-white">
                         Satuan
                     </th>
-                    <th width="100px" class="px-5 text-center font-medium text-white dark:text-white">
+                    <th width="100px" class="px-5 text-center border-r border-white font-medium text-white dark:text-white">
                         Kontrak
                     </th>
-                    <th width="100px" class="px-5 text-center font-medium text-white dark:text-white">
+                    <th width="100px" class="px-5 text-center border-r border-white font-medium text-white dark:text-white">
                         Realisasi
                     </th>
-                    <th width="100px" class="px-5 text-center font-medium text-white dark:text-white">
+                    <th width="100px" class="px-5 text-center border-r border-white font-medium text-white dark:text-white">
                         Sisa
                     </th>
-                    <th width="100px" class="px-5 text-center font-medium text-white dark:text-white">
+                    <th width="100px" class="px-5 text-center border-r border-white font-medium text-white dark:text-white">
                         Awal
                     </th>
-                    <th width="100px" class="px-5 text-center font-medium text-white dark:text-white">
+                    <th width="100px" class="px-5 text-center border-r border-white font-medium text-white dark:text-white">
                         Akhir
                     </th>
                 </tr>
@@ -87,18 +99,19 @@
                 @foreach ($dataKontrak as $itemKontrak)
                     @php
                         $barangKontrakCount = $itemKontrak->barangKontrak->count();
+                        $rowspan = $barangKontrakCount > 0 ? $barangKontrakCount : 1;
                     @endphp                    
                     <tr>
-                        <td rowspan="{{$barangKontrakCount}}" class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark sticky bg-blue-600 left-0 dark:bg-meta-4">
+                        <td rowspan="{{$rowspan}}" class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark sticky bg-blue-600 left-0 dark:bg-meta-4">
                             <h5 class="font-medium text-white dark:text-white">{{$loop->index + 1}}</h5>
                         </td>
-                        <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                        <td rowspan="{{$rowspan}}" class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white">{{$itemKontrak->takon}}</p>
                         </td>
-                        <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                        <td rowspan="{{$rowspan}}" class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white">{{$itemKontrak->no_kontrak_pihak_pertama ?? ''}}</p>
                         </td>
-                        <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                        <td rowspan="{{$rowspan}}" class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white">                    
                                 @if($itemKontrak->tanggal_kontrak && $itemKontrak->tanggal_kontrak)
                                     {{ \Carbon\Carbon::parse($itemKontrak->tanggal_kontrak)->translatedFormat('d F Y') }}
@@ -107,10 +120,10 @@
                                 @endif
                             </p>
                         </td>
-                        <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                        <td rowspan="{{$rowspan}}" class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white">{{$itemKontrak->perusahaan->nama_perusahaan ?? '-'}}</p>
                         </td>
-                        <td rowspan="{{$barangKontrakCount}}" class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                        <td rowspan="{{$rowspan}}" class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white text-left">{{$itemKontrak->uraian ?? '-'}}</p>
                         </td>
                         <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark text-center">
@@ -128,26 +141,68 @@
                         <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark text-center">
                             <p class="text-black dark:text-white">{{$itemKontrak->barangKontrak->first()->volume_sisa ?? '-'}}</p>
                         </td>
+                        <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark items-center mx-auto">
+                            <p class="text-black dark:text-white text-left border-b border-slate-400 px-10">
+                                <button
+                                data-hs-overlay="#modal-edit-barang"
+                                data-id="{{$itemKontrak->barangKontrak->first()->id ?? null}}"
+                                data-id-barang-kontrak="{{$itemKontrak->barangKontrak->first()->id_produk ?? null}}"
+                                data-kuantitas-barang-kontrak="{{$itemKontrak->barangKontrak->first()->kuantitas ?? null}}"
+                                data-id-satuan-kontrak="{{$itemKontrak->barangKontrak->first()->satuan->id ?? null}}"
+                                data-volume-kontrak="{{$itemKontrak->barangKontrak->first()->volume_kontrak ?? null}}"
+                                data-volume-realisasi-kontrak="{{$itemKontrak->barangKontrak->first()->volume_realisasi ?? null}}"
+                                data-volume-sisa-kontrak="{{$itemKontrak->barangKontrak->first()->volume_sisa ?? null}}"
+                                data-harga-barang-kontrak="{{$itemKontrak->barangKontrak->first()->harga_barang ?? null}}"
+                                id="edit-barang-kontrak"
+                                class="edit-barang-kontrak text-blue-600 hover:underline">Edit</button>
+                                |
+                                <button
+                                data-hs-overlay="#modal-hapus-barang"
+                                data-id-barang-kontrak="{{$itemKontrak->barangKontrak->first()->id ?? null}}"
+                                data-nama-barang-kontrak="{{$itemKontrak->barangKontrak->first()->dataProduk->nama_barang ?? null}}"
+                                id="hapus-barang-kontrak"
+                                class="hapus-barang-kontrak text-red-600 hover:underline">Hapus</button>
+                            </p>
+                        </td>   
+                        {{-- Tombol Tambah Barang --}}                           
+                        <td rowspan="{{$rowspan}}" class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark items-center mx-auto px-10">
+                            <button
+                                data-hs-overlay="#modal-tambah-barang"
+                                data-id-kontrak-global="{{$itemKontrak->id}}"
+                                id="tambah-barang-kontrak"
+                                class="barang-kontrak text-blue-600 hover:underline">+ Tambah Barang</button>
+                        </td>
                         @if ($loggedInUser->id_level_user === 1)   
-                        <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap text-center border-black dark:border-strokedark">
+                        <td rowspan="{{$rowspan}}" class="whitespace-nowrap text-center border-black dark:border-strokedark">
                             <p class="text-black dark:text-white px-10">
                                 {{ $itemKontrak->total_harga !== null ? 'Rp ' . number_format($itemKontrak->total_harga, 0, ',', '.') : '-' }}
                             </p>
                         </td>
                         {{-- PPN --}}
-                        <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
+                        <td rowspan="{{$rowspan}}" class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
                             <p class="text-black dark:text-white hover:underline">
                                 Rp. {{ number_format(($itemKontrak->total_harga/100)*$dataPajak->ppn, 2, ',', '.') }}
                             </p>
                         </td>
                         {{-- Total Harga + PPN --}}
-                        <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
+                        <td rowspan="{{$rowspan}}" class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
                             <p class="text-black dark:text-white hover:underline">
                                 Rp. {{ number_format($itemKontrak->total_harga + ($itemKontrak->total_harga/100)*$dataPajak->ppn, 2, ',', '.') }}
                             </p>
+                        </td>
+                        {{-- Tombol Total Harga --}}
+                        <td rowspan="{{$rowspan}}" class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
+                            <p class="text-black dark:text-white hover:underline px-4">
+                                <button 
+                                        data-hs-overlay="#modal-edit-total-harga"
+                                        data-id="{{$itemKontrak->id ?? ''}}"
+                                        data-total-harga-kontrak="{{$itemKontrak->total_harga ?? ''}}"
+                                        data-id-pajak="{{$itemKontrak->pajak->id ?? ''}}"
+                                        id="edit-total-harga" class="edit-total-harga text-blue-600 hover:underline">Update Harga</button>
+                            </p>
                         </td>    
                         @endif
-                        <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap text-center border-black dark:border-strokedark">
+                        <td rowspan="{{$rowspan}}" class="whitespace-nowrap text-center border-black dark:border-strokedark">
                             <p class="text-black dark:text-white px-10">                    
                                 @if($itemKontrak->awal_kr && $itemKontrak->awal_kr)
                                     {{ \Carbon\Carbon::parse($itemKontrak->awal_kr)->translatedFormat('d F Y') }}
@@ -156,7 +211,7 @@
                                 @endif
                             </p>
                         </td>   
-                        <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap text-center border-black dark:border-strokedark">
+                        <td rowspan="{{$rowspan}}" class="whitespace-nowrap text-center border-black dark:border-strokedark">
                             <p class="text-black dark:text-white px-10">                    
                                 @if($itemKontrak->akhir_kr && $itemKontrak->akhir_kr)
                                     {{ \Carbon\Carbon::parse($itemKontrak->akhir_kr)->translatedFormat('d F Y') }}
@@ -165,18 +220,18 @@
                                 @endif
                             </p>
                         </td>   
-                        <td rowspan="{{$barangKontrakCount}}" class="whitespace-nowrap text-center border-black dark:border-strokedark">
+                        <td rowspan="{{$rowspan}}" class="whitespace-nowrap text-center border-black dark:border-strokedark">
                             <p class="text-black dark:text-white px-10">
-                                @if ($itemKontrak->kontrakGlobal->status_spk === 0)
+                                @if ($itemKontrak->status_spk === 0)
                                     @include('components.badges.belum-selesai')
                                 @else
                                     @include('components.badges.selesai')
                                 @endif
                                 <button 
                                 data-hs-overlay="#modal-update-status-spk"
-                                data-id-kontrak-global="{{$itemKontrak->kontrakGlobal->id}}"
+                                data-id-kontrak-global="{{$itemKontrak->id}}"
                                 data-no-kontrak-takon="{{$itemKontrak->takon}}"
-                                data-status-spk="{{$itemKontrak->kontrakGlobal->status_spk}}"
+                                data-status-spk="{{$itemKontrak->status_spk}}"
                                 id="update-status-spk" class="update-status-spk text-blue-600 hover:underline">Update</button>
                             </p>
                         </td>   
@@ -201,6 +256,29 @@
                             <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark text-center">
                                 <p class="text-black dark:text-white">{{$itemBarang->volume_sisa}}</p>
                             </td>
+                            <td class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark items-center mx-auto">
+                                <p class="text-black dark:text-white text-left border-b border-slate-400 px-10">
+                                    <button
+                                    data-hs-overlay="#modal-edit-barang"
+                                    data-id="{{$itemBarang->id}}"
+                                    data-id-barang-kontrak="{{$itemBarang->id_produk}}"
+                                    data-kuantitas-barang-kontrak="{{$itemBarang->kuantitas}}"
+                                    data-id-satuan-kontrak="{{$itemBarang->satuan->id}}"
+                                    data-volume-kontrak="{{$itemBarang->volume_kontrak}}"
+                                    data-volume-realisasi-kontrak="{{$itemBarang->volume_realisasi}}"
+                                    data-volume-sisa-kontrak="{{$itemBarang->volume_sisa}}"
+                                    data-harga-barang-kontrak="{{$itemBarang->harga_barang}}"
+                                    id="edit-barang-kontrak"
+                                    class="edit-barang-kontrak text-blue-600 hover:underline">Edit</button>
+                                    |
+                                    <button
+                                    data-hs-overlay="#modal-hapus-barang"
+                                    data-id-barang-kontrak="{{$itemBarang->id}}"
+                                    data-nama-barang-kontrak="{{$itemBarang->dataProduk->nama_barang}}"
+                                    id="hapus-barang-kontrak"
+                                    class="hapus-barang-kontrak text-red-600 hover:underline">Hapus</button>
+                                </p>
+                            </td>   
                         </tr>
                     @endforeach
                 @endforeach
@@ -228,4 +306,12 @@
 
     {{-- Status SPK Update --}}
     @include('pages.dashboard.monitoring_kontrak.kontrak_global.status_spk.edit')
+
+    {{-- Barang Kontrak --}}
+    @include('pages.dashboard.monitoring_kontrak.kontrak_global.barang_kontrak.create')
+    @include('pages.dashboard.monitoring_kontrak.kontrak_global.barang_kontrak.edit')
+    @include('pages.dashboard.monitoring_kontrak.kontrak_global.barang_kontrak.delete')
+
+    {{-- Total Harga Kontrak --}}
+    @include('pages.dashboard.monitoring_kontrak.kontrak_global.total_harga.edit')
 </div>

@@ -9,6 +9,7 @@ use App\Models\DataPerusahaan;
 use App\Models\DataSatuan;
 use App\Models\DataUkuran;
 use App\Models\DataWarna;
+use App\Models\KontrakGlobal;
 use App\Models\KontrakRinci;
 use App\Models\Pajak;
 use App\Models\Produk;
@@ -77,11 +78,10 @@ class MonitoringKontrakRinciTable extends Component
     
         // Ambil Kontrak Rinci dengan stok harian dalam rentang tanggal
         $query = KontrakRinci::where(function ($q) {
-            $q->where('takon', 'LIKE', '%'.$this->search.'%')
-              ->orWhere('no_kontrak_rinci', 'LIKE', '%'.$this->search.'%');
+            $q->where('no_kontrak_rinci', 'LIKE', '%'.$this->search.'%');
         })
-        ->whereBetween('tanggal_kontrak', [$awal, $akhir])
-        ->orderBy('tanggal_kontrak', 'desc')
+        ->whereBetween('tanggal_kr', [$awal, $akhir])
+        ->orderBy('tanggal_kr', 'desc')
         ->with(['prosesCutting', 'prosesJahit', 'prosesPacking', 'barangKontrak', 'pengirimanBarang', 'ba_rikmatek', 
                 'bapb_bapp', 'bast', 'invoice'                 
                ]);    
@@ -101,7 +101,7 @@ class MonitoringKontrakRinciTable extends Component
             
         $dataSatuan = DataSatuan::all();
         $dataEkspedisi = DataEkspedisi::all();
-        $dataPerusahaan = DataPerusahaan::all();
+        $dataKontrakGlobal = KontrakGlobal::all();
         $dataRegion = Region::all();
 
         $datanotfound = !$dataKontrakRinci->count();
@@ -113,7 +113,7 @@ class MonitoringKontrakRinciTable extends Component
             'dataSatuan' => $dataSatuan,
             'dataEkspedisi' => $dataEkspedisi,
             'dataRegion' => $dataRegion,
-            'dataPerusahaan' => $dataPerusahaan,
+            'dataKontrakGlobal' => $dataKontrakGlobal,
             'dataProdukPakaian' => $dataProdukPakaian,
             'dataPajak' => Pajak::get()->all(),
         ]);

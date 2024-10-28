@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Exports\MonitoringKontrakGlobalExport;
 use App\Helpers\LogHelper;
 use App\Helpers\TanggalHelper;
+use App\Models\DataPerusahaan;
 use App\Models\KontrakGlobal;
 use App\Models\KontrakRinci;
 use App\Models\Pajak;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
 use Throwable;
@@ -17,9 +19,79 @@ use Throwable;
 class MonitoringKontrakGlobalController extends Controller
 {
     public function index(){
+        $dataPerusahaan = DataPerusahaan::get();
+        
         return view('pages.dashboard.monitoring_kontrak.kontrak_global.index', [
+            'dataPerusahaan' => $dataPerusahaan,
             'dataPajak' => Pajak::get()->first(),
         ]);
+    }
+
+    public function store(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'takon' => 'nullable|unique:kontrak_global,takon',
+                // 'no_telepon' => 'required',
+                'no_kontrak_pihak_pertama' => 'required',
+                'tanggal_kontrak' => 'required|date',
+                'tanggal_kr' => 'nullable|date',
+                'awal_kr' => 'nullable|date',
+                'akhir_kr' => 'nullable|date',
+                'uraian' => 'nullable',
+                'id_perusahaan' => 'nullable|integer'
+            ], [
+                'takon.unique' => 'No Kontrak Takon ini sudah digunakan dalam kontrak Global lain.',
+                // 'no_telepon.required' => 'HP tidak boleh kosong.',
+                'no_kontrak_pihak_pertama.required' => 'No Kontrak Pihak Pertama tidak boleh kosong.',
+                'tanggal_kontrak.required' => 'Tanggal kontrak tidak boleh kosong.',
+                'tanggal_kontrak.date' => 'Tanggal kontrak harus berupa tanggal yang valid.',
+                'tanggal_kr.date' => 'Tanggal KR harus berupa tanggal yang valid.',
+                'awal_kr.date' => 'Tanggal awal KR harus berupa tanggal yang valid.',
+                'akhir_kr.date' => 'Tanggal akhir KR harus berupa tanggal yang valid.',
+                'id_perusahaan.integer' => 'Perusahaan tidak valid!',
+            ]);
+            
+            $parameter = [
+                'takon' => $validated['takon'],
+                'no_telepon' => $validated['no_telepon'] ?? 0,
+                'no_kontrak_pihak_pertama' => $validated['no_kontrak_pihak_pertama'],
+                'tanggal_kontrak' => $validated['tanggal_kontrak'],
+                'tanggal_kr' => $validated['tanggal_kr'] ?? null,
+                'awal_kr' => $validated['awal_kr'] ?? null,
+                'akhir_kr' => $validated['akhir_kr'] ?? null,
+                'uraian' => $validated['uraian'] ?? null,
+                'id_perusahaan' => $validated['id_perusahaan'] ?? null,
+                'status_spk' => 0,
+            ];
+    
+            $createKontrakGlobal = KontrakGlobal::create($parameter);
+            
+
+            if (!$createKontrakGlobal) {
+                Alert::error('Gagal!', 'Gagal menambahkan kontrak Global');
+                LogHelper::error('Gagal menambahkan kontrak Global!');
+                return redirect()->back();
+            }
+    
+            Alert::success('Berhasil!', 'Berhasil menambah kontrak Global');
+            LogHelper::success('Berhasil menambahkan kontrak Global.');
+            return redirect()->back();
+            
+        } catch (ValidationException $e) {
+            if(!$e){
+                return view('pages.utility.500');
+            }
+
+            foreach ($e->errors() as $errors) {
+                foreach ($errors as $error) {
+                    Alert::error('Error!', $error);
+                }
+            }
+            return redirect()->back()->withInput();
+        } /* catch (Throwable $e) {
+            return view('pages.utility.500');
+        } */
     }
 
     public function updateStatusSpk(Request $request, $id){
@@ -78,7 +150,7 @@ class MonitoringKontrakGlobalController extends Controller
                 }
             }
 
-            // Ambil Kontrak Rinci dengan stok harian dalam rentang tanggal
+            // Ambil Kontrak Global dengan stok harian dalam rentang tanggal
             $query = KontrakRinci::whereBetween('tanggal_kontrak', [$startDate, $endDate])
             ->orderBy('tanggal_kontrak', 'desc')
             ->with([
@@ -142,5 +214,45 @@ class MonitoringKontrakGlobalController extends Controller
 
         $filename = 'Monitoring Global Export_' . $startDate . ' - '. $endDate .'.xlsx';
         return Excel::download(new MonitoringKontrakGlobalExport($startDate, $endDate), $filename);
+    }
+
+    public function updateTotalHarga(Request $request, $id){
+        try {
+            $validated = $request->validate([
+                'total_harga' => 'required',
+                'id_pajak' => 'required|integer',
+            ],
+            [
+                'total_harga.required' => 'Kolom Harga wajib diisi.',
+                'id_pajak.required' => 'Kolom Pajak wajib diisi.',
+                'id_pajak.integer' => 'Input pajak tidak sesuai',
+            ]);
+
+            
+            $data = KontrakGlobal::find($id);
+            if (!$data) {
+                // Jika data tidak ditemukan, arahkan kembali dengan pesan error
+                Alert::error('Error!', 'Data Kontrak Global tidak ditemukan.');
+                return redirect()->back();
+            }
+
+
+            $totalHargaStr = str_replace('Rp', '', $validated['total_harga']);
+            $totalHargaStr = str_replace('.', '', $totalHargaStr);
+            $totalHargaStr = str_replace(',', '.', $totalHargaStr);
+            $data->total_harga = (float)$totalHargaStr ;
+            $data->id_pajak = $validated['id_pajak'];
+
+        
+            $data->save();
+        
+            Alert::success('Berhasil!', 'Berhasil mengubah total harga dengan No Kontrak Global '. ($data->no_kontrak_rinci ?? 'No Kontrak Global Kosong') . '.');
+            LogHelper::success('Berhasil mengubah total harga dengan No Kontrak Global '. ($data->no_kontrak_rinci ?? 'No Kontrak Global Kosong') . '.');
+            return redirect()->back();
+            // Additional logic here if needed
+        } catch (Throwable $e) {
+            LogHelper::error($e->getMessage());
+            return view('pages.utility.500');
+        }
     }
 }

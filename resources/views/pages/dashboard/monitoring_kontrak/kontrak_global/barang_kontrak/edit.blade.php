@@ -26,7 +26,7 @@
                         <!-- Input default pertama -->
                         <div class="input-group mb-4.5">
                             <input type="text" hidden name="id_barang_kontrak" id="id_barang_kontrak" class="id_barang_kontrak">
-                            <input type="text" hidden name="type" id="type" class="type" value="detail_contract">
+                            <input type="text" hidden name="type" id="type" class="type" value="contract_global">
                             <div class="mb-4 w-full">
                                 <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                     Nama Barang <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
@@ -37,26 +37,17 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="flex justify-between gap-3">
-                                <div class="mb-4.5 w-full">
-                                    <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                        Kuantitas
-                                    </label>
-                                    <input type="number" name="kuantitas" id="kuantitas" placeholder="Masukan Kuantitas"
-                                        class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
-                                </div>
-                                <div class="mb-4.5 w-full">
-                                    <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                        Satuan <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
-                                    </label>
-                                    <select required name="id_satuan" id="id_satuan" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
-                                        @foreach ($dataSatuan as $item)
-                                        <option value="{{$item->id}}">{{$item->nama_satuan}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                            <div class="mb-4.5 w-full">
+                                <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                    Satuan <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
+                                </label>
+                                <select required name="id_satuan" id="id_satuan" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
+                                    @foreach ($dataSatuan as $item)
+                                    <option value="{{$item->id}}">{{$item->nama_satuan}}</option>
+                                    @endforeach
+                                </select>
                             </div>
-                            {{-- <div class="mb-4.5 w-full">
+                            <div class="mb-4.5 w-full">
                                 <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                     Volume Kontrak
                                 </label>
@@ -76,7 +67,7 @@
                                 </label>
                                 <input type="number" name="volume_sisa" id="volume_sisa" placeholder="Masukan Volume Sisa"
                                     class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
-                            </div> --}}
+                            </div>
                         </div>
                     </div>
                     <div class="bg-white dark:bg-boxdark flex justify-center">

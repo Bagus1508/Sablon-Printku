@@ -1,4 +1,4 @@
-<div wire:ignore.self id="modal-create-kontrak-rinci"
+<div wire:ignore.self id="modal-create-kontrak-global"
     class="hs-overlay hidden w-full h-screen overflow-x-hidden overflow-y-auto fixed top-0 left-0 z-999999 bg-black/80 [--overlay-backdrop:static]">
     <div
         class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto">
@@ -8,10 +8,10 @@
                 <div
                     class="border-b border-stroke px-6.5 py-4 dark:border-strokedark flex justify-between self-baseline">
                     <h3 class="font-medium text-black dark:text-white">
-                        Tambah Data Kontrak Rinci
+                        Tambah Data Kontrak Global
                     </h3>
                     <div>
-                        <button data-hs-overlay="#modal-create-kontrak-rinci" type="button"
+                        <button data-hs-overlay="#modal-create-kontrak-global" type="button"
                             class="justify-center items-center rounded-md p-1 border font-medium bg-white dark:bg-slate-800 text-gray-700 shadow-sm align-middle hover:bg-red-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-white transition-all text-xs dark:bg-gray-800 dark:hover:bg-red-500 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-gray-700 dark:focus:ring-offset-gray-800">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -20,16 +20,16 @@
                         </button>
                     </div>
                 </div>
-                <form method="POST" action="{{route('monitoring-kontrak-rinci.store')}}">
+                <form method="POST" action="{{route('monitoring-kontrak-global.store')}}">
                     @csrf
                     <div class="p-6.5">
-                        {{-- <div class="mb-4.5 w-full">
+                        <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 No Kontrak (Takon) <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
                             </label>
                             <input type="text" id="takon" name="takon" placeholder="Masukan No Kontrak Takon"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
-                        </div> --}}
+                        </div>
                         <!-- <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 No Kontrak (HP) <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
@@ -37,7 +37,7 @@
                             <input type="text" id="no_telepon" name="no_telepon" placeholder="Masukan No Kontrak HP"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div> -->
-                        {{-- <div class="mb-4.5 w-full">
+                        <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 No Kontrak Pihak Pertama <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
                             </label>
@@ -61,34 +61,16 @@
                                 <option value="{{$item->id}}">{{$item->nama_perusahaan}}</option>
                                 @endforeach
                             </select>
-                        </div> --}}
-                        <div class="mb-4.5 w-full">
-                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                Kontrak Global <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
-                            </label>
-                            <select required name="id_kontrak_global" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
-                                <option selected disabled>==Pilih Kontrak Global==</option>
-                                @foreach ($dataKontrakGlobal as $item)
-                                <option value="{{$item->id}}">{{$item->takon}}</option>
-                                @endforeach
-                            </select>
                         </div>
                         <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                No Kontrak Rinci
-                            </label>
-                            <input type="text" id="no_kontrak_rinci" name="no_kontrak_rinci" placeholder="Masukan No Kontrak HP"
-                                class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
-                        </div>
-                        <div class="mb-4.5 w-full">
-                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                Tanggal Kontrak Rinci
+                                Tanggal Kontrak Global
                             </label>
                             <input type="date" id="tanggal_kr" name="tanggal_kr" placeholder="Masukan Tanggal Kontrak"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div>
                         <div class="mb-4.5 w-full underline">
-                            Jangka Waktu Kontrak Rinci
+                            Jangka Waktu Kontrak Global
                         </div>
                         <div class="mb-4.5 w-full flex justify-between">
                             <div>

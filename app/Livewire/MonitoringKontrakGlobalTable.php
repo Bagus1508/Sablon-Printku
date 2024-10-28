@@ -6,9 +6,11 @@ use App\Exports\MonitoringKontrakGlobalExport;
 use App\Exports\StokBahanBakuGlobalExport;
 use App\Helpers\TanggalHelper;
 use App\Models\DataEkspedisi;
+use App\Models\DataPerusahaan;
 use App\Models\DataSatuan;
 use App\Models\DataUkuran;
 use App\Models\DataWarna;
+use App\Models\KontrakGlobal;
 use App\Models\KontrakRinci;
 use App\Models\Pajak;
 use App\Models\Produk;
@@ -56,23 +58,24 @@ class MonitoringKontrakGlobalTable extends Component
     
         $startDate = Carbon::parse($awal);
         $endDate = Carbon::parse($akhir);
+
+        $dataProdukPakaian = Produk::where('id_kategori', 2)->get();
     
         // Ambil Kontrak Rinci dengan stok harian dalam rentang tanggal
-        $query = KontrakRinci::where(function ($q) {
+        $query = KontrakGlobal::where(function ($q) {
             $q->where('takon', 'LIKE', '%'.$this->search.'%')
-              ->orWhere('no_kontrak_rinci', 'LIKE', '%'.$this->search.'%');
+              ->orWhere('no_kontrak_pihak_pertama', 'LIKE', '%'.$this->search.'%');
         })
         ->whereBetween('tanggal_kontrak', [$awal, $akhir])
         ->orderBy('tanggal_kontrak', 'desc')
         ->with([
-            'prosesCutting', 'prosesJahit', 'prosesPacking', 'barangKontrak', 
-            'pengirimanBarang', 'ba_rikmatek', 'bapb_bapp', 'bast', 'invoice', 
-            'kontrakGlobal'
+            'barangKontrak', 
         ]);        
         
         $dataKontrak = $query->paginate($this->perPage);
         $dataSatuan = DataSatuan::all();
         $dataEkspedisi = DataEkspedisi::all();
+        $dataPerusahaan = DataPerusahaan::all();
         $dataRegion = Region::all();
 
         $datanotfound = !$dataKontrak->count();
@@ -83,7 +86,10 @@ class MonitoringKontrakGlobalTable extends Component
             'dataSatuan' => $dataSatuan,
             'dataEkspedisi' => $dataEkspedisi,
             'dataRegion' => $dataRegion,
+            'dataPerusahaan' => $dataPerusahaan,
+            'dataProdukPakaian' => $dataProdukPakaian,
             'dataPajak' => Pajak::get()->first(),
+            'dataPajakList' => Pajak::get()->all(),
         ]);
     }
 

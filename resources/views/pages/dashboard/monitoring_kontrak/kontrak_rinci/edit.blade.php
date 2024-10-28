@@ -24,13 +24,13 @@
                     @csrf
                     <div class="p-6.5">
                         <input type="text" hidden id="id_kontrak_rinci">
-                        <div class="mb-4.5 w-full">
+                        {{-- <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 No Kontrak (Takon) <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
                             </label>
                             <input type="text" id="takon" name="takon" placeholder="Masukan No Kontrak Takon"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
-                        </div>
+                        </div> --}}
                         <!-- <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 No Kontrak (HP) <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
@@ -38,7 +38,7 @@
                             <input type="text" id="no_telepon" name="no_telepon" placeholder="Masukan No Kontrak HP"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div> -->
-                        <div class="mb-4.5 w-full">
+                        {{-- <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 No Kontrak Pihak Pertama <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
                             </label>
@@ -51,15 +51,15 @@
                             </label>
                             <input type="date" id="tanggal_kontrak" name="tanggal_kontrak" placeholder="Masukan Tanggal Kontrak"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
-                        </div>
+                        </div> --}}
                         <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                Perusahaan <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
+                                Kontrak Global <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
                             </label>
-                            <select required name="id_perusahaan" id="id_perusahaan_kontrak_rinci" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
-                                <option selected disabled>==Pilih Perusahaan==</option>
-                                @foreach ($dataPerusahaan as $item)
-                                <option value="{{$item->id}}">{{$item->nama_perusahaan}}</option>
+                            <select required name="id_kontrak_global" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
+                                <option selected disabled>==Pilih Kontrak Global==</option>
+                                @foreach ($dataKontrakGlobal as $item)
+                                <option value="{{$item->id}}">{{$item->takon}}</option>
                                 @endforeach
                             </select>
                         </div>

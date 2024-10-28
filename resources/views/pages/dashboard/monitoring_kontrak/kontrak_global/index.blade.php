@@ -8,4 +8,5 @@
         </div>
         @livewire('monitoring-kontrak-global-table')
     </div>
+    @include('pages.dashboard.monitoring_kontrak.kontrak_global.create')
 </x-app-layout>

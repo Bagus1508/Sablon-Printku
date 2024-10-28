@@ -32,9 +32,11 @@ class MonitoringKontrakRinciController extends Controller
 {
     public function index(){
         $dataPerusahaan = DataPerusahaan::get();
+        $dataKontrakGlobal = KontrakGlobal::get();
 
         return view('pages.dashboard.monitoring_kontrak.kontrak_rinci.index',[
             'dataPerusahaan' => $dataPerusahaan,
+            'dataKontrakGlobal' => $dataKontrakGlobal,
             'dataPajak' => Pajak::get()->first(),
         ]);
     }
@@ -43,10 +45,7 @@ class MonitoringKontrakRinciController extends Controller
     {
         try {
             $validated = $request->validate([
-                'takon' => 'nullable|unique:kontrak_rinci_table,takon',
-                // 'no_telepon' => 'required',
-                'no_kontrak_pihak_pertama' => 'required',
-                'tanggal_kontrak' => 'required|date',
+                'id_kontrak_global' => 'required',
                 'no_kontrak_rinci' => 'nullable',
                 'tanggal_kr' => 'nullable|date',
                 'awal_kr' => 'nullable|date',
@@ -54,28 +53,23 @@ class MonitoringKontrakRinciController extends Controller
                 'uraian' => 'nullable',
                 'id_perusahaan' => 'nullable|integer'
             ], [
-                'takon.unique' => 'No Kontrak Takon ini sudah digunakan dalam kontrak rinci lain.',
-                // 'no_telepon.required' => 'HP tidak boleh kosong.',
-                'no_kontrak_pihak_pertama.required' => 'No Kontrak Pihak Pertama tidak boleh kosong.',
-                'tanggal_kontrak.required' => 'Tanggal kontrak tidak boleh kosong.',
-                'tanggal_kontrak.date' => 'Tanggal kontrak harus berupa tanggal yang valid.',
+                'id_kontrak_global.required' => 'kontrak Global tidak boleh kosong.',
                 'tanggal_kr.date' => 'Tanggal KR harus berupa tanggal yang valid.',
                 'awal_kr.date' => 'Tanggal awal KR harus berupa tanggal yang valid.',
                 'akhir_kr.date' => 'Tanggal akhir KR harus berupa tanggal yang valid.',
                 'id_perusahaan.integer' => 'Perusahaan tidak valid!',
             ]);
+
+            $dataKontrakGlobal = KontrakGlobal::where('id', $validated['id_kontrak_global'])->first();
             
             $parameter = [
-                'takon' => $validated['takon'],
-                'no_telepon' => $validated['no_telepon'] ?? 0,
-                'no_kontrak_pihak_pertama' => $validated['no_kontrak_pihak_pertama'],
-                'tanggal_kontrak' => $validated['tanggal_kontrak'],
+                'id_kontrak_global' => $validated['id_kontrak_global'],
                 'no_kontrak_rinci' => $validated['no_kontrak_rinci'] ?? null,
                 'tanggal_kr' => $validated['tanggal_kr'] ?? null,
                 'awal_kr' => $validated['awal_kr'] ?? null,
                 'akhir_kr' => $validated['akhir_kr'] ?? null,
                 'uraian' => $validated['uraian'] ?? null,
-                'id_perusahaan' => $validated['id_perusahaan'] ?? null,
+                'id_perusahaan' => $dataKontrakGlobal->id_perusahaan ?? null,
             ];
     
             $dataKontrakRinci = KontrakRinci::create($parameter);
@@ -84,15 +78,9 @@ class MonitoringKontrakRinciController extends Controller
                 'id_kontrak_rinci' => $dataKontrakRinci->id
             ];
 
-            $parameterForKontrakGlobal = [
-                'id_kontrak_rinci' => $dataKontrakRinci->id,
-                'status_spk' => 0,
-            ];
-
             $dataProsesCutting = ProsesCutting::create($parameterProsesPekerjaan);
             $dataProsesJahit = ProsesJahit::create($parameterProsesPekerjaan);
             $dataProsesPacking = ProsesPacking::create($parameterProsesPekerjaan);
-            $dataMonitoringKontrakGlobal = KontrakGlobal::create($parameterForKontrakGlobal);
     
             if (!$dataKontrakRinci) {
                 Alert::error('Gagal!', 'Gagal menambahkan kontrak rinci');
@@ -320,34 +308,33 @@ class MonitoringKontrakRinciController extends Controller
 
     public function destroy($id)
     {
-        $dataKontrakRinci = KontrakRinci::find($id);
-        
-        if (!$dataKontrakRinci) {
-            return redirect()->back()->with('gagal', 'Data kontrak rinci tidak ditemukan.');
-        }
-
-        // Menghapus semua yang terkait dengan id_kontrak_rinci
-        ProdukKontrak::where('id_kontrak_rinci', $id)->delete();
-        ProsesCutting::where('id_kontrak_rinci', $id)->delete();
-        ProsesJahit::where('id_kontrak_rinci', $id)->delete();
-        ProsesPacking::where('id_kontrak_rinci', $id)->delete();
-        Bast::where('id_kontrak_rinci', $id)->delete();
-        BapbBapp::where('id_kontrak_rinci', $id)->delete();
-        BaRikmatek::where('id_kontrak_rinci', $id)->delete();
-        PengirimanBarang::where('id_kontrak_rinci', $id)->delete();
-        Invoice::where('id_kontrak_rinci', $id)->delete();
-        
-        // Menghapus data KontrakRinci
-        $deleteDataKontrakRinci = $dataKontrakRinci->delete();
-        
-        if (!$deleteDataKontrakRinci) {
-            return redirect()->back()->with('gagal', 'Gagal menghapus data kontrak rinci.');
-        }
-        
-        LogHelper::success('Berhasil menghapus data kontrak rinci!');
-        toast('Berhasil menghapus data kontrak rinci!', 'success', 'top-right');
-        return redirect()->back();
         try {
+            $dataKontrakRinci = KontrakRinci::find($id);
+            
+            if (!$dataKontrakRinci) {
+                return redirect()->back()->with('gagal', 'Data kontrak rinci tidak ditemukan.');
+            }
+    
+            // Menghapus semua yang terkait dengan id_kontrak_rinci
+            ProsesCutting::where('id_kontrak_rinci', $id)->delete();
+            ProsesJahit::where('id_kontrak_rinci', $id)->delete();
+            ProsesPacking::where('id_kontrak_rinci', $id)->delete();
+            Bast::where('id_kontrak_rinci', $id)->delete();
+            BapbBapp::where('id_kontrak_rinci', $id)->delete();
+            BaRikmatek::where('id_kontrak_rinci', $id)->delete();
+            PengirimanBarang::where('id_kontrak_rinci', $id)->delete();
+            Invoice::where('id_kontrak_rinci', $id)->delete();
+            
+            // Menghapus data KontrakRinci
+            $deleteDataKontrakRinci = $dataKontrakRinci->delete();
+            
+            if (!$deleteDataKontrakRinci) {
+                return redirect()->back()->with('gagal', 'Gagal menghapus data kontrak rinci.');
+            }
+            
+            LogHelper::success('Berhasil menghapus data kontrak rinci!');
+            toast('Berhasil menghapus data kontrak rinci!', 'success', 'top-right');
+            return redirect()->back();
         } catch (Throwable $e) {
             LogHelper::error($e->getMessage());
             return view('pages.utility.500');
@@ -580,16 +567,20 @@ class MonitoringKontrakRinciController extends Controller
                 Alert::error('Error!', 'Data Kontrak Rinci tidak ditemukan.');
                 return redirect()->back();
             }
-
-
+            
             $totalHargaStr = str_replace('Rp', '', $validated['total_harga']);
             $totalHargaStr = str_replace('.', '', $totalHargaStr);
             $totalHargaStr = str_replace(',', '.', $totalHargaStr);
             $data->total_harga = (float)$totalHargaStr ;
             $data->id_pajak = $validated['id_pajak'];
-
         
             $data->save();
+
+            $idKontrakGlobal = $data->id_kontrak_global;
+
+            $dataKontrakGlobal = KontrakGlobal::where('id', $idKontrakGlobal)->first();
+            $dataKontrakGlobal->total_harga = $dataKontrakGlobal->total_harga - $data->total_harga;
+            $dataKontrakGlobal->save();
         
             Alert::success('Berhasil!', 'Berhasil mengubah total harga dengan No Kontrak Rinci '. ($data->no_kontrak_rinci ?? 'No Kontrak Rinci Kosong') . '.');
             LogHelper::success('Berhasil mengubah total harga dengan No Kontrak Rinci '. ($data->no_kontrak_rinci ?? 'No Kontrak Rinci Kosong') . '.');

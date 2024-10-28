@@ -55,7 +55,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     });
     
-    Route::middleware(['checkrole:1,2'])->group(function () {
+    Route::middleware(['checkrole:1,2,3'])->group(function () {
         Route::resource('data-satuan', UnitController::class);
         Route::resource('data-ukuran', SizeController::class);
         Route::resource('data-warna', ColorController::class);
@@ -72,10 +72,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('monitoring-kontrak-rinci/proses-cutting/{id}', [MonitoringKontrakRinciController::class, 'updateProsesCutting'])->name('monitoring-kontrak-rinci.updateProsesCutting');
         Route::post('monitoring-kontrak-rinci/proses-jahit/{id}', [MonitoringKontrakRinciController::class, 'updateProsesJahit'])->name('monitoring-kontrak-rinci.updateProsesJahit');
         Route::post('monitoring-kontrak-rinci/proses-packing/{id}', [MonitoringKontrakRinciController::class, 'updateProsesPacking'])->name('monitoring-kontrak-rinci.updateProsesPacking');
-        Route::resource('barang-kontrak-rinci', BarangKontrakRinciController::class);
+        Route::resource('barang-kontrak-global', BarangKontrakRinciController::class);
         Route::post('monitoring-kontrak-rinci/total-harga/{id}', [MonitoringKontrakRinciController::class, 'updateTotalHarga'])->name('monitoring-kontrak-rinci.updateTotalHarga');
+        Route::post('monitoring-kontrak-global/total-harga/{id}', [MonitoringKontrakGlobalController::class, 'updateTotalHarga'])->name('monitoring-kontrak-global.updateTotalHarga');
         Route::post('monitoring-kontrak-rinci/barang-kontrak/{id}', [BarangKontrakRinciController::class, 'updateBarang'])->name('monitoring-kontrak-rinci.updateBarang');
         Route::delete('monitoring-kontrak-rinci/barang-kontrak/hapus/{id}', [BarangKontrakRinciController::class, 'destroy'])->name('barang-kontrak-rinci.destroy');
+        Route::get('monitoring-kontrak-rinci/barang-kontrak/filterByKontrakGlobal/{id}', [BarangKontrakRinciController::class, 'filterByKontrakGlobal'])->name('barang-kontrak-rinci.filterByKontrakGlobal');
         Route::resource('data-region', RegionController::class);
         Route::resource('pengiriman-barang', PengirimanBarangController::class);
         Route::resource('ba-rikmatek', BaRikmatekController::class);

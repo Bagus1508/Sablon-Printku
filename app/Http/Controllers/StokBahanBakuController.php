@@ -53,7 +53,7 @@ class StokBahanBakuController extends Controller
                 $hargaBeliSatuan.'regex' => 'Harga beli satuan harus dalam format yang benar, contoh: 1.000'
             ]);
 
-            $used_rolls = floor($validated['stok_keluar'] ?? 0 / $validated['roll_length'] ?? 0);
+            $used_rolls = floor(($validated['stok_keluar'] ?? 0) / ($validated['roll_length'] ?? 1));
             $total_meter = $validated['stok_masuk'] ?? 0;
             $used_meter = $validated['stok_keluar'] ?? 0;
             $remaining_meter = $total_meter - $used_meter;
@@ -72,13 +72,6 @@ class StokBahanBakuController extends Controller
                 'remaining_rolls' => $remaining_rolls,
                 'id_satuan' => $validated['id_satuan'],
             ];
-
-            $existingStokHarian = StokHarian::where('id_produk', $validated['id_produk'])->where('tanggal', $validated['tanggal'])->exists();
-
-            if($existingStokHarian){
-                Alert::error('Gagal!', 'Stok dengan tanggal ' . Carbon::parse($validated['tanggal'])->translatedFormat('d F Y') . ' sudah ada.');
-                return redirect()->back();
-            }
     
             $dataStokHarian = StokHarian::create($parameter);
 
@@ -148,16 +141,6 @@ class StokBahanBakuController extends Controller
             // Periksa apakah data ditemukan
             if (!$data) {
                 Alert::error('Gagal!', 'Data stok harian tidak ditemukan.');
-                return redirect()->back();
-            }
-
-
-            $existingStokHarian = StokHarian::where('id_produk', $id)                
-                            ->where('id', '!=', $id)
-                            ->where('tanggal', $validated['tanggal'])->exists();
-
-            if($existingStokHarian){
-                Alert::error('Gagal!', 'Stok dengan tanggal ' . Carbon::parse($validated['tanggal'])->translatedFormat('d F Y') . ' sudah ada.');
                 return redirect()->back();
             }
 

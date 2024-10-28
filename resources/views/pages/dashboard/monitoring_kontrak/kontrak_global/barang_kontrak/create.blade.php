@@ -22,7 +22,7 @@
                 </div>
                 <form method="POST" action="{{route('barang-kontrak-global.store')}}" id="form-barang-kontrak">
                     @csrf
-                    <input type="text" hidden name="id_kontrak_rinci" class="id_kontrak_rinci">
+                    <input type="text" hidden name="id_kontrak_global" class="id_kontrak_global">
                     <div id="inputContainer" class="p-6.5">
                         <div id="input-container">
                             <!-- Input default pertama -->
@@ -31,31 +31,23 @@
                                     <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                         Nama Barang <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
                                     </label>
-                                    <select required name="id_produk[]" class="produk-select w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
-                                        <option value="">Pilih Produk</option>
-                                        {{-- <option value="add" class="text-blue-500">+ Tambahkan Barang</option> --}}
+                                    <select required name="id_produk[]" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
+                                        @foreach ($dataProdukPakaian as $item)
+                                        <option value="{{$item->id}}">{{$item->nama_barang}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
-                                <div class="flex justify-between gap-3">
-                                    <div class="mb-4 w-full">
-                                        <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                            Kuantitas
-                                        </label>
-                                        <input type="number" name="kuantitas[]" placeholder="Masukan Kuantitas"
-                                            class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
-                                    </div>
-                                    <div class="mb-4 w-full">
-                                        <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                            Satuan <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
-                                        </label>
-                                        <select required name="id_satuan[]" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
-                                            @foreach ($dataSatuan as $item)
-                                            <option value="{{$item->id}}">{{$item->nama_satuan}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                                <div class="mb-4 w-full">
+                                    <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                        Satuan <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
+                                    </label>
+                                    <select required name="id_satuan[]" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
+                                        @foreach ($dataSatuan as $item)
+                                        <option value="{{$item->id}}">{{$item->nama_satuan}}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                                {{-- <div class="mb-4 w-full">
+                                <div class="mb-4 w-full">
                                     <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                         Volume Kontrak
                                     </label>
@@ -75,7 +67,7 @@
                                     </label>
                                     <input type="number" name="volume_sisa[]" placeholder="Masukan Volume Sisa"
                                         class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
-                                </div> --}}
+                                </div>
                                 <!-- Tombol hapus untuk setiap input -->
                                 <button type="button" class="remove-input btn btn-primary px-6 py-3 bg-red-600 text-white rounded-md hover:bg-red-600">Hapus</button>
                             </div>
@@ -103,96 +95,57 @@
     </div>
 </div>
 <script>
+$(document).ready(function() {
+    // Gunakan event delegation untuk elemen yang di-generate secara dinamis
     $(document).on('click', '.barang-kontrak', function() {
-        const id = $(this).data('id-kontrak-rinci');
-        $('.id_kontrak_rinci').val(id);
+        const id = $(this).data('id-kontrak-global');
 
-        // AJAX request untuk mengambil data produk berdasarkan id_kontrak_global
-        $.ajax({
-            url: `/monitoring-kontrak-rinci/barang-kontrak/filterByKontrakGlobal/${id}`,
-            type: 'GET',
-            success: function(response) {
-                // Mengosongkan semua dropdown produk
-                $('.produk-select').each(function() {
-                    $(this).empty().append(new Option('Pilih Produk', ''));
-                });
-
-                // Menambahkan opsi produk ke setiap dropdown
-                response.forEach(function(item) {
-                    $('.produk-select').each(function() {
-                        $(this).append(new Option(item.data_produk.nama_barang, item.id_produk));
-                    });
-                });
-
-                // Menambahkan opsi "Tambah Barang" ke setiap dropdown
-                $('.produk-select').each(function() {
-                    $(this).append(new Option('+ Tambahkan Barang', 'add'));
-                });
-            },
-            error: function(xhr) {
-                console.error('Error fetching data', xhr);
-            }
-        });
+        console.log(id);
+        
+        // Mengatur nilai input ID pada form modal
+        $('.id_kontrak_global').val(id);
     });
-
+});
+</script>
+<script>
     document.addEventListener('DOMContentLoaded', function() {
         let inputContainer = document.getElementById('input-container');
         let addButton = document.getElementById('add-input');
         let inputTemplate = document.getElementById('input-template').innerHTML;
         let inputCount = inputContainer.children.length; // Menghitung input yang sudah ada
-
+    
         addButton.addEventListener('click', function() {
             inputCount++;
             let newInput = document.createElement('div');
+            newInput.classList.add('input-group', 'mb-4');
             newInput.innerHTML = inputTemplate;
             inputContainer.appendChild(newInput);
-
-            // Mengosongkan dan mengisi dropdown produk pada input baru
-            const id = $('.barang-kontrak').data('id-kontrak-rinci'); // Ambil id dari yang terakhir di klik
-            $.ajax({
-                url: `/monitoring-kontrak-rinci/barang-kontrak/filterByKontrakGlobal/${id}`,
-                type: 'GET',
-                success: function(response) {
-                    const newSelect = newInput.querySelector('.produk-select');
-                    $(newSelect).empty().append(new Option('Pilih Produk', ''));
-
-                    response.forEach(function(item) {
-                        $(newSelect).append(new Option(item.data_produk.nama_barang, item.id_produk));
-                    });
-
-                    $(newSelect).append(new Option('+ Tambahkan Barang', 'add'));
-                },
-                error: function(xhr) {
-                    console.error('Error fetching data', xhr);
-                }
-            });
-
+    
             // Tampilkan tombol hapus setelah input kedua
             if (inputCount > 1) {
                 document.querySelectorAll('.remove-input').forEach(btn => btn.style.display = 'inline-block');
             }
         });
-
+    
         // Delegate click event to dynamically added remove buttons
         inputContainer.addEventListener('click', function(e) {
             if (e.target.classList.contains('remove-input')) {
                 e.target.parentElement.remove();
                 inputCount--;
-
+    
                 // Sembunyikan tombol hapus jika hanya ada satu input tersisa
                 if (inputCount <= 1) {
                     document.querySelectorAll('.remove-input').forEach(btn => btn.style.display = 'none');
                 }
             }
         });
-
+    
         // Inisialisasi visibilitas tombol hapus
         if (inputCount <= 1) {
             document.querySelectorAll('.remove-input').forEach(btn => btn.style.display = 'none');
         }
     });
-</script>
- 
+</script>    
 {{-- <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Target input dengan id "harga_barang"
@@ -222,17 +175,5 @@
         }
     });
 </script> --}}
-<script>
-    $(document).ready(function() {
-        $('select[name="id_produk[]"]').change(function() {
-            if ($(this).val() === 'add') {
-                // Ketika 'Tambahkan Barang' dipilih, lakukan sesuatu (misalnya buka modal atau arahkan ke halaman lain)
-                alert('Tambahkan barang baru!');
-                // Reset kembali dropdown setelah menekan tombol
-                $(this).val('');
-            }
-        });
-    });
-</script>
 
     

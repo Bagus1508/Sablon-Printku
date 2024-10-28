@@ -299,11 +299,6 @@
                                     </button>
                                 </form>
                                 <button title="Edit Data" data-hs-overlay="#modal-edit-kontrak-rinci" type="button"
-                                    data-id-kontrak-rinci="{{$itemKontrak->id}}"
-                                    data-takon="{{$itemKontrak->takon}}"
-                                    {{-- data-no-telepon="{{$itemKontrak->no_telepon}}" --}}
-                                    data-no-kontrak-pihak-pertama="{{$itemKontrak->no_kontrak_pihak_pertama}}"
-                                    data-tanggal-kontrak="{{$itemKontrak->tanggal_kontrak}}"
                                     data-id-perusahaan="{{$itemKontrak->id_perusahaan}}"
                                     data-no-kontrak-rinci="{{$itemKontrak->no_kontrak_rinci}}"
                                     data-tanggal-kr="{{$itemKontrak->tanggal_kr}}"
@@ -333,19 +328,23 @@
                         </td>
                         {{-- Data Kontrak --}}
                         <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                            <p class="text-black dark:text-white">{{$itemKontrak->takon}}</p>
+                            <p class="text-black dark:text-white">{{$itemKontrak->kontrakGlobal->takon}}</p>
                         </td>
-                        {{-- <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                        <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white">{{$itemKontrak->kontrakGlobal->no_kontrak_pihak_pertama}}</p>
+                        </td>
+                        {{-- 
+                        <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white">{{$itemKontrak->no_telepon}}</p>
-                        </td> --}}
+                        </td>
                         <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white">{{$itemKontrak->no_kontrak_pihak_pertama}}</p>
-                        </td>
+                        </td> --}}
                         <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white">{{$itemKontrak->perusahaan->nama_perusahaan}}</p>
                         </td>
                         <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                            <p class="text-black dark:text-white">{{ \Carbon\Carbon::parse($itemKontrak->tanggal_kontrak)->translatedFormat('d F Y') }}</p>
+                            <p class="text-black dark:text-white">{{ \Carbon\Carbon::parse($itemKontrak->kontrakGlobal->tanggal_kontrak)->translatedFormat('d F Y') }}</p>
                         </td>
                         <td class="whitespace-nowrap text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white">{{$itemKontrak->no_kontrak_rinci}}</p>

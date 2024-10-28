@@ -13,4 +13,13 @@ class KontrakGlobal extends Model
 
     protected $guarded = ['id'];
 
+    public function barangKontrak()
+    {
+        return $this->hasMany(ProdukKontrak::class, 'id_kontrak_global', 'id');
+    }
+
+    public function perusahaan()
+    {
+        return $this->hasOne(DataPerusahaan::class, 'id', 'id_perusahaan');
+    }
 }

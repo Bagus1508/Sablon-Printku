@@ -47,7 +47,7 @@
                     </li>
                     <!-- Menu Item Dashboard -->
                         <!-- Menu Item Data Master -->
-                        @if ((in_array($loggedInUser->id_level_user, [1,2])))
+                        @if ((in_array($loggedInUser->id_level_user, [1,2,3])))
                         <li>
                             <a class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out @if (Route::is(['data-akun.index', 'data-satuan.index', 'data-warna.index', 'data-ukuran.index', 'data-merek.index', 'data-pajak.index'])) {{ 'bg-graydark' }} @endif hover:bg-graydark dark:hover:bg-meta-4"
                                 href="#" @click.prevent="selected = (selected === 'Master' ? '':'Master')">

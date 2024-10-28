@@ -30,7 +30,7 @@ class KontrakRinci extends Model
 
     public function barangKontrak()
     {
-        return $this->hasMany(ProdukKontrak::class, 'id_kontrak_rinci', 'id');
+        return $this->hasMany(ProdukKontrakRinci::class, 'id_kontrak_rinci', 'id');
     }
 
     public function pengirimanBarang()
@@ -60,7 +60,7 @@ class KontrakRinci extends Model
 
     public function kontrakGlobal()
     {
-        return $this->hasOne(KontrakGlobal::class, 'id_kontrak_rinci', 'id');
+        return $this->hasOne(KontrakGlobal::class, 'id', 'id_kontrak_global');
     }
 
     public function perusahaan()

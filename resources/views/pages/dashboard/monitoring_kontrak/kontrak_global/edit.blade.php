@@ -1,4 +1,4 @@
-<div wire:ignore.self id="modal-create-kontrak-rinci"
+<div wire:ignore.self id="modal-edit-kontrak-rinci"
     class="hs-overlay hidden w-full h-screen overflow-x-hidden overflow-y-auto fixed top-0 left-0 z-999999 bg-black/80 [--overlay-backdrop:static]">
     <div
         class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto">
@@ -8,10 +8,10 @@
                 <div
                     class="border-b border-stroke px-6.5 py-4 dark:border-strokedark flex justify-between self-baseline">
                     <h3 class="font-medium text-black dark:text-white">
-                        Tambah Data Kontrak Rinci
+                        Edit Data Kontrak Rinci
                     </h3>
                     <div>
-                        <button data-hs-overlay="#modal-create-kontrak-rinci" type="button"
+                        <button data-hs-overlay="#modal-edit-kontrak-rinci" type="button"
                             class="justify-center items-center rounded-md p-1 border font-medium bg-white dark:bg-slate-800 text-gray-700 shadow-sm align-middle hover:bg-red-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:ring-offset-white transition-all text-xs dark:bg-gray-800 dark:hover:bg-red-500 dark:border-gray-700 dark:text-gray-400 dark:hover:text-white dark:focus:ring-gray-700 dark:focus:ring-offset-gray-800">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -20,16 +20,17 @@
                         </button>
                     </div>
                 </div>
-                <form method="POST" action="{{route('monitoring-kontrak-rinci.store')}}">
+                <form method="POST" action="{{route('monitoring-kontrak-rinci.update', (int)$ID)}}" id="form-edit-kontrak-rinci">
                     @csrf
                     <div class="p-6.5">
-                        {{-- <div class="mb-4.5 w-full">
+                        <input type="text" hidden id="id_kontrak_rinci">
+                        <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 No Kontrak (Takon) <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
                             </label>
                             <input type="text" id="takon" name="takon" placeholder="Masukan No Kontrak Takon"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
-                        </div> --}}
+                        </div>
                         <!-- <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 No Kontrak (HP) <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
@@ -37,7 +38,7 @@
                             <input type="text" id="no_telepon" name="no_telepon" placeholder="Masukan No Kontrak HP"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div> -->
-                        {{-- <div class="mb-4.5 w-full">
+                        <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 No Kontrak Pihak Pertama <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
                             </label>
@@ -55,21 +56,10 @@
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 Perusahaan <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
                             </label>
-                            <select required name="id_perusahaan" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
+                            <select required name="id_perusahaan" id="id_perusahaan_kontrak_rinci" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
                                 <option selected disabled>==Pilih Perusahaan==</option>
                                 @foreach ($dataPerusahaan as $item)
                                 <option value="{{$item->id}}">{{$item->nama_perusahaan}}</option>
-                                @endforeach
-                            </select>
-                        </div> --}}
-                        <div class="mb-4.5 w-full">
-                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                Kontrak Global <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
-                            </label>
-                            <select required name="id_kontrak_global" class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
-                                <option selected disabled>==Pilih Kontrak Global==</option>
-                                @foreach ($dataKontrakGlobal as $item)
-                                <option value="{{$item->id}}">{{$item->takon}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -77,7 +67,7 @@
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 No Kontrak Rinci
                             </label>
-                            <input type="text" id="no_kontrak_rinci" name="no_kontrak_rinci" placeholder="Masukan No Kontrak HP"
+                            <input type="text" id="no_kontrak_rinci" name="no_kontrak_rinci" placeholder="Masukan No Kontrak Rinci"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div>
                         <div class="mb-4.5 w-full">
@@ -95,29 +85,29 @@
                                 <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                     Awal Kontrak
                                 </label>
-                                <input type="date" id="awal_kr_create" name="awal_kr" placeholder="Masukan Nama Perusahaan" onchange="updateMasaKontrak()"
+                                <input type="date" id="awal_kr_update" name="awal_kr" placeholder="Masukan Nama Perusahaan"
                                     class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                             </div>
                             <div>
                                 <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                    Akhir Kontrak  <span class="text-red-500 text-[10px]">*Otomatis Terisi</span>
+                                    Akhir Kontrak
                                 </label>
-                                <input type="date" readonly id="akhir_kr_create" name="akhir_kr" placeholder="Masukan Nama Perusahaan" onchange="updateMasaKontrak()"
+                                <input type="date" readonly id="akhir_kr_update" name="akhir_kr" placeholder="Masukan Nama Perusahaan"
                                     class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                             </div>
                         </div>
                         <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
-                                Durasi Hari
+                                Durasi Hari <span class="text-red-500 text-[10px]">*Otomatis Terisi</span>
                             </label>
-                            <input onchange="updateAkhirKontrak()" type="text" id="durasi_hari_create" name="durasi_hari" placeholder="Masukan Nama Perusahaan"
+                            <input onchange="updateAkhirKontrak()" type="text" id="durasi_hari_update" name="durasi_hari" placeholder="Masukan Nama Perusahaan"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div>
                         <div class="mb-4.5 w-full">
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 Masa Kontrak <span class="text-red-500 text-[10px]">*Otomatis Terisi</span>
                             </label>
-                            <input readonly type="text" id="masa_kr_create" name="masa_kr" placeholder="Masukan Nama Perusahaan"
+                            <input readonly type="text" id="masa_kr_update" name="masa_kr" placeholder="Masukan Nama Perusahaan"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div>
                         <div class="mb-4.5 w-full">
@@ -139,11 +129,62 @@
     </div>
 </div>
 <script>
+$(document).ready(function() {
+    $(document).on('click', '.edit-kontrak-rinci', function() {
+        const id = $(this).data('id-kontrak-rinci');
+        const takon = $(this).data('takon');
+        const no_telepon = $(this).data('no-telepon');
+        const no_kontrak_pihak_pertama = $(this).data('no-kontrak-pihak-pertama');
+        const tanggal_kontrak = $(this).data('tanggal-kontrak');
+        const id_perusahaan_kontrak_rinci = $(this).data('id-perusahaan');
+        const no_kontrak_rinci = $(this).data('no-kontrak-rinci');
+        const tanggal_kr = $(this).data('tanggal-kr');
+        const awal_kr = $(this).data('awal-kr');
+        const akhir_kr = $(this).data('akhir-kr');
+        const uraian = $(this).data('uraian');
+
+        // Mengatur nilai input ID pada form modal
+        $('#id_kontrak_rinci').val(id);
+        $('#takon').val(takon);
+        $('#no_telepon').val(no_telepon);
+        $('#no_kontrak_pihak_pertama').val(no_kontrak_pihak_pertama);
+        $('#tanggal_kontrak').val(tanggal_kontrak);
+        $('#id_perusahaan_kontrak_rinci').val(id_perusahaan_kontrak_rinci);
+        $('#no_kontrak_rinci').val(no_kontrak_rinci);
+        $('#tanggal_kr').val(tanggal_kr);
+        $('#awal_kr_update').val(awal_kr);
+        $('#akhir_kr_update').val(akhir_kr);
+        $('#uraian').val(uraian);
+
+        // Menghitung durasi_hari secara simpel
+        if (awal_kr && akhir_kr) {
+            const awalDate = new Date(awal_kr);
+            const akhirDate = new Date(akhir_kr);
+            const timeDiff = akhirDate - awalDate;
+            const durasi_hari = Math.ceil(timeDiff / (1000 * 3600 * 24)); // Menghitung dalam hari
+            $('#durasi_hari_update').val(durasi_hari);
+        }
+
+        // Hanya jalankan update jika semua nilai ada
+        if (awal_kr && $('#durasi_hari_update').val()) {
+            updateAkhirKontrak();
+        }
+
+        // Set the action attribute of the form
+        const url = '{{ route("monitoring-kontrak-rinci.update", ":id") }}'.replace(':id', id);
+        $('#form-edit-kontrak-rinci').attr('action', url);
+    });
+
+    // Event listener untuk perubahan pada input tanggal awal dan durasi hari
+    $('#awal_kr_update, #durasi_hari_update').on('change', function() {
+        updateAkhirKontrak();
+    });
+
     function updateAkhirKontrak() {
-        var awalKontrak = document.getElementById('awal_kr_create').value;
-        var durasiHari = document.getElementById('durasi_hari_create').value;
-        var akhirKontrakInput = document.getElementById('akhir_kr_create');
-        var masaKontrakInput = document.getElementById('masa_kr_create');
+        var awalKontrak = document.getElementById('awal_kr_update').value;
+        var durasiHari = document.getElementById('durasi_hari_update').value;
+        var akhirKontrakInput = document.getElementById('akhir_kr_update');
+        var masaKontrakInput = document.getElementById('masa_kr_update');
 
         if (awalKontrak && durasiHari) {
             // Mengubah string tanggal menjadi objek Date
@@ -163,4 +204,6 @@
             masaKontrakInput.value = '';
         }
     }
+});
 </script>
+
