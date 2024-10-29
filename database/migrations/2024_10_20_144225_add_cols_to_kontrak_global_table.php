@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('takon', 100);
             $table->string('no_kontrak_pihak_pertama');
             $table->string('no_telepon');
-            $table->date('tanggal_kontrak');
+            $table->date('tanggal_kontrak')->nullable();
             $table->date('tanggal_kr')->nullable();
             $table->date('awal_kr')->nullable();
             $table->date('akhir_kr')->nullable();
