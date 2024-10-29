@@ -1,6 +1,6 @@
 <div>
     <div class="my-5">
-        <form action="{{route('preview-export-stok-global')}}" method="GET" class="flex mt-3 gap-x-3 max-sm:flex-col gap-5">
+        <form action="{{route('preview-export-stok-global')}}" target="__blank" method="GET" class="flex mt-3 gap-x-3 max-sm:flex-col gap-5">
             <x-datepicker-range name="tanggal"/>
             <button type="submit" class="transition ease-in-out hover:bg-gray-100 hover:text-gray-950 inline-flex w-fit rounded-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6 justify-center my-auto">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 mr-1 h-5">

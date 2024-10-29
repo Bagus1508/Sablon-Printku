@@ -35,6 +35,7 @@
                                         @foreach ($dataProdukPakaian as $item)
                                         <option value="{{$item->id}}">{{$item->nama_barang}}</option>
                                         @endforeach
+                                        <option value="add">+ Tambah Barang</option>
                                     </select>
                                 </div>
                                 <div class="mb-4 w-full">
@@ -175,5 +176,39 @@ $(document).ready(function() {
         }
     });
 </script> --}}
+
+
+<script>
+    $(document).ready(function() {
+        $('select[name="id_produk[]"]').change(function() {
+            if ($(this).val() === 'add') {
+                // Memanggil modal Preline
+                const modalAddItem = document.getElementById('modal-tambah-barang');
+                modalAddItem.classList.add('hidden'); // Menghilangkan class hidden untuk menampilkan modal
+    
+                const modal = document.getElementById('modal-create-produk');
+                modal.classList.remove('hidden'); // Menghilangkan class hidden untuk menampilkan modal
+    
+                // Mengatur opacity menjadi 100 dengan transisi
+                const modalContent = document.getElementById('child-modal-create-produk');
+                modalContent.classList.remove('opacity-0'); // Menghapus class opacity-0
+    
+                // Reset kembali dropdown setelah menekan tombol
+                $(this).val('');
+            }
+        });
+    
+        // Menutup modal
+        $('.hs-overlay-close').click(function() {
+            const modal = document.getElementById('modal-create-produk');
+            modal.classList.add('hidden'); // Menambahkan kembali class hidden untuk menyembunyikan modal
+    
+            // Mengatur kembali opacity saat menutup modal
+            const modalContent = modal.querySelector('.hs-overlay-open');
+            modalContent.classList.remove('opacity-100'); // Menghapus class opacity-100
+            modalContent.classList.add('opacity-0'); // Menambahkan class opacity-0
+        });
+    }); 
+</script>
 
     

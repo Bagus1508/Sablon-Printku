@@ -27,6 +27,9 @@
                 Harga
             </th>
             <th rowspan="2" width="200px" style="background-color: #D0DFE2; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
+                Sisa Harga
+            </th>
+            <th rowspan="2" width="200px" style="background-color: #D0DFE2; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
                 PPN ({{$dataPajak->ppn}}%)
             </th>
             <th rowspan="2" width="200px" style="background-color: #D0DFE2; border: 1px solid black; padding-left: 40px; padding-right: 40px; white-space: nowrap; color: black; text-align: center; vertical-align: middle;">
@@ -80,7 +83,7 @@
                     <p>{{$itemKontrak->takon}}</p>
                 </td>
                 <td rowspan="{{$barangKontrakCount}}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
-                    <p>{{$itemKontrak->no_telepon}}</p>
+                    <p>{{$itemKontrak->no_kontrak_pihak_pertama}}</p>
                 </td>
                 <td rowspan="{{$barangKontrakCount}}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
                     <p>                    
@@ -115,17 +118,22 @@
                 @if ($loggedInUser->id_level_user === 1)                    
                 <td rowspan="{{$barangKontrakCount}}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
                     <p>
+                        {{ 'Rp ' . number_format($itemKontrak->total_harga_old ?? 'Kosong', 0, ',', '.') }}
+                    </p>
+                </td>
+                <td rowspan="{{$barangKontrakCount}}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
+                    <p>
                         {{ 'Rp ' . number_format($itemKontrak->total_harga ?? 'Kosong', 0, ',', '.') }}
                     </p>
                 </td>
                 <td rowspan="{{$barangKontrakCount}}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
                     <p class="text-black dark:text-white hover:underline">
-                        Rp. {{ number_format(($itemKontrak->total_harga/100)*$dataPajak->ppn, 2, ',', '.') }}
+                        Rp. {{ number_format(($itemKontrak->total_harga_old/100)*$dataPajak->ppn, 2, ',', '.') }}
                     </p>
                 </td>
                 <td rowspan="{{$barangKontrakCount}}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
                     <p class="text-black dark:text-white hover:underline">
-                        Rp. {{ number_format($itemKontrak->total_harga + ($itemKontrak->total_harga/100)*$dataPajak->ppn, 2, ',', '.') }}
+                        Rp. {{ number_format($itemKontrak->total_harga_old + ($itemKontrak->total_harga_old/100)*$dataPajak->ppn, 2, ',', '.') }}
                     </p>
                 </td>
                     
@@ -148,7 +156,7 @@
                         @endif
                     </p>
                 </td>
-                @if ($itemKontrak->kontrakGlobal->status_spk == false)
+                @if ($itemKontrak->status_spk == false)
                     <td rowspan="{{$barangKontrakCount}}" style="text-align: center; white-space: nowrap; color: #FFFFFF; background-color: #ff0000; border:1px solid black; align-items: center; justify-content: center;  vertical-align: middle;">
                         <p>
                             Belum Selesai

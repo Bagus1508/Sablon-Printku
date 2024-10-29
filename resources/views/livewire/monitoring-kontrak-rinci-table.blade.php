@@ -6,7 +6,7 @@
         </div>
     </section>
     <div class="my-5">
-        <form action="{{route('monitoring-kontrak-rinci.preview_export_all')}}" method="GET" class="flex mt-3 gap-x-3 max-sm:flex-col gap-5">
+        <form action="{{route('monitoring-kontrak-rinci.preview_export_all')}}" target="_blank" method="GET" class="flex mt-3 gap-x-3 max-sm:flex-col gap-5">
             <x-datepicker-range name="tanggal"/>
             <div>
                 <div class="hs-dropdown hs-dropdown-proses relative inline-flex [--auto-close:inside]">
@@ -456,6 +456,7 @@
                             <button
                                 data-hs-overlay="#modal-tambah-barang"
                                 data-id-kontrak-rinci="{{$itemKontrak->id}}"
+                                data-id-kontrak-global="{{$itemKontrak->id_kontrak_global}}"
                                 id="tambah-barang-kontrak"
                                 class="barang-kontrak text-blue-600 hover:underline">+ Tambah Barang</button>
                         </td>
@@ -766,6 +767,10 @@
     @include('pages.dashboard.monitoring_kontrak.kontrak_rinci.proses_pekerjaan.proses_cutting.edit')
     @include('pages.dashboard.monitoring_kontrak.kontrak_rinci.proses_pekerjaan.proses_jahit.edit')
     @include('pages.dashboard.monitoring_kontrak.kontrak_rinci.proses_pekerjaan.proses_packing.edit')
+
+    {{-- Tambah Data Pakaian --}}
+    @include('pages.dashboard.monitoring_persediaan.pakaian_celana.satuan.create')
+
 </div>                          
 <script>
     document.getElementById('exportForm').onsubmit = function() {

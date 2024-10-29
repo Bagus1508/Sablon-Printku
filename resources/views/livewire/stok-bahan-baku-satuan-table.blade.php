@@ -46,6 +46,9 @@
                         Sisa Stok
                     </th>
                     <th class="min-w-[150px] px-4 py-4 text-center font-medium text-white border-r dark:text-white">
+                        Panjang Per Roll
+                    </th>
+                    <th class="min-w-[150px] px-4 py-4 text-center font-medium text-white border-r dark:text-white">
                         Total Roll Masuk
                     </th>
                     <th class="min-w-[150px] px-4 py-4 text-center font-medium text-white border-r dark:text-white">
@@ -103,6 +106,9 @@
                         </td>
                         <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white">{{$item->stok_masuk - $item->stok_keluar ?? ''}} {{$item->satuan->nama_satuan ?? ''}}</p>
+                        </td>
+                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white">{{number_format($item->roll_length ?? '0', 0)}} {{$item->satuan->nama_satuan ?? ''}}</p>
                         </td>
                         <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white">{{$item->total_rolls ?? '0'}}</p>

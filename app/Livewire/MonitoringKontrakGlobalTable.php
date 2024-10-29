@@ -77,6 +77,9 @@ class MonitoringKontrakGlobalTable extends Component
         $dataEkspedisi = DataEkspedisi::all();
         $dataPerusahaan = DataPerusahaan::all();
         $dataRegion = Region::all();
+        $produkKategori = ProdukKategori::all();
+        $dataUkuran = DataUkuran::all();
+        $dataWarna = DataWarna::all();
 
         $datanotfound = !$dataKontrak->count();
 
@@ -90,6 +93,10 @@ class MonitoringKontrakGlobalTable extends Component
             'dataProdukPakaian' => $dataProdukPakaian,
             'dataPajak' => Pajak::get()->first(),
             'dataPajakList' => Pajak::get()->all(),
+            'produkKategori' => $produkKategori,
+            'dataSatuan' => $dataSatuan,
+            'dataUkuran' => $dataUkuran,
+            'dataWarna' => $dataWarna,
         ]);
     }
 

@@ -1,6 +1,6 @@
 <div wire:ignore.self id="modal-create-produk"
     class="hs-overlay hidden w-full h-screen overflow-x-hidden overflow-y-auto fixed top-0 left-0 z-999999 bg-black/80 [--overlay-backdrop:static]">
-    <div
+    <div id="child-modal-create-produk"
         class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto">
 
         <div class="p-4 sm:p-7">

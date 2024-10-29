@@ -27,6 +27,13 @@
                             <label class="mb-3 block text-sm font-medium text-black dark:text-white">
                                 Total Harga
                             </label>
+                            <input type="text" id="total_harga_old_kontrak" name="total_harga_old" placeholder="Masukan Total Harga"
+                                class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                        </div>
+                        <div class="mb-4.5 w-full">
+                            <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                Sisa Harga
+                            </label>
                             <input type="text" id="total_harga_kontrak" name="total_harga" placeholder="Masukan Total Harga"
                                 class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
                         </div>
@@ -56,7 +63,10 @@
     $('.edit-total-harga').click(function() {
     const id = $(this).data('id');
     let total_harga_kontrak = $(this).data('total-harga-kontrak');
+    let total_harga_old_kontrak = $(this).data('total-harga-old-kontrak');
     const id_pajak = $(this).data('id-pajak');
+
+    console.log(id_pajak);
     
     function formatRupiah(angka, prefix) {
         var numberString = angka.toString(),
@@ -83,10 +93,20 @@
         // Jika tidak, berikan nilai default, misalnya 0.00
         total_harga = "0.00";
     }
+
+    total_harga_old = parseFloat(total_harga_old_kontrak);
+    if (!isNaN(total_harga_old)) {
+        // Jika total_harga_kontrak adalah angka yang valid
+        total_harga_old = total_harga_old_kontrak.toFixed(0);
+    } else {
+        // Jika tidak, berikan nilai default, misalnya 0.00
+        total_harga_old = "0.00";
+    }
     
     // Mengatur nilai input ID pada form modal
     $('#total_harga_kontrak').val(formatRupiah(total_harga, 'Rp'));
-    $('#id_pajak').val(id_pajak);
+    $('#total_harga_old_kontrak').val(formatRupiah(total_harga_old, 'Rp'));
+    $('#id_pajak').val(id_pajak);    
 
     // Select the form element
     const form = $('form');

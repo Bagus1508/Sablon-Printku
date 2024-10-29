@@ -184,15 +184,15 @@
                     <h5 class="font-medium text-black dark:text-white">{{$loop->index + 1}}</h5>
                 </td>
                 <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black;  vertical-align: middle;">
-                    <p class="text-black dark:text-white">{{$data->takon ?? '-'}}</p>
+                    <p class="text-black dark:text-white">{{$data->kontrakGlobal->takon ?? '-'}}</p>
                 </td>
                 <td rowspan="{{$totalBarang }}" style="text-align: center; white-space: nowrap; text: black; border:1px solid black;  vertical-align: middle;">
-                    <p class="text-black dark:text-white">{{$data->no_kontrak_pihak_pertama ?? '-'}}</p>
+                    <p class="text-black dark:text-white">{{$data->kontrakGlobal->no_kontrak_pihak_pertama ?? '-'}}</p>
                 </td>
                 <td rowspan="{{ $totalBarang }}" style="text-align: center; white-space: nowrap; color: black; border:1px solid black;  vertical-align: middle;">
                     <p class="text-black dark:text-white">
-                        @if($data->tanggal_kontrak)
-                            {{ \Carbon\Carbon::parse($data->tanggal_kontrak)->translatedFormat('d F Y') }}
+                        @if($data->tanggal_kr)
+                            {{ \Carbon\Carbon::parse($data->tanggal_kr)->translatedFormat('d F Y') }}
                         @else
                             -
                         @endif

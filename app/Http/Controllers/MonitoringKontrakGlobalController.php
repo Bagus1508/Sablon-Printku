@@ -151,13 +151,8 @@ class MonitoringKontrakGlobalController extends Controller
             }
 
             // Ambil Kontrak Global dengan stok harian dalam rentang tanggal
-            $query = KontrakRinci::whereBetween('tanggal_kontrak', [$startDate, $endDate])
-            ->orderBy('tanggal_kontrak', 'desc')
-            ->with([
-                'prosesCutting', 'prosesJahit', 'prosesPacking', 'barangKontrak', 
-                'pengirimanBarang', 'ba_rikmatek', 'bapb_bapp', 'bast', 'invoice', 
-                'kontrakGlobal'
-            ]);        
+            $query = KontrakGlobal::whereBetween('tanggal_kontrak', [$startDate, $endDate])
+            ->orderBy('tanggal_kontrak', 'desc');        
             
             $dataKontrak = $query->get();
 
@@ -230,16 +225,21 @@ class MonitoringKontrakGlobalController extends Controller
 
             
             $data = KontrakGlobal::find($id);
+
             if (!$data) {
                 // Jika data tidak ditemukan, arahkan kembali dengan pesan error
                 Alert::error('Error!', 'Data Kontrak Global tidak ditemukan.');
                 return redirect()->back();
             }
 
-
             $totalHargaStr = str_replace('Rp', '', $validated['total_harga']);
             $totalHargaStr = str_replace('.', '', $totalHargaStr);
             $totalHargaStr = str_replace(',', '.', $totalHargaStr);
+
+            if($data->total_harga_old == null){
+                $data->total_harga_old = (float)$totalHargaStr;
+            }
+            
             $data->total_harga = (float)$totalHargaStr ;
             $data->id_pajak = $validated['id_pajak'];
 

@@ -18,6 +18,11 @@ class KontrakGlobal extends Model
         return $this->hasMany(ProdukKontrak::class, 'id_kontrak_global', 'id');
     }
 
+    public function pajak()
+    {
+        return $this->hasOne(Pajak::class, 'id', 'id_pajak');
+    }
+
     public function perusahaan()
     {
         return $this->hasOne(DataPerusahaan::class, 'id', 'id_perusahaan');

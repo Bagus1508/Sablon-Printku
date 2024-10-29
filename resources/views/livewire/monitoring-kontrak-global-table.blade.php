@@ -1,6 +1,6 @@
 <div>
     <div class="my-5">
-        <form action="{{route('preview-export-monitoring-kontrak-global')}}" method="GET" class="flex mt-3 gap-x-3 max-sm:flex-col gap-5">
+        <form action="{{route('preview-export-monitoring-kontrak-global')}}" target="_blank" method="GET" class="flex mt-3 gap-x-3 max-sm:flex-col gap-5">
             <x-datepicker-range name="tanggal"/>
             <button type="submit" class="transition ease-in-out hover:bg-gray-100 hover:text-gray-950 inline-flex w-fit rounded-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6 justify-center my-auto">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 mr-1 h-5">
@@ -50,6 +50,9 @@
                     @if ($loggedInUser->id_level_user === 1) 
                     <th rowspan="2" class="px-5 whitespace-nowrap text-center border-r border-white font-medium text-white dark:text-white">
                         Harga
+                    </th>
+                    <th rowspan="2" class="px-5 whitespace-nowrap text-center border-r border-white font-medium text-white dark:text-white">
+                        Sisa Harga
                     </th>
                     <th rowspan="2" class="px-5 whitespace-nowrap text-center border-r border-white font-medium text-white dark:text-white">
                         PPN ({{$dataPajak->ppn}}%)
@@ -175,19 +178,25 @@
                         @if ($loggedInUser->id_level_user === 1)   
                         <td rowspan="{{$rowspan}}" class="whitespace-nowrap text-center border-black dark:border-strokedark">
                             <p class="text-black dark:text-white px-10">
+                                {{ $itemKontrak->total_harga_old !== null ? 'Rp ' . number_format($itemKontrak->total_harga_old, 0, ',', '.') : '-' }}
+                            </p>
+                        </td>
+                        {{-- Sisa Harga --}}
+                        <td rowspan="{{$rowspan}}" class="whitespace-nowrap text-center border-black dark:border-strokedark">
+                            <p class="text-black dark:text-white px-10">
                                 {{ $itemKontrak->total_harga !== null ? 'Rp ' . number_format($itemKontrak->total_harga, 0, ',', '.') : '-' }}
                             </p>
                         </td>
                         {{-- PPN --}}
                         <td rowspan="{{$rowspan}}" class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
                             <p class="text-black dark:text-white hover:underline">
-                                Rp. {{ number_format(($itemKontrak->total_harga/100)*$dataPajak->ppn, 2, ',', '.') }}
+                                Rp. {{ number_format(($itemKontrak->total_harga_old/100)*$dataPajak->ppn, 2, ',', '.') }}
                             </p>
                         </td>
                         {{-- Total Harga + PPN --}}
                         <td rowspan="{{$rowspan}}" class="whitespace-nowrap border-b border-slate-300 dark:border-strokedark">
                             <p class="text-black dark:text-white hover:underline">
-                                Rp. {{ number_format($itemKontrak->total_harga + ($itemKontrak->total_harga/100)*$dataPajak->ppn, 2, ',', '.') }}
+                                Rp. {{ number_format($itemKontrak->total_harga_old + ($itemKontrak->total_harga_old/100)*$dataPajak->ppn, 2, ',', '.') }}
                             </p>
                         </td>
                         {{-- Tombol Total Harga --}}
@@ -196,7 +205,8 @@
                                 <button 
                                         data-hs-overlay="#modal-edit-total-harga"
                                         data-id="{{$itemKontrak->id ?? ''}}"
-                                        data-total-harga-kontrak="{{$itemKontrak->total_harga ?? ''}}"
+                                        data-total-harga-kontrak="{{$itemKontrak->total_harga ?? ''}}" 
+                                        data-total-harga-old-kontrak="{{$itemKontrak->total_harga ?? ''}}" 
                                         data-id-pajak="{{$itemKontrak->pajak->id ?? ''}}"
                                         id="edit-total-harga" class="edit-total-harga text-blue-600 hover:underline">Update Harga</button>
                             </p>
@@ -314,4 +324,7 @@
 
     {{-- Total Harga Kontrak --}}
     @include('pages.dashboard.monitoring_kontrak.kontrak_global.total_harga.edit')
+
+    {{-- Tambah Data Pakaian --}}
+    @include('pages.dashboard.monitoring_persediaan.pakaian_celana.satuan.create')
 </div>

@@ -10,11 +10,15 @@ use App\Models\BapbBapp;
 use App\Models\BaRikmatek;
 use App\Models\Bast;
 use App\Models\DataPerusahaan;
+use App\Models\DataSatuan;
+use App\Models\DataUkuran;
+use App\Models\DataWarna;
 use App\Models\Invoice;
 use App\Models\KontrakGlobal;
 use App\Models\KontrakRinci;
 use App\Models\Pajak;
 use App\Models\PengirimanBarang;
+use App\Models\ProdukKategori;
 use App\Models\ProdukKontrak;
 use App\Models\ProsesCutting;
 use App\Models\ProsesJahit;
@@ -33,11 +37,19 @@ class MonitoringKontrakRinciController extends Controller
     public function index(){
         $dataPerusahaan = DataPerusahaan::get();
         $dataKontrakGlobal = KontrakGlobal::get();
+        $produkKategori = ProdukKategori::all();
+        $dataSatuan = DataSatuan::all();
+        $dataUkuran = DataUkuran::all();
+        $dataWarna = DataWarna::all();
 
         return view('pages.dashboard.monitoring_kontrak.kontrak_rinci.index',[
             'dataPerusahaan' => $dataPerusahaan,
             'dataKontrakGlobal' => $dataKontrakGlobal,
             'dataPajak' => Pajak::get()->first(),
+            'produkKategori' => $produkKategori,
+            'dataSatuan' => $dataSatuan,
+            'dataUkuran' => $dataUkuran,
+            'dataWarna' => $dataWarna,
         ]);
     }
 
@@ -432,8 +444,8 @@ class MonitoringKontrakRinciController extends Controller
                 }
             }
 
-            $query = KontrakRinci::whereBetween('tanggal_kontrak', [$startDate, $endDate])
-            ->orderBy('tanggal_kontrak', 'desc')
+            $query = KontrakRinci::whereBetween('tanggal_kr', [$startDate, $endDate])
+            ->orderBy('tanggal_kr', 'desc')
             ->with(['prosesCutting', 'prosesJahit', 'prosesPacking', 'barangKontrak', 'pengirimanBarang', 'ba_rikmatek', 
                     'bapb_bapp', 'bast', 'invoice'                 
                    ])
@@ -442,8 +454,8 @@ class MonitoringKontrakRinciController extends Controller
             $query->whereNotNull('id_kontrak_rinci');
             }); 
 
-            $checkingBarangKontrak = KontrakRinci::whereBetween('tanggal_kontrak', [$startDate, $endDate])
-                ->orderBy('tanggal_kontrak', 'desc')
+            $checkingBarangKontrak = KontrakRinci::whereBetween('tanggal_kr', [$startDate, $endDate])
+                ->orderBy('tanggal_kr', 'desc')
                 ->with(['prosesCutting', 'prosesJahit', 'prosesPacking', 'barangKontrak', 'pengirimanBarang', 'ba_rikmatek', 'bapb_bapp', 'bast', 'invoice'])
                 ->get();
 
@@ -567,19 +579,34 @@ class MonitoringKontrakRinciController extends Controller
                 Alert::error('Error!', 'Data Kontrak Rinci tidak ditemukan.');
                 return redirect()->back();
             }
-            
+
+            // Nilai kontrak rinci sebelum perubahan
+            $totalHargaRinciOld = floatval($data->total_harga);
+
+            // Ambil nilai dari form input dan ubah ke float
             $totalHargaStr = str_replace('Rp', '', $validated['total_harga']);
             $totalHargaStr = str_replace('.', '', $totalHargaStr);
             $totalHargaStr = str_replace(',', '.', $totalHargaStr);
-            $data->total_harga = (float)$totalHargaStr ;
-            $data->id_pajak = $validated['id_pajak'];
-        
-            $data->save();
+            $totalHargaRinciNew = (float)$totalHargaStr; // Nilai kontrak rinci baru setelah perubahan
 
+            // Update nilai kontrak rinci
+            $data->total_harga = $totalHargaRinciNew;
+            $data->id_pajak = $validated['id_pajak'];
             $idKontrakGlobal = $data->id_kontrak_global;
 
+            // Dapatkan data kontrak global yang terkait
             $dataKontrakGlobal = KontrakGlobal::where('id', $idKontrakGlobal)->first();
-            $dataKontrakGlobal->total_harga = $dataKontrakGlobal->total_harga - $data->total_harga;
+            $totalHargaGlobalOld = floatval($dataKontrakGlobal->total_harga); // Nilai kontrak global sebelum perubahan
+
+            // Hitung selisih nilai antara kontrak rinci lama dan yang baru
+            $selisih = $totalHargaRinciNew - $totalHargaRinciOld;
+
+            // Update nilai kontrak global dengan mengurangi atau menambah sesuai selisih
+            $dataKontrakGlobal->total_harga = $totalHargaGlobalOld - $selisih;
+            $dataKontrakGlobal->save(); // Simpan perubahan pada kontrak global
+
+            // Simpan perubahan pada kontrak rinci
+            $data->save();
             $dataKontrakGlobal->save();
         
             Alert::success('Berhasil!', 'Berhasil mengubah total harga dengan No Kontrak Rinci '. ($data->no_kontrak_rinci ?? 'No Kontrak Rinci Kosong') . '.');

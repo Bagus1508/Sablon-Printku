@@ -102,14 +102,16 @@
         </div>
     </div>
 </div>
+
 <script>
     $(document).on('click', '.barang-kontrak', function() {
         const id = $(this).data('id-kontrak-rinci');
+        const id_kontrak_global = $(this).data('id-kontrak-global');
         $('.id_kontrak_rinci').val(id);
 
         // AJAX request untuk mengambil data produk berdasarkan id_kontrak_global
         $.ajax({
-            url: `/monitoring-kontrak-rinci/barang-kontrak/filterByKontrakGlobal/${id}`,
+            url: `/monitoring-kontrak-rinci/barang-kontrak/filterByKontrakGlobal/${id_kontrak_global}`,
             type: 'GET',
             success: function(response) {
                 // Mengosongkan semua dropdown produk
@@ -149,8 +151,9 @@
 
             // Mengosongkan dan mengisi dropdown produk pada input baru
             const id = $('.barang-kontrak').data('id-kontrak-rinci'); // Ambil id dari yang terakhir di klik
+            const id_kontrak_global = $('.barang-kontrak').data('id-kontrak-global'); // Ambil id dari yang terakhir di klik
             $.ajax({
-                url: `/monitoring-kontrak-rinci/barang-kontrak/filterByKontrakGlobal/${id}`,
+                url: `/monitoring-kontrak-rinci/barang-kontrak/filterByKontrakGlobal/${id_kontrak_global}`,
                 type: 'GET',
                 success: function(response) {
                     const newSelect = newInput.querySelector('.produk-select');
@@ -223,16 +226,38 @@
     });
 </script> --}}
 <script>
-    $(document).ready(function() {
-        $('select[name="id_produk[]"]').change(function() {
-            if ($(this).val() === 'add') {
-                // Ketika 'Tambahkan Barang' dipilih, lakukan sesuatu (misalnya buka modal atau arahkan ke halaman lain)
-                alert('Tambahkan barang baru!');
-                // Reset kembali dropdown setelah menekan tombol
-                $(this).val('');
-            }
-        });
+$(document).ready(function() {
+    $('select[name="id_produk[]"]').change(function() {
+        if ($(this).val() === 'add') {
+            // Memanggil modal Preline
+            const modalAddItem = document.getElementById('modal-tambah-barang');
+            modalAddItem.classList.add('hidden'); // Menghilangkan class hidden untuk menampilkan modal
+
+            const modal = document.getElementById('modal-create-produk');
+            modal.classList.remove('hidden'); // Menghilangkan class hidden untuk menampilkan modal
+
+            // Mengatur opacity menjadi 100 dengan transisi
+            const modalContent = document.getElementById('child-modal-create-produk');
+            modalContent.classList.remove('opacity-0'); // Menghapus class opacity-0
+
+            // Reset kembali dropdown setelah menekan tombol
+            $(this).val('');
+        }
     });
+
+    // Menutup modal
+    $('.hs-overlay-close').click(function() {
+        const modal = document.getElementById('modal-create-produk');
+        modal.classList.add('hidden'); // Menambahkan kembali class hidden untuk menyembunyikan modal
+
+        // Mengatur kembali opacity saat menutup modal
+        const modalContent = modal.querySelector('.hs-overlay-open');
+        modalContent.classList.remove('opacity-100'); // Menghapus class opacity-100
+        modalContent.classList.add('opacity-0'); // Menambahkan class opacity-0
+    });
+});
+
+
 </script>
 
     

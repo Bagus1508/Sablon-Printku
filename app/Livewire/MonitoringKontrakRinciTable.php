@@ -104,6 +104,12 @@ class MonitoringKontrakRinciTable extends Component
         $dataKontrakGlobal = KontrakGlobal::all();
         $dataRegion = Region::all();
 
+        $produkKategori = ProdukKategori::all();
+        $dataSatuan = DataSatuan::all();
+        $dataUkuran = DataUkuran::all();
+        $dataWarna = DataWarna::all();
+        $dataPerusahaan = DataPerusahaan::all();
+
         $datanotfound = !$dataKontrakRinci->count();
 
         return view('livewire.monitoring-kontrak-rinci-table', [
@@ -116,6 +122,10 @@ class MonitoringKontrakRinciTable extends Component
             'dataKontrakGlobal' => $dataKontrakGlobal,
             'dataProdukPakaian' => $dataProdukPakaian,
             'dataPajak' => Pajak::get()->all(),
+            'produkKategori' => $produkKategori,
+            'dataUkuran' => $dataUkuran,
+            'dataWarna' => $dataWarna,
+            'dataPerusahaan' => $dataPerusahaan,
         ]);
     }
     

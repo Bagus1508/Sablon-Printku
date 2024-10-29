@@ -38,8 +38,8 @@ class MonitoringKontrakRinciAllExport implements FromView, ShouldAutoSize
         $this->proses_packing_boolean = $checkPacking ? "true" : "false";  
         
         // Fetch the data needed
-        $query = KontrakRinci::whereBetween('tanggal_kontrak', [$this->startDate, $this->endDate])
-        ->orderBy('tanggal_kontrak', 'desc')
+        $query = KontrakRinci::whereBetween('tanggal_kr', [$this->startDate, $this->endDate])
+        ->orderBy('tanggal_kr', 'desc')
         ->with(['prosesCutting', 'prosesJahit', 'prosesPacking', 'barangKontrak', 'pengirimanBarang', 'ba_rikmatek', 
                 'bapb_bapp', 'bast', 'invoice'                 
                ]); 

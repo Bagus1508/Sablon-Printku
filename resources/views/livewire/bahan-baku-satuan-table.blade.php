@@ -6,7 +6,7 @@
         </div>
     </section>
     <div class="my-5">
-        <form action="{{route('preview-export-stok-satuan')}}" method="GET" class="flex mt-3 gap-x-3 max-sm:flex-col gap-5">
+        <form action="{{route('preview-export-stok-satuan')}}" target="__blank" method="GET" class="flex mt-3 gap-x-3 max-sm:flex-col gap-5">
             <x-datepicker-range name="tanggal"/>
             <section class="flex gap-3">
                 <!-- Pilihan Satuan -->

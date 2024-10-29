@@ -212,6 +212,7 @@ class BarangKontrakRinciController extends Controller
 
             $dataProdukKontrakRinci->update([
                 'kuantitas' => $request->kuantitas,
+                'id_satuan' => $request->id_satuan,
             ]);
 
             $dataProdukKontrakGlobal->update([

@@ -20,6 +20,7 @@ use App\Models\Produk;
 use App\Models\DataSatuan;
 use App\Models\DataUkuran;
 use App\Models\DataWarna;
+use App\Models\KontrakGlobal;
 use App\Models\KontrakRinci;
 use App\Models\Pajak;
 use App\Models\ProdukKategori;
@@ -46,13 +47,8 @@ class MonitoringKontrakGlobalExport implements FromView
         $endDate = $this->endDate;
         
         // Ambil Kontrak Rinci dengan stok harian dalam rentang tanggal
-        $query = KontrakRinci::whereBetween('tanggal_kontrak', [$startDate, $endDate])
-        ->orderBy('tanggal_kontrak', 'desc')
-        ->with([
-            'prosesCutting', 'prosesJahit', 'prosesPacking', 'barangKontrak', 
-            'pengirimanBarang', 'ba_rikmatek', 'bapb_bapp', 'bast', 'invoice', 
-            'kontrakGlobal'
-        ]);        
+        $query = KontrakGlobal::whereBetween('tanggal_kontrak', [$startDate, $endDate])
+        ->orderBy('tanggal_kontrak', 'desc');      
         
         $dataKontrak = $query->get();
 
