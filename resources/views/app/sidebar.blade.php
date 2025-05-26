@@ -3,8 +3,9 @@
     @click.outside="sidebarToggle = false">
     <!-- SIDEBAR HEADER -->
     <div class="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-        <a href="/">
-            <img src="{{ asset('src/images/logo/logo.png') }}" alt="Logo" />
+        <a href="/" class="text-white font-extrabold">
+            Sablon Print Surabaya
+            {{-- <img src="{{ asset('src/images/logo/logo.png') }}" alt="Logo" /> --}}
         </a>
 
         <button class="block lg:hidden" @click.stop="sidebarToggle = !sidebarToggle">
@@ -149,7 +150,7 @@
                         @endif
 
                         <!-- Menu Item Ekspedisi -->
-                        <li>
+                        {{-- <li>
                             <a class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 @if (Route::is('data-ekspedisi.index')) {{ '!bg-graydark dark:bg-meta-4' }} @endif""
                                 href="{{ route('data-ekspedisi.index') }}">
                                 <svg class="fill-current" width="18" height="20" viewBox="0 0 30 30"
@@ -160,7 +161,7 @@
 
                                 Data Ekspedisi
                             </a>
-                        </li>
+                        </li> --}}
                         <!-- Menu Item Ekspedisi -->
 
                         <!-- Menu Item Perusahaan -->
@@ -181,7 +182,7 @@
                 </ul>
 
                 {{-- Menu Monitoring Persediaan --}}
-                <h3 class="mb-4 ml-4 text-sm font-medium text-bodydark2">MENU MONITORING PERSEDIAAN</h3>
+                {{-- <h3 class="mb-4 ml-4 text-sm font-medium text-bodydark2">MENU MONITORING PERSEDIAAN</h3>
                 <ul class="flex flex-col gap-1.5">
                     <!-- Menu Item Monitoring Persediaan -->
                     <!-- Menu Item Bahan Baku -->
@@ -289,12 +290,12 @@
                         </div>
                         <!-- Dropdown Menu End -->
                     </li>
-                </ul>
+                </ul> --}}
                 {{-- Menu Monitoring Persediaan --}}
 
                 @if ((in_array($loggedInUser->id_level_user, [1,2])))
                 {{-- Menu Monitoring Pekerjaan --}}
-                <h3 class="mb-4 ml-4 text-sm font-medium text-bodydark2">MENU MONITORING PEKERJAAN</h3>
+                {{-- <h3 class="mb-4 ml-4 text-sm font-medium text-bodydark2">MENU MONITORING PEKERJAAN</h3>
                 <ul class="flex flex-col gap-1.5">
                     <!-- Menu Item Monitoring Persediaan -->
                     <!-- Menu Item Bahan Baku -->
@@ -344,7 +345,7 @@
                         </div>
                         <!-- Dropdown Menu End -->
                     </li>
-                </ul>
+                </ul> --}}
                 {{-- Menu Monitoring Pekerjaan --}}
                 @endif
             </div>

@@ -7,7 +7,7 @@
     <link rel="icon" href="{{asset('src/images/logo/logo.svg')}}" type="image/x-icon">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>
-        PT Takon Uniform Production | Login
+        Sablon Print Surabaya | Login
     </title>
   </head>
 
