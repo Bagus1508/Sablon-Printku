@@ -1,3 +1,8 @@
+@php
+    $dataRegion = [];
+    $dataEkspedisi  = [];
+@endphp
+
 <div wire:ignore.self id="modal-update-pengiriman"
     class="hs-overlay hidden w-full h-screen overflow-x-hidden overflow-y-auto fixed top-0 left-0 z-999999 bg-black/80 [--overlay-backdrop:static]">
     <div

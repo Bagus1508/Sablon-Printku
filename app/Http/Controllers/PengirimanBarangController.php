@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\LogHelper;
+use App\Models\DataEkspedisi;
 use App\Models\PengirimanBarang;
+use App\Models\PermintaanBarang;
+use App\Models\Region;
+use App\Models\VerifikasiPermintaanBarang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
@@ -11,18 +15,32 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class PengirimanBarangController extends Controller
 {
+    public function index(){
+        return view('pages.dashboard.pengiriman_barang.index');
+    }
+
+    public function create(){
+        $dataRegion = Region::all();
+        $dataEkspedisi = DataEkspedisi::all();
+
+        return view('pages.dashboard.pengiriman_barang.create', [
+            'dataRegion' => $dataRegion,
+            'dataEkspedisi' => $dataEkspedisi,
+        ]);
+    }
+
     public function store(Request $request){
         try {
             $validated = $request->validate([
-                'id_kontrak_rinci' => 'required|integer',
+                'id_permintaan_barang' => 'required|integer',
                 'id_region' => 'required|integer',
                 'no_surat_jalan' => 'nullable',
                 'tanggal_surat_jalan' => 'nullable|date',
                 'bukti_foto' => 'nullable|mimes:pdf,jpg,png,jpeg|max:2048',
                 'id_ekspedisi' => 'nullable|integer',
             ], [
-                'id_kontrak_rinci.required' => 'Kontrak Rinci wajib diisi.',
-                'id_kontrak_rinci.integer' => 'Kontrak Rinci tidak sesuai.',
+                'id_permintaan_barang.required' => 'Kontrak Rinci wajib diisi.',
+                'id_permintaan_barang.integer' => 'Kontrak Rinci tidak sesuai.',
                 'id_region.required' => 'Region wajib diisi.',
                 'id_region.integer' => 'Region tidak sesuai.',
                 'tanggal_surat_jalan.date' => 'Tanggal Surat Jalan harus berupa tanggal yang valid.',
@@ -31,7 +49,7 @@ class PengirimanBarangController extends Controller
                 'id_ekspedisi.integer' => 'Ekspedisi tidak sesuai.',
             ]);
 
-            $existDataPengiriman = PengirimanBarang::where('id_kontrak_rinci', $validated['id_kontrak_rinci'])->exists();
+            $existDataPengiriman = PengirimanBarang::where('id_permintaan_barang', $validated['id_permintaan_barang'])->exists();
 
             if($existDataPengiriman != true){
                 $uploadedFile = $request->file('bukti_foto');
@@ -51,19 +69,20 @@ class PengirimanBarangController extends Controller
                 }                
                 
                 $parameter = [
-                    'id_kontrak_rinci' => $validated['id_kontrak_rinci'],
+                    'id_permintaan_barang' => $validated['id_permintaan_barang'],
                     'id_region' => $validated['id_region'],
                     'no_surat_jalan' => $validated['no_surat_jalan'],
                     'tanggal_surat_jalan' => $validated['tanggal_surat_jalan'],
                     'bukti_foto' => $validated['bukti_foto'],
                     'id_ekspedisi' => $validated['id_ekspedisi'],
+                    'status' => 1, //Dalam pengiriman
                 ];
                 
         
                 $dataKontrakRinci = PengirimanBarang::create($parameter);
             } else {
 
-                $data = PengirimanBarang::where('id_kontrak_rinci', $validated['id_kontrak_rinci'])->first();
+                $data = PengirimanBarang::where('id_permintaan_barang', $validated['id_permintaan_barang'])->first();
 
                 $uploadedFile = $request->file('bukti_foto');
     
@@ -116,5 +135,22 @@ class PengirimanBarangController extends Controller
         } /* catch (Throwable $e) {
             return view('pages.utility.500');
         } */
+    }
+
+    
+    public function edit($id){
+        $data = PermintaanBarang::find($id);
+        $dataVerifikasi = VerifikasiPermintaanBarang::where('id_permintaan_barang', $id)->first();
+        $dataPengiriman = PengirimanBarang::where('id_permintaan_barang', $id)->first();
+        $dataRegion = Region::all();
+        $dataEkspedisi = DataEkspedisi::all();
+
+        return view('pages.dashboard.pengiriman_barang.edit', [
+            'data' => $data,
+            'dataVerifikasi' => $dataVerifikasi,
+            'dataPengiriman' => $dataPengiriman,
+            'dataRegion' => $dataRegion,
+            'dataEkspedisi' => $dataEkspedisi,
+        ]);
     }
 }

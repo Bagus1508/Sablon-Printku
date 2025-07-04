@@ -13,9 +13,14 @@ class PengirimanBarang extends Model
 
     protected $guarded = ['id'];
 
-    public function kontrakRinci()
+    public function permintaanBarang()
     {
-        return $this->hasOne(KontrakRinci::class, 'id', 'id_kontrak_rinci');
+        return $this->hasOne(PermintaanBarang::class, 'id', 'id_permintaan_barang');
+    }
+
+    public function penerimaanBarang()
+    {
+        return $this->hasOne(PenerimaanBarang::class, 'id_pengiriman_barang', 'id');
     }
 
     public function region()
