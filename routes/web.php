@@ -24,10 +24,12 @@ use App\Http\Controllers\PakaianCelanaGlobalController;
 use App\Http\Controllers\PakaianCelanaSatuanController;
 use App\Http\Controllers\PenerimaanBarangController;
 use App\Http\Controllers\PengirimanBarangController;
+use App\Http\Controllers\PenjualanBarangController;
 use App\Http\Controllers\PermintaanBarangController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegionController;
+use App\Http\Controllers\SerahTerimaBarangController;
 use App\Http\Controllers\SizeController;
 use App\Http\Controllers\StokBahanBakuController;
 use App\Http\Controllers\StokPakaianCelanaController;
@@ -69,12 +71,16 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
         Route::resource('data-produk', DataProdukController::class);
         
+        Route::get('permintaan-barang/{id}/print', [PermintaanBarangController::class, 'print'])->name('permintaan-barang.print');
         Route::resource('permintaan-barang', PermintaanBarangController::class);
         Route::resource('verifikasi-permintaan-barang', VerifikasiPermintaanBarangController::class);
         Route::resource('pengiriman-barang', PengirimanBarangController::class);
         Route::resource('penerimaan-barang', PenerimaanBarangController::class);
         Route::resource('pengeluaran-barang', PengirimanBarangController::class);
         Route::resource('verifikasi-pengeluaran-barang', PengirimanBarangController::class);
+        Route::get('penjualan-barang/{id}/print', [PenjualanBarangController::class, 'print'])->name('penjualan-barang.print');
+        Route::resource('penjualan-barang', PenjualanBarangController::class);
+        Route::resource('serah-terima-barang', SerahTerimaBarangController::class);
 
         // Route::resource('monitoring-kontrak-global', MonitoringKontrakGlobalController::class);
         // Route::get('export-monitoring-kontrak-global-preview', [MonitoringKontrakGlobalController::class, 'preview_export'])->name('preview-export-monitoring-kontrak-global');

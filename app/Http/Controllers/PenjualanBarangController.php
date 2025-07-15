@@ -6,8 +6,9 @@ use App\Helpers\LogHelper;
 use App\Models\DataAlamat;
 use App\Models\DataPerusahaan;
 use App\Models\DataProduk;
-use App\Models\PermintaanBarang;
-use App\Models\PermintaanBarangDetail;
+use App\Models\PenjualanBarang;
+use App\Models\PenjualanBarangDetail;
+use App\Models\Produk;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,12 +19,12 @@ use Throwable;
 
 use function PHPUnit\Framework\isNull;
 
-class PermintaanBarangController extends Controller
+class PenjualanBarangController extends Controller
 {
     public function index(){
         $dataProduk = DataProduk::select('kode_produk', 'kode_produk')->get();
 
-        return view('pages.dashboard.permintaan_barang.index', [
+        return view('pages.dashboard.penjualan_barang.index', [
             'dataProduk' => $dataProduk,
         ]);
     }
@@ -31,7 +32,7 @@ class PermintaanBarangController extends Controller
     public function create(){
         $dataProduk = DataProduk::pluck('kode_produk', 'kode_produk');
 
-        return view('pages.dashboard.permintaan_barang.create', [
+        return view('pages.dashboard.penjualan_barang.create', [
             'dataProduk' => $dataProduk,
         ]);
     }
@@ -43,49 +44,54 @@ class PermintaanBarangController extends Controller
 
             $validated = $request->validate([
                 'no_transaksi' => 'required',
+                'total_transaksi' => 'required',
                 'nama' => 'required',
                 'status' => 'required',
                 'catatan' => 'nullable',
                 'barang' => 'required|array|min:1',
             ], [
                 'no_transaksi.required' => 'No Transaksi tidak boleh kosong.',
-                'nama.required' => 'Nama Pengaju Permintaan Barang tidak boleh kosong.',
-                'status.required' => 'Status Permintaan Barang tidak boleh kosong.',
+                'total_transaksi.required' => 'Total Transaksi tidak boleh kosong.',
+                'nama.required' => 'Nama Pengaju Penjualan Barang tidak boleh kosong.',
+                'status.required' => 'Status Penjualan Barang tidak boleh kosong.',
                 'barang.required' => 'Barang tidak boleh kosong.',
             ]);
             
             $parameter = [
                 'no_transaksi' => $validated['no_transaksi'],
+                'total_transaksi' => $validated['total_transaksi'],
                 'nama' => $validated['nama'],
                 'catatan' => $validated['catatan'],
                 'status' => $validated['status'],
             ];
 
-            $dataPermintaanBarang = PermintaanBarang::create($parameter);
+            $dataPenjualanBarang = PenjualanBarang::create($parameter);
 
             if ($validated['barang']) {
                 foreach ($validated['barang'] as $key => $item) {
-                    PermintaanBarangDetail::create([
-                        'id_pr' => $dataPermintaanBarang->id,
+                    $dataItem = Produk::where('kode_produk', $item['kode_barang'])->first();
+
+                    PenjualanBarangDetail::create([
+                        'id_pb' => $dataPenjualanBarang->id,
+                        'id_produk' => $dataItem->id,
                         "kode_barang" => $item['kode_barang'],
                         "nama_barang" => $item['nama_barang'],
-                        "spesifikasi_barang" => $item['spesifikasi_barang'],
-                        "satuan" => $item['satuan'],
+                        "harga" => $item['harga'],
                         "jumlah" => $item['jumlah'],
-                        "alasan_kebutuhan" => $item['alasan_kebutuhan'],
+                        "sub_total" => $item['sub_total'],
                     ]);
                 }
             }
     
 
-            if (!$dataPermintaanBarang) {
-                Alert::error('Gagal!', 'Gagal menambahkan Permintaan Barang '.$dataPermintaanBarang->no_transaksi);
-                LogHelper::error('Gagal menambahkan Permintaan Barang! '.$dataPermintaanBarang->no_transaksi);
+            if (!$dataPenjualanBarang) {
+                Alert::error('Gagal!', 'Gagal menambahkan Penjualan Barang '.$dataPenjualanBarang->no_transaksi);
+                LogHelper::error('Gagal menambahkan Penjualan Barang! '.$dataPenjualanBarang->no_transaksi);
                 return redirect()->back();
             }
     
-            Alert::success('Berhasil!', 'Berhasil menambah Permintaan Barang '.$dataPermintaanBarang->no_transaksi);
-            LogHelper::success('Berhasil menambahkan Permintaan Barang '.$dataPermintaanBarang->no_transaksi);
+            Alert::success('Berhasil!', 'Berhasil menambah Penjualan Barang '.$dataPenjualanBarang->no_transaksi);
+            LogHelper::success('Berhasil menambahkan Penjualan Barang '.$dataPenjualanBarang->no_transaksi);
 
             DB::commit();
             return redirect()->back();
@@ -120,8 +126,8 @@ class PermintaanBarangController extends Controller
                 'rt' => 'nullable|numeric',
                 'rw' => 'nullable|numeric',
             ], [
-                'kode_perusahaan.required' => 'Kode Permintaan Barang tidak boleh kosong.',
-                'nama_perusahaan.required' => 'Nama Permintaan Barang tidak boleh kosong.',
+                'kode_perusahaan.required' => 'Kode Penjualan Barang tidak boleh kosong.',
+                'nama_perusahaan.required' => 'Nama Penjualan Barang tidak boleh kosong.',
                 'no_telepon.regex' => 'Nomor telepon harus berisi angka saja.',
                 'email.email' => 'Email harus merupakan alamat email yang valid.',
                 'alamat.string' => 'Alamat harus berupa teks.',
@@ -130,15 +136,15 @@ class PermintaanBarangController extends Controller
                 'rw.numeric' => 'RW tidak sesuai.',
             ]);
 
-            $dataPermintaanBarang = DataPerusahaan::findOrFail($id);
+            $dataPenjualanBarang = DataPerusahaan::findOrFail($id);
     
-            // Cek apakah kode_perusahaan sudah digunakan oleh Permintaan Barang lain
+            // Cek apakah kode_perusahaan sudah digunakan oleh Penjualan Barang lain
             if (DataPerusahaan::where('kode_perusahaan', $validated['kode_perusahaan'])->where('id', '!=', $id)->exists()) {
-                Alert::error('Gagal!', 'Perusahaan dengan kode ' . $validated['kode_perusahaan'] . ' sudah digunakan oleh Permintaan Barang lain.');
+                Alert::error('Gagal!', 'Perusahaan dengan kode ' . $validated['kode_perusahaan'] . ' sudah digunakan oleh Penjualan Barang lain.');
                 return redirect()->back();
             }
     
-            $dataAlamat = DataAlamat::find($dataPermintaanBarang->id_alamat);
+            $dataAlamat = DataAlamat::find($dataPenjualanBarang->id_alamat);
             if (!$dataAlamat) {
                 $dataAlamat = new DataAlamat();
             }
@@ -162,18 +168,18 @@ class PermintaanBarangController extends Controller
     
             $dataAlamat->save();
     
-            // Update dataPermintaanBarang dengan id_alamat dari dataAlamat yang baru disimpan
-            $dataPermintaanBarang->kode_perusahaan = $validated['kode_perusahaan'];
-            $dataPermintaanBarang->nama_perusahaan = $validated['nama_perusahaan'];
-            $dataPermintaanBarang->no_telepon = $validated['no_telepon'];
-            $dataPermintaanBarang->npwp = $validated['npwp'];
-            $dataPermintaanBarang->email = $validated['email'];
-            $dataPermintaanBarang->id_alamat = $dataAlamat->id; // Assign id_alamat dari dataAlamat yang baru disimpan
+            // Update dataPenjualanBarang dengan id_alamat dari dataAlamat yang baru disimpan
+            $dataPenjualanBarang->kode_perusahaan = $validated['kode_perusahaan'];
+            $dataPenjualanBarang->nama_perusahaan = $validated['nama_perusahaan'];
+            $dataPenjualanBarang->no_telepon = $validated['no_telepon'];
+            $dataPenjualanBarang->npwp = $validated['npwp'];
+            $dataPenjualanBarang->email = $validated['email'];
+            $dataPenjualanBarang->id_alamat = $dataAlamat->id; // Assign id_alamat dari dataAlamat yang baru disimpan
     
-            $dataPermintaanBarang->save();
+            $dataPenjualanBarang->save();
     
-            Alert::success('Berhasil!', 'Berhasil mengubah data Permintaan Barang '.$dataPermintaanBarang->nama_perusahaan);
-            LogHelper::success('Berhasil mengubah data Permintaan Barang '.$dataPermintaanBarang->nama_perusahaan);
+            Alert::success('Berhasil!', 'Berhasil mengubah data Penjualan Barang '.$dataPenjualanBarang->nama_perusahaan);
+            LogHelper::success('Berhasil mengubah data Penjualan Barang '.$dataPenjualanBarang->nama_perusahaan);
             return redirect()->back();
         } catch (ValidationException $e) {
             foreach ($e->errors() as $errors) {
@@ -186,9 +192,9 @@ class PermintaanBarangController extends Controller
     }
 
     public function edit($id){
-        $data = PermintaanBarang::find($id);
+        $data = PenjualanBarang::find($id);
 
-        return view('pages.dashboard.permintaan_barang.edit', [
+        return view('pages.dashboard.penjualan_barang.edit', [
             'data' => $data,
         ]);
     }
@@ -196,49 +202,49 @@ class PermintaanBarangController extends Controller
     public function destroy($id)
     {
         try{
-            $dataPermintaanBarang = dataPermintaanBarang::find($id);
+            $dataPenjualanBarang = dataPenjualanBarang::find($id);
     
-            $dataPermintaanBarang->delete();
+            $dataPenjualanBarang->delete();
             
-            if(!isNull($dataPermintaanBarang->id_alamat)){
-                $dataAlamat = DataAlamat::find($dataPermintaanBarang->id_alamat);
+            if(!isNull($dataPenjualanBarang->id_alamat)){
+                $dataAlamat = DataAlamat::find($dataPenjualanBarang->id_alamat);
                 $dataAlamat->delete();
             }
             
-            if(!$dataPermintaanBarang){
+            if(!$dataPenjualanBarang){
                 return redirect()->back()->with('gagal', 'menghapus');
             }
-            LogHelper::success('Berhasil menghapus data Permintaan Barang!');
-            toast('Berhasil menghapus data Permintaan Barang!','success','top-right');
+            LogHelper::success('Berhasil menghapus data Penjualan Barang!');
+            toast('Berhasil menghapus data Penjualan Barang!','success','top-right');
             return redirect()->back();
         } catch (QueryException $e) {
             // Cek apakah kesalahan adalah Integrity constraint violation
             if ($e->getCode() == 23000) {
-                LogHelper::error('Gagal menghapus data Permintaan Barang: Data terkait masih ada.');
-                Alert::error('Gagal!', 'Gagal menghapus data Permintaan Barang: Data terkait masih ada.');
+                LogHelper::error('Gagal menghapus data Penjualan Barang: Data terkait masih ada.');
+                Alert::error('Gagal!', 'Gagal menghapus data Penjualan Barang: Data terkait masih ada.');
             } else {
-                LogHelper::error('Terjadi kesalahan saat mencoba menghapus data Permintaan Barang.');
-                Alert::error('Gagal!', 'Gagal menghapus data Permintaan Barang: Data terkait masih ada.');
+                LogHelper::error('Terjadi kesalahan saat mencoba menghapus data Penjualan Barang.');
+                Alert::error('Gagal!', 'Gagal menghapus data Penjualan Barang: Data terkait masih ada.');
             }
     
             return redirect()->back();
         } catch (Throwable $e) {
-            LogHelper::error('Terjadi kesalahan saat mencoba menghapus data Permintaan Barang.');
-            Alert::error('Gagal!', 'Gagal menghapus data Permintaan Barang: Data terkait masih ada.');
+            LogHelper::error('Terjadi kesalahan saat mencoba menghapus data Penjualan Barang.');
+            Alert::error('Gagal!', 'Gagal menghapus data Penjualan Barang: Data terkait masih ada.');
             return redirect()->back();
         }
     }
 
     public function print($id)
     {
-        $data = PermintaanBarang::with('items')->find($id);
+        $data = PenjualanBarang::with('items')->find($id);
 
-        $pdf = Pdf::loadView('pages.dashboard.permintaan_barang.export', [
-            'nama' => 'Permintaan Barang',
+        $pdf = Pdf::loadView('pages.dashboard.penjualan_barang.export', [
+            'nama' => 'Penjualan',
             'no_transaksi' => $data->no_transaksi,
             'data' => $data,
         ])->setPaper('a4', 'landscape');
 
-        return $pdf->stream('Permintaan Barang - ' . $data->no_transaksi . '.pdf');
+        return $pdf->stream('Penjualan Barang - ' . $data->no_transaksi . '.pdf');
     }
 }

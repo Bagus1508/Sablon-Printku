@@ -225,6 +225,28 @@
                             </a>
                         </li>
                         <!-- Menu Penerimaan Barang -->
+
+                        <!-- Menu Penjualan Barang -->
+                        <li>
+                            <a class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 @if (Route::is('penjualan-barang.index')) {{ '!bg-graydark dark:bg-meta-4' }} @endif""
+                                href="{{ route('penjualan-barang.index') }}">
+                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+
+                                Penjualan Barang
+                            </a>
+                        </li>
+                        <!-- Menu Penjualan Barang -->
+
+                        <!-- Menu Serah Terima Barang -->
+                        <li>
+                            <a class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 @if (Route::is('serah-terima-barang.index')) {{ '!bg-graydark dark:bg-meta-4' }} @endif""
+                                href="{{ route('serah-terima-barang.index') }}">
+                                <i class="fa fa-handshake-o" aria-hidden="true"></i>
+
+                                Serah Terima Barang
+                            </a>
+                        </li>
+                        <!-- Menu Serah Terima Barang -->
                     @endif
                 </ul>
             </div>

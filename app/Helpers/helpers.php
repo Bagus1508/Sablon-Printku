@@ -64,6 +64,15 @@ if (!function_exists('getListProduct')) {
     }
 }
 
+if (!function_exists('getPriceProduct')) {
+    function getPriceProduct($key = null)
+    {
+        $columns = DataProduk::pluck('harga_jual', 'kode_produk');
+
+        return is_null($key) ? $columns : ($columns[$key] ?? null);
+    }
+}
+
 if (!function_exists('getUnitList')) {
     function getUnitList()
     {
@@ -76,6 +85,19 @@ if (!function_exists('getUnitList')) {
     }
 }
 
+if (!function_exists('formatCurrency')) {
+    function formatCurrency($amount, $withRp = false)
+    {
+        $formatted = number_format($amount, 2, ',', '.');
+
+        if ($withRp) {
+            return 'Rp ' . $formatted;
+        }
+
+        return $formatted;
+    }
+}
+
 if (!function_exists('getTransactionNoItemReq')) {
     function getTransactionNoItemReq()
     {
@@ -84,6 +106,28 @@ if (!function_exists('getTransactionNoItemReq')) {
 
         // Format nomor: PR-YYMMDD-0001
         $prefix = 'PR';
+        $datePart = now()->format('ymd'); // contoh: 250703
+
+        if ($last) {
+            // Ambil bagian nomor dari transaksi terakhir
+            $lastNumber = (int) substr($last->no_transaksi, -4);
+            $newNumber = str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
+        } else {
+            $newNumber = '0001';
+        }
+
+        return $prefix . '-' . $datePart . '-' . $newNumber;
+    }
+}
+
+if (!function_exists('getTransactionNoSales')) {
+    function getTransactionNoSales()
+    {
+        // Ambil record terakhir berdasarkan ID atau tanggal
+        $last = \App\Models\PenjualanBarang::orderBy('id', 'desc')->first();
+
+        // Format nomor: PR-YYMMDD-0001
+        $prefix = 'SO';
         $datePart = now()->format('ymd'); // contoh: 250703
 
         if ($last) {
@@ -150,6 +194,28 @@ if (!function_exists('getTransactionNoReceiptItem')) {
 
         // Format nomor: PR-YYMMDD-0001
         $prefix = 'GRN';
+        $datePart = now()->format('ymd'); // contoh: 250703
+
+        if ($last) {
+            // Ambil bagian nomor dari transaksi terakhir
+            $lastNumber = (int) substr($last->no_transaksi, -4);
+            $newNumber = str_pad($lastNumber + 1, 4, '0', STR_PAD_LEFT);
+        } else {
+            $newNumber = '0001';
+        }
+
+        return $prefix . '-' . $datePart . '-' . $newNumber;
+    }
+}
+
+if (!function_exists('getTransactionNoReceiptCustomer')) {
+    function getTransactionNoReceiptCustomer()
+    {
+        // Ambil record terakhir berdasarkan ID atau tanggal
+        $last = PenerimaanBarang::orderBy('id', 'desc')->first();
+
+        // Format nomor: PR-YYMMDD-0001
+        $prefix = 'STDO';
         $datePart = now()->format('ymd'); // contoh: 250703
 
         if ($last) {

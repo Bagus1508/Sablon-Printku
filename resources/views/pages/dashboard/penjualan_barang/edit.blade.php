@@ -1,14 +1,17 @@
 <x-app-layout>
-    @section('title', 'Permintaan Barang')
+    @section('title', 'Penjualan Barang')
     <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
         <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <h2 class="text-title-md2 font-bold text-black dark:text-white">
-                Edit Permintaan Barang
+                Edit Penjualan Barang
             </h2>
             <div class="flex gap-2">
                 <div class="">
-                    <a href="{{ route('permintaan-barang.print', $data->id) }}" id="print"
-                        class="bg-blue-600 text-white font-medium px-4 py-2 rounded-md hover:bg-blue-700">Print</a>
+                    <button id="printButton"
+                        class="bg-blue-600 text-white font-medium px-4 py-2 rounded-md hover:bg-blue-700"
+                        data-print-url="{{ route('penjualan-barang.print', $data->id) }}">
+                        Print
+                    </button>
                 </div>
                 <div class="">
                     <button button id="submitForm"
@@ -35,21 +38,21 @@
             <table class="table-auto" id="tabelBarang">
                 <thead>
                     <tr>
+                        <th class="px-4 py-2 bg-blue-500 text-white">Kode Barang</th>
                         <th class="px-4 py-2 bg-blue-500 text-white">Nama Barang</th>
-                        <th class="px-4 py-2 bg-blue-500 text-white">Spesifikasi Barang</th>
-                        <th class="px-4 py-2 bg-blue-500 text-white">Satuan</th>
+                        <th class="px-4 py-2 bg-blue-500 text-white">Harga</th>
                         <th class="px-4 py-2 bg-blue-500 text-white">Jumlah</th>
-                        <th class="px-4 py-2 bg-blue-500 text-white">Alasan Kebutuhan</th>
+                        <th class="px-4 py-2 bg-blue-500 text-white">Sub Total</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($data->items as $item)
                         <tr>
+                            <td class="border px-4 py-2">{{ $item->kode_barang }}</td>
                             <td class="border px-4 py-2">{{ $item->nama_barang }}</td>
-                            <td class="border px-4 py-2">{{ $item->spesifikasi_barang }}</td>
-                            <td class="border px-4 py-2">{{ $item->satuan }}</td>
+                            <td class="border px-4 py-2">{{ $item->harga }}</td>
                             <td class="border px-4 py-2">{{ $item->jumlah }}</td>
-                            <td class="border px-4 py-2">{{ $item->alasan_kebutuhan }}</td>
+                            <td class="border px-4 py-2">{{ $item->sub_total }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -139,5 +142,25 @@
                 console.log(xhr.responseText);
             }
         });
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Ambil tombol berdasarkan ID
+        const printButton = document.getElementById('printButton');
+
+        if (printButton) {
+            printButton.addEventListener('click', function() {
+                // Ambil URL dari atribut data
+                const printUrl = this.dataset.printUrl;
+
+                if (printUrl) {
+                    window.open(printUrl, '_blank'); // Buka di tab baru
+                    // Atau jika tidak perlu tab baru:
+                    // window.location.href = printUrl;
+                }
+            });
+        }
     });
 </script>

@@ -80,6 +80,24 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="px-6.5">
+                            <div class="mb-4.5 w-full">
+                                <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                    Harga Beli <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
+                                </label>
+                                <input type="text" id="harga_beli" name="harga_beli" placeholder="Masukan Harga Beli"
+                                    class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                            </div>
+                        </div>
+                        <div class="px-6.5">
+                            <div class="mb-4.5 w-full">
+                                <label class="mb-3 block text-sm font-medium text-black dark:text-white">
+                                    Harga Jual <span class="text-red-500 text-[10px]">*(Wajib diisi)</span>
+                                </label>
+                                <input type="text" id="harga_jual" name="harga_jual" placeholder="Masukan Harga Jual"
+                                    class="w-full rounded border-[1.5px] border-stroke bg-transparent px-5 py-3 font-normal text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="bg-white dark:bg-boxdark flex justify-center">

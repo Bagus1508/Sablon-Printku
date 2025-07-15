@@ -28,6 +28,12 @@
                         Satuan
                     </th>
                     <th class="text-center px-4 py-4 font-medium text-white dark:text-white">
+                        Harga Beli
+                    </th>
+                    <th class="text-center px-4 py-4 font-medium text-white dark:text-white">
+                        Harga Jual
+                    </th>
+                    <th class="text-center px-4 py-4 font-medium text-white dark:text-white">
                         Stok Masuk
                     </th>
                     <th class="text-center px-4 py-4 font-medium text-white dark:text-white">
@@ -61,6 +67,12 @@
                         </td>
                         <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white">{{@$item->satuan->nama_satuan}}</p>
+                        </td>
+                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white">{{ formatCurrency(@$item->harga_beli)}}</p>
+                        </td>
+                        <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                            <p class="text-black dark:text-white">{{ formatCurrency(@$item->harga_jual)}}</p>
                         </td>
                         <td class="text-center border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                             <p class="text-black dark:text-white">{{$item->stok->stok_masuk ?? 0}}</p>

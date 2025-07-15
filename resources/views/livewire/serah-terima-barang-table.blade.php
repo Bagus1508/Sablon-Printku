@@ -1,8 +1,8 @@
 <div>
-    <section class="justify-between flex max-sm:flex-col-reverse max-sm:mb-5 mb-5">
+    <section class="justify-between flex max-sm:flex-col-reverse max-sm:mb-5">
         @include('livewire.search-data')
     </section>
-    <div class="max-w-full overflow-x-auto rounded-t-md">
+    <div class="max-w-full overflow-x-auto rounded-t-md mt-5">
         <table class="w-full table-auto">
             <thead class="bg-blue-600 text-white">
                 <tr class="text-left dark:bg-meta-4">
@@ -10,13 +10,13 @@
                         No
                     </th>
                     <th class="min-w-[200px] text-center px-4 py-4 font-medium text-white dark:text-white">
-                        No Transaksi
+                        No Serah Terima
                     </th>
                     <th class="text-center whitespace-nowrap px-4 py-4 font-medium text-white dark:text-white">
-                        Nama Pengaju
+                        Nama Pembeli
                     </th>
                     <th class="text-center whitespace-nowrap px-4 py-4 font-medium text-white dark:text-white">
-                        Status
+                        Status Penerimaan
                     </th>
                     <th class="px-4 py-4 text-center font-medium text-white dark:text-white">
                         Aksi
@@ -30,27 +30,27 @@
                             <h5 class="font-medium text-black dark:text-white">{{$loop->index + 1}}</h5>
                         </td>
                         <td class="text-center whitespace-nowrap border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                            <p class="text-black dark:text-white">{{$item->no_transaksi ?? '-'}}</p>
+                            <p class="text-black dark:text-white">{{$item->penerimaanBarang->no_transaksi ?? 'Belum Terbit'}}</p>
                         </td>
                         <td class="text-center whitespace-nowrap border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                            <p class="text-black dark:text-white">{{$item->nama ?? '-'}}</p>
+                            <p class="text-black dark:text-white">{{ $item->nama }}</p>
                         </td>
                         <td class="text-center whitespace-nowrap border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                            <p class="text-black dark:text-white">{{ getStatusList($item->status) }}</p>
+                            <p class="text-black dark:text-white">{{ getReceiptItemStatusList($item->penerimaanBarang->status ?? 0) }}</p>
                         </td>
                         <td class="mx-auto px-4 py-5 border-b border-[#eee] dark:border-strokedark">
                             <div class="flex items-center mx-auto justify-center">
-                                <a href="{{ route('verifikasi-permintaan-barang.edit', $item->id) }}" id="edit-permintaan-barang"
-                                    class="edit-permintaan-barang transition ease-in-out hover:bg-amber-50 focus:bg-amber-50 hover:text-amber-500 focus:text-amber-500 inline-flex w-fit rounded-l-md p-2 text-gray-900 items-center hover:ring-1 ring-inset ring-gray-300 hover:ring-amber-500 focus:ring-2 focus:ring-amber-500 sm:text-sm sm:leading-6">
+                                <a href="{{ route('serah-terima-barang.edit', $item->id) }}" id="edit-serah-terima-barang"
+                                    class="edit-serah-terima-barang transition ease-in-out hover:bg-amber-50 focus:bg-amber-50 hover:text-amber-500 focus:text-amber-500 inline-flex w-fit rounded-l-md p-2 text-gray-900 items-center hover:ring-1 ring-inset ring-gray-300 hover:ring-amber-500 focus:ring-2 focus:ring-amber-500 sm:text-sm sm:leading-6">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-5">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                                     </svg>
                                 </a>
-                                <button data-hs-overlay="#modal-delete-permintaan-barang" id="delete-permintaan-barang" type="button"
-                                    data-id-permintaan-barang = "{{$item->id}}"
-                                    class="delete-permintaan-barang transition ease-in-out hover:bg-rose-50 border-l rounded-r-md focus:bg-rose-50 hover:text-rose-500 focus:text-rose-500 inline-flex w-fit  p-2 text-gray-900 items-center hover:ring-1 ring-inset ring-gray-300 hover:ring-rose-500 focus:ring-2 focus:ring-rose-500 sm:text-sm sm:leading-6">
+                                <button data-hs-overlay="#modal-delete-serah-terima-barang" id="delete-serah-terima-barang" type="button"
+                                    data-id-serah-terima-barang = "{{$item->id}}"
+                                    class="delete-serah-terima-barang transition ease-in-out hover:bg-rose-50 border-l rounded-r-md focus:bg-rose-50 hover:text-rose-500 focus:text-rose-500 inline-flex w-fit  p-2 text-gray-900 items-center hover:ring-1 ring-inset ring-gray-300 hover:ring-rose-500 focus:ring-2 focus:ring-rose-500 sm:text-sm sm:leading-6">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-5">
                                         <path stroke-linecap="round" stroke-linejoin="round"
