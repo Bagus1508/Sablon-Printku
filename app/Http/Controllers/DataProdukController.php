@@ -33,6 +33,8 @@ class DataProdukController extends Controller
             $validated = $request->validate([
                 'kode_produk' => 'nullable|unique:produk_table,kode_produk',
                 'nama_barang' => 'required',
+                'harga_beli' => 'required|integer',
+                'harga_jual' => 'required|integer',
                 'id_kategori' => 'required|integer',
                 'id_warna' => 'required|integer',
                 'id_satuan' => 'required|integer',
@@ -40,6 +42,8 @@ class DataProdukController extends Controller
                 'kode_produk.unique' => 'Kode Barang ' . $request->kode_produk . ' sudah digunakan oleh data Barang lain.',
                 'kode_produk.required' => 'Kode Barang tidak boleh kosong.',
                 'nama_barang.required' => 'Nama Barang tidak boleh kosong.',
+                'harga_beli.required' => 'Harga Beli tidak boleh kosong.',
+                'harga_jual.required' => 'Harga Jual tidak boleh kosong.',
                 'id_kategori.required' => 'Kategori tidak boleh kosong.',
                 'id_kategori.integer' => 'Kategori yang dipilih tidak sesuai.',
                 'id_warna.required' => 'Warna tidak boleh kosong.',
@@ -51,6 +55,8 @@ class DataProdukController extends Controller
             $parameter = [
                 'kode_produk' => $validated['kode_produk'],
                 'nama_barang' => $validated['nama_barang'],
+                'harga_beli' => $validated['harga_beli'],
+                'harga_jual' => $validated['harga_jual'],
                 'id_kategori' => $validated['id_kategori'],
                 'id_warna' => $validated['id_warna'],
                 'id_satuan' => $validated['id_satuan'],
