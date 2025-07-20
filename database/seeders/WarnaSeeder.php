@@ -56,12 +56,9 @@ class WarnaSeeder extends Seeder
 
                     $data = array_combine($header, $row);
 
-                    $dataMerek = DataMerek::where('kode_merek', $data['kode_merek'])->get()->first();
-
                     $dataWarna = DataWarna::create([
                         'kode_warna' => $data['kode_warna'],
                         'nama_warna' => $data['nama_warna'],
-                        'id_merek' => $dataMerek->id,
                     ]);
 
                 }

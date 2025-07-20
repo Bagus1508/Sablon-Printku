@@ -27,9 +27,6 @@ class DatabaseSeeder extends Seeder
             PerusahaanSeeder::class,
             EkspedisiSeeder::class,
             RegionSeeder::class,
-            BahanKainSeeder::class,
-            /* BahanBakuSeeder::class,
-            KontrakRinciSeeder::class, */
         ]);
 
         $dataPajak = Pajak::create([

@@ -13,13 +13,13 @@ class KategoriSeeder extends Seeder
      */
     public function run(): void
     {
-        $bahanBaku = ProdukKategori::create([
-            'kode_kategori' => '01',
-            'nama_kategori' => 'Bahan Baku',
-        ]);
         $pakaian = ProdukKategori::create([
-            'kode_kategori' => '02',
+            'kode_kategori' => '01',
             'nama_kategori' => 'Pakaian',
+        ]);
+        $bahanBaku = ProdukKategori::create([
+            'kode_kategori' => '02',
+            'nama_kategori' => 'Aksesoris',
         ]);
     }
 }

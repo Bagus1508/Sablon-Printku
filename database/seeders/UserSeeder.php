@@ -14,23 +14,40 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $superAdmin = User::create([
-            'name' => 'Super Admin',
-            'email' => 'superadmin',
-            'password' => Hash::make('admin'),
-            'id_level_user' => 1,
-        ]);
-        $midAdmin = User::create([
-            'name' => 'Mid Admin',
-            'email' => 'midadmin',
-            'password' => Hash::make('admin'),
-            'id_level_user' => 2,
-        ]);
-        $admin = User::create([
-            'name' => 'Admin',
-            'email' => 'admin',
-            'password' => Hash::make('admin'),
-            'id_level_user' => 3,
-        ]);
+        $accounts = [
+            [
+                'name' => 'Admin',
+                'email' => 'admin',
+            ],
+            [
+                'name' => 'PIRDAUS',
+                'email' => 'pirdaus',
+            ],
+            [
+                'name' => 'NANDA',
+                'email' => 'nanda',
+            ],
+            [
+                'name' => 'WOWO',
+                'email' => 'wowo',
+            ],
+            [
+                'name' => 'ABDUL',
+                'email' => 'abdul',
+            ],
+            [
+                'name' => 'VIKRI',
+                'email' => 'vikri',
+            ],
+        ];
+
+        foreach ($accounts as $key => $account) {
+            User::create([
+                'name' => $account['name'],
+                'email' => $account['email'],
+                'password' => Hash::make('123456'),
+                'id_level_user' => 1,
+            ]);
+        }
     }
 }

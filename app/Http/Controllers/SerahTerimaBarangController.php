@@ -74,8 +74,8 @@ class SerahTerimaBarangController extends Controller
                         ]);
                     } else {
                         $dataStok->update([
-                            'stok_keluar' => $item->jumlah,
-                            'sisa_stok' => $item->jumlah - $dataBarang->sisa_stok,
+                            'stok_keluar' => $dataStok->stok_keluar + $item->jumlah,
+                            'sisa_stok' => $dataStok->sisa_stok - $item->jumlah,
                             'id_ukuran' => 1,
                         ]);
                     }
